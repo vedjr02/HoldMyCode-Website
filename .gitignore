@@ -1,0 +1,5 @@
+.DS_Store
+node_modules/
+
+# Raw design source (~12 MB) — the shipped hero-mockup.webp/.jpg are optimized from this
+MacBook Pro 14 Realistic Mockup (1).png
