@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HoldMyCode — keep your Mac awake while your agent works</title>
 <meta name="description" content="HoldMyCode is a free macOS menu-bar app that blocks sleep only while a coding agent is actually working — including with the lid closed — then lets your Mac sleep again when it's done.">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="light">
 
 <link rel="canonical" href="https://holdmycode.vercel.app/">
 
@@ -24,7 +24,7 @@
 <meta name="twitter:description" content="Blocks sleep only while your agent is actually working. Lid closed included. Free.">
 <meta name="twitter:image" content="https://holdmycode.vercel.app/og-image.png">
 
-<link rel="stylesheet" href="styles.css?v=4">
+<link rel="stylesheet" href="styles.css?v=5">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -33,7 +33,7 @@
 
 <!-- Browser chrome follows the page's own light/dark themes. -->
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
+<meta name="theme-color" media="(prefers-color-scheme: dark) and (min-width: 99999px)" content="#000000">
 
 <script type="application/ld+json">
 {
@@ -56,7 +56,7 @@
   <div class="wrap nav">
     <a class="brand" href="#main">
       <picture>
-        <source srcset="logo-mark-on-dark.png" media="(prefers-color-scheme: dark)">
+        <source srcset="logo-mark-on-dark.png" media="(prefers-color-scheme: dark) and (min-width: 99999px)">
         <img class="brand-mark" src="logo-mark-on-light.png" alt=""
              width="29" height="22" decoding="async">
       </picture>
@@ -556,7 +556,7 @@
     <div class="footer-row">
       <span class="brand">
         <picture>
-          <source srcset="logo-mark-on-dark.png" media="(prefers-color-scheme: dark)">
+          <source srcset="logo-mark-on-dark.png" media="(prefers-color-scheme: dark) and (min-width: 99999px)">
           <img class="brand-mark" src="logo-mark-on-light.png" alt=""
                width="24" height="18" decoding="async">
         </picture>

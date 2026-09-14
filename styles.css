@@ -6,7 +6,18 @@
      low contrast / outlined = planned, idle, absent
    ========================================================================== */
 
+/* ---------------------------------------------------------------------------
+   DARK MODE TEMPORARILY LOCKED OFF (2026-09-15) — the site is forced to light.
+   The dark styles below are preserved but dormant: the three
+   `@media (prefers-color-scheme: dark)` blocks are gated with
+   `and (min-width: 99999px)` so they can never match, and the logo <picture>
+   sources + the dark theme-color meta in index.html / 404.html are gated the
+   same way. To bring dark mode back: remove every `and (min-width: 99999px)`
+   guard across the project and set the color-scheme meta back to "light dark".
+   --------------------------------------------------------------------------- */
+
 :root {
+  color-scheme: light;
   /* Greys — light theme */
   --bg:         #FFFFFF;
   --bg-alt:     #F5F5F5;
@@ -40,7 +51,7 @@
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) and (min-width: 99999px) {
   :root {
     --bg:        #000000;
     --bg-alt:    #0B0B0B;
@@ -364,7 +375,7 @@ section {
   height: auto;
   filter: drop-shadow(0 22px 44px rgba(0,0,0,0.16));
 }
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) and (min-width: 99999px) {
   .hero-shot { filter: none; }
 }
 
@@ -1021,7 +1032,7 @@ h1, h2, h3 {
 .agent:hover {
   box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.05);
 }
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) and (min-width: 99999px) {
   .card:hover,
   .agent:hover { box-shadow: none; }
 }
