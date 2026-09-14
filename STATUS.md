@@ -6,6 +6,36 @@ in this file plus the source.
 
 ---
 
+## Update — 2026-09-15 (session 2): launch prep + first deploy
+
+Picks up from the original handoff below. Changes this session:
+
+- **Domain set** to `holdmycode.vercel.app` — replaced `REPLACE-ME-DOMAIN` in all
+  six spots (canonical, og:url, og:image, twitter:image, robots.txt, sitemap.xml).
+  Deploying on Vercel; swap this one string if a custom domain is added later.
+- **Contact handle set** to `vedjr02` in both footers (index + 404).
+- **Hero mock replaced with a real product shot.** The inline SVG panel is gone;
+  the hero now serves `hero-mockup.webp` (50 KB) with a JPEG fallback
+  (`hero-mockup.jpg`), a MacBook shot of the app in the menu bar. **Full colour by
+  explicit choice** — the one deliberate exception to the monochrome rule.
+  Optimised from a 12 MB source that is git-ignored. `styles.css` bumped to
+  `?v=3`; the `.figure-frame` rules were replaced by `.hero-shot`.
+- **Battery threshold:** the real UI shows "stops below 10%", so the old "20%"
+  assumption (which lived only in the now-removed hero SVG) is gone. 10% is the
+  only figure on the page now.
+- **Build is notarised** (confirmed), so no Gatekeeper "right-click → Open" note
+  is needed on the download section.
+- **Git:** repo initialised and pushed to
+  `github.com/vedjr02/HoldMyCode-Website` (public) — five logical commits on
+  `main`.
+
+**Still open:** the notarised `HoldMyCode.dmg` is not in `downloads/` yet, so the
+three Download buttons 404 — the one true launch blocker. And the no-telemetry
+claim (hero meta + FAQ) still needs confirming against the real app before
+launch; see "Assumptions" below.
+
+---
+
 ## What this is
 
 A static marketing/landing site for **HoldMyCode**, a free **closed-source**
@@ -384,9 +414,9 @@ default), you can drop the query entirely.
 | Placeholder | Where | What to do |
 |---|---|---|
 | **`downloads/HoldMyCode.dmg`** | 3 download buttons (nav, hero, download section) | **The build itself.** Drop the signed `.dmg` at that path or repoint the `href`. Until then the buttons 404 — this is the #1 launch blocker. |
-| **`REPLACE-ME-DOMAIN`** | `index.html` head (canonical, og:url, og:image, twitter:image), `robots.txt`, `sitemap.xml` | The real domain. Social scrapers need absolute URLs, so share cards stay broken until this is done. `grep -rn REPLACE-ME-DOMAIN .` finds all seven. |
-| **`YOUR-GITHUB-USERNAME`** | Footer contact row (both `index.html` and `404.html`) | The owner's GitHub profile link (a contact link, *not* a source repo — the app stays closed-source). One `grep -n YOUR-GITHUB-USERNAME index.html` finds it. |
-| Hero SVG mock | hero | Optional — replace with a real screenshot, or keep the illustration. |
+| ✅ ~~`REPLACE-ME-DOMAIN`~~ | `index.html` head, `robots.txt`, `sitemap.xml` | **DONE (session 2)** → `holdmycode.vercel.app`. Swap if a custom domain is added. |
+| ✅ ~~`YOUR-GITHUB-USERNAME`~~ | Footer contact row (`index.html` + `404.html`) | **DONE (session 2)** → `vedjr02`. |
+| ✅ ~~Hero SVG mock~~ | hero | **DONE (session 2)** — replaced with a real product shot (`hero-mockup.webp`, JPEG fallback). |
 | `og:url` / `og:image` | `<head>` | Marked with a TODO comment; needs a domain and a share image. |
 
 ---
