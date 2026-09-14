@@ -14,12 +14,14 @@ Picks up from the original handoff below. Changes this session:
   six spots (canonical, og:url, og:image, twitter:image, robots.txt, sitemap.xml).
   Deploying on Vercel; swap this one string if a custom domain is added later.
 - **Contact handle set** to `vedjr02` in both footers (index + 404).
-- **Hero mock replaced with a real product shot.** The inline SVG panel is gone;
-  the hero now serves `hero-mockup.webp` (50 KB) with a JPEG fallback
-  (`hero-mockup.jpg`), a MacBook shot of the app in the menu bar. **Full colour by
-  explicit choice** — the one deliberate exception to the monochrome rule.
-  Optimised from a 12 MB source that is git-ignored. `styles.css` bumped to
-  `?v=3`; the `.figure-frame` rules were replaced by `.hero-shot`.
+- **Hero mock replaced with a real product shot,** then refined to a
+  **transparent laptop render** (background removed) that floats on the page in
+  both themes. The inline SVG is gone; the hero serves `hero-laptop.webp`
+  (57 KB, WebP-only — support is universal now), a MacBook shot of the app in the
+  menu bar. **Full colour by explicit choice** — the one deliberate exception to
+  the monochrome rule. Optimised from a multi-MB source that is git-ignored.
+  `styles.css` is at `?v=4`; `.figure-frame` was replaced by `.hero-shot`, which
+  uses a shape-aware `drop-shadow` (light mode only) instead of a card.
 - **Battery threshold:** the real UI shows "stops below 10%", so the old "20%"
   assumption (which lived only in the now-removed hero SVG) is gone. 10% is the
   only figure on the page now.
@@ -29,10 +31,15 @@ Picks up from the original handoff below. Changes this session:
   `github.com/vedjr02/HoldMyCode-Website` (public) — five logical commits on
   `main`.
 
-**Still open:** the notarised `HoldMyCode.dmg` is not in `downloads/` yet, so the
-three Download buttons 404 — the one true launch blocker. And the no-telemetry
-claim (hero meta + FAQ) still needs confirming against the real app before
-launch; see "Assumptions" below.
+- **App download shipped.** The notarised `HoldMyCode.dmg` (v1.0.1, 2.9 MB) is in
+  `downloads/`; all three Download buttons resolve (verified 200,
+  `application/x-apple-diskimage`).
+
+**Still open before launch:** the no-telemetry claim (hero meta + FAQ) still needs
+confirming against the real app — see "Assumptions" below — plus the smaller copy
+assumptions (app size "~5 MB" vs the 2.9 MB download, macOS floor, 30-second
+grace, one-admin-prompt install). Deploy note: the Vercel project must be named
+`holdmycode` for the URLs above to match.
 
 ---
 
@@ -413,7 +420,7 @@ default), you can drop the query entirely.
 
 | Placeholder | Where | What to do |
 |---|---|---|
-| **`downloads/HoldMyCode.dmg`** | 3 download buttons (nav, hero, download section) | **The build itself.** Drop the signed `.dmg` at that path or repoint the `href`. Until then the buttons 404 — this is the #1 launch blocker. |
+| ✅ ~~`downloads/HoldMyCode.dmg`~~ | 3 download buttons (nav, hero, download section) | **DONE (session 2)** — notarised v1.0.1 (2.9 MB) is in `downloads/`; all three buttons resolve. |
 | ✅ ~~`REPLACE-ME-DOMAIN`~~ | `index.html` head, `robots.txt`, `sitemap.xml` | **DONE (session 2)** → `holdmycode.vercel.app`. Swap if a custom domain is added. |
 | ✅ ~~`YOUR-GITHUB-USERNAME`~~ | Footer contact row (`index.html` + `404.html`) | **DONE (session 2)** → `vedjr02`. |
 | ✅ ~~Hero SVG mock~~ | hero | **DONE (session 2)** — replaced with a real product shot (`hero-mockup.webp`, JPEG fallback). |
