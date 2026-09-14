@@ -1,7 +1,8 @@
 .DS_Store
 node_modules/
 
-# Raw design sources — kept local, not shipped. The optimized hero-mockup.webp/.jpg
+# Raw design sources — kept local, not shipped. The optimized hero-laptop.webp
 # and the generated favicons/logo marks are what the site actually uses.
 MacBook Pro 14 Realistic Mockup (1).png
 Laptop Logo Black Background Sept 14.jpeg
+MacBook Pro 14 Mockup.png

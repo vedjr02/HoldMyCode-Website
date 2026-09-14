@@ -355,21 +355,17 @@ section {
 
 .figure { text-align: center; }
 
-/* Hero product shot. The image ships with its own dark ground, so it needs no
-   surface card — just rounded corners, a lift in light mode and a hairline in
-   dark, where a shadow reads as nothing. */
+/* Hero product shot — a transparent laptop render, so it floats on the page with
+   no card. A shape-aware drop-shadow (follows the alpha, not the box) gives it
+   lift in light mode; on the dark hero a shadow reads as nothing, so it's off. */
 .hero-shot {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: var(--radius-lg);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 18px 50px rgba(0,0,0,0.10);
+  filter: drop-shadow(0 22px 44px rgba(0,0,0,0.16));
 }
 @media (prefers-color-scheme: dark) {
-  .hero-shot {
-    box-shadow: none;
-    border: 1px solid var(--line-soft);
-  }
+  .hero-shot { filter: none; }
 }
 
 .figure-cap {
