@@ -24,7 +24,7 @@
 <meta name="twitter:description" content="Blocks sleep only while your agent is actually working. Lid closed included. Free.">
 <meta name="twitter:image" content="https://holdmycode.xyz/og-image.png">
 
-<link rel="stylesheet" href="styles.css?v=7">
+<link rel="stylesheet" href="styles.css?v=8">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -384,44 +384,24 @@
 <section id="setup">
   <div class="wrap">
     <div class="section-head lead reveal">
-      <p class="eyebrow">Getting started</p>
-      <h2>Set it up once. Then forget it's there.</h2>
+      <p class="eyebrow">See it in action</p>
+      <h2>Watch it work.</h2>
       <p>
-        No config file, no per project setup, no dashboard to keep an eye on.
-        Three steps and it's running.
+        Under a minute, start to finish. First launch to a closed lid that keeps
+        running, with nothing trimmed out.
       </p>
     </div>
 
-    <ol class="setup-grid reveal">
-      <li class="setup-step">
-        <span class="setup-num">01</span>
-        <h3>Drag it to Applications</h3>
-        <p>
-          Open the download and drop HoldMyCode into your Applications folder. It lives up in
-          the menu bar, with no dock icon, no window to manage, and nothing to keep open.
-        </p>
-      </li>
-      <li class="setup-step">
-        <span class="setup-num">02</span>
-        <h3>Approve the helper once</h3>
-        <p>
-          macOS asks for your admin password the first time you launch it. That's HoldMyCode installing the
-          small privileged helper that can hold lid sleep open, which is the one thing a normal app
-          isn't allowed to do. It asks once, not every single launch.
-        </p>
-      </li>
-      <li class="setup-step">
-        <span class="setup-num">03</span>
-        <h3>Start a task, close the lid</h3>
-        <p>
-          That's the whole setup. Kick off a run in your agent and shut the laptop. The menu
-          bar takes it from there. Nudge the battery floor later if the default doesn't suit you.
-        </p>
-      </li>
-    </ol>
+    <figure class="walkthrough reveal">
+      <video class="walkthrough-video" muted loop playsinline preload="metadata"
+             poster="walkthrough-poster.jpg" width="1920" height="1080"
+             aria-label="Screen recording walkthrough of HoldMyCode, from first launch to a closed lid that keeps working">
+        <source src="walkthrough.mp4" type="video/mp4">
+      </video>
+    </figure>
 
     <p class="setup-note">
-      Nothing to sign up for, and nothing running until an agent actually starts working.
+      The setup itself: drag it to Applications, approve the helper once, then start a task and close the lid.
     </p>
   </div>
 </section>
@@ -614,6 +594,6 @@
   </div>
 </dialog>
 
-<script src="main.js?v=4"></script>
+<script src="main.js?v=5"></script>
 </body>
 </html>

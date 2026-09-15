@@ -248,4 +248,29 @@
       if (e.key === 'Escape' && thanks.open) thanks.close();
     });
   }
+
+  /* 7. Walkthrough video: plays while it's on screen, pauses when it scrolls
+        away. Muted, no audio track; a click toggles play/pause. Under reduced
+        motion it doesn't autoplay and shows native controls instead. */
+  var wv = document.querySelector('.walkthrough-video');
+  if (wv) {
+    var reduceWv = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceWv) {
+      wv.setAttribute('controls', '');
+    } else {
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { wv.play().catch(function () {}); }
+            else { wv.pause(); }
+          });
+        }, { threshold: 0.25 }).observe(wv);
+      } else {
+        wv.play().catch(function () {});
+      }
+      wv.addEventListener('click', function () {
+        if (wv.paused) wv.play().catch(function () {}); else wv.pause();
+      });
+    }
+  }
 })();
