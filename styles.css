@@ -586,7 +586,7 @@ section {
 
 .agent-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);   /* five agents, one clean row */
+  grid-template-columns: repeat(4, 1fr);   /* seven agents: four over three */
   gap: 12px;
 }
 
@@ -1245,6 +1245,209 @@ h1, h2, h3 {
 }
 
 .modal-done { width: 100%; }
+
+/* ---------- install guide inside the thank-you dialog ---------- */
+
+/* A tall card must scroll from its top, so centre with auto margins rather than
+   align-items (which would push the start of the card above the viewport). */
+.modal[open] { align-items: flex-start; }
+.modal-card { margin: auto; }
+.modal-guide { max-width: 560px; }
+
+.guide {
+  list-style: none;
+  counter-reset: guide;
+  margin: 0 0 22px;
+  padding: 0;
+  text-align: left;
+  display: grid;
+  gap: 0;
+}
+.guide-step {
+  counter-increment: guide;
+  position: relative;
+  padding: 18px 0 18px 44px;
+  border-top: 1px solid var(--line-soft);
+}
+.guide-step:first-child { border-top: 0; padding-top: 4px; }
+.guide-step::before {
+  content: counter(guide);
+  position: absolute;
+  left: 0;
+  top: 16px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--on-fill);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  display: grid;
+  place-items: center;
+}
+.guide-step:first-child::before { top: 2px; }
+.guide-step h3 {
+  font-size: 15.5px;
+  letter-spacing: -0.015em;
+  margin: 3px 0 6px;
+}
+.guide-step p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin: 0 0 10px;
+}
+.guide-step p:last-child { margin-bottom: 0; }
+.guide-step strong { color: var(--ink); font-weight: 600; }
+.guide-step code, .guide-code code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--ink);
+}
+.guide-callout {
+  border-left: 2px solid var(--ink);
+  padding-left: 10px;
+}
+
+/* Drawn stand-ins for the two macOS screens, in the site's greys. */
+.mac-alert {
+  width: 250px;
+  max-width: 100%;
+  margin: 12px 0 12px;
+  padding: 18px 16px 14px;
+  border-radius: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  text-align: center;
+}
+.mac-alert-icon { display: block; margin: 0 auto 10px; border-radius: 10px; }
+.guide-step .mac-alert-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+.guide-step .mac-alert-text {
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--ink-2);
+  margin: 0 0 12px;
+}
+.mac-alert-buttons { display: grid; gap: 6px; }
+
+.mac-btn {
+  position: relative;
+  display: inline-block;
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.mac-btn.is-pick { background: var(--ink); color: var(--on-fill); }
+.mac-btn.is-avoid {
+  background: var(--bg-alt);
+  color: var(--ink-4);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+/* A soft ring that says "this one". Static under reduced motion. */
+.pick-ring {
+  position: absolute;
+  inset: -5px;
+  border-radius: 12px;
+  border: 1.5px solid var(--ink);
+  animation: pickPulse 1.8s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes pickPulse {
+  0%   { opacity: .9; transform: scale(.96); }
+  100% { opacity: 0;  transform: scale(1.12); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pick-ring { animation: none; opacity: .5; }
+}
+
+.mac-pane {
+  margin: 12px 0;
+  padding: 12px 14px 14px;
+  border-radius: 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+.guide-step .mac-crumbs {
+  font-size: 11px;
+  color: var(--ink-3);
+  margin: 0 0 10px;
+}
+.mac-crumbs .sep { padding: 0 3px; }
+.guide-step .mac-section {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+.mac-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+}
+.mac-row-text { font-size: 12px; color: var(--ink-2); line-height: 1.35; }
+
+.guide-alt {
+  text-align: left;
+  border-top: 1px solid var(--line-soft);
+  padding-top: 16px;
+  margin: 0 0 22px;
+}
+.guide-alt summary {
+  cursor: pointer;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+.guide-alt summary:hover { color: var(--ink); }
+.guide-alt p { font-size: 13.5px; color: var(--ink-2); margin: 10px 0 8px; }
+.guide-code {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 8px 8px 12px;
+  border-radius: 10px;
+  background: var(--bg-alt);
+  border: 1px solid var(--line-soft);
+}
+.guide-code code {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.guide-copy {
+  flex: none;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+.guide-copy:hover { background: var(--bg-alt); }
+
+@media (max-width: 480px) {
+  .modal-card.modal-guide { padding: 36px 20px 24px; }
+  .guide-step { padding-left: 38px; }
+  .mac-row { flex-direction: column; align-items: flex-start; }
+}
 
 .modal-close {
   position: absolute;

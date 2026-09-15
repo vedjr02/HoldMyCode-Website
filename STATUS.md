@@ -6,6 +6,23 @@ in this file plus the source.
 
 ---
 
+## Update — 2026-09-15 (session 3): install guide, seven agents, GitHub downloads
+
+- **Downloads** now point at `https://github.com/vedjr02/hold-my-code-releases/releases/latest/download/HoldMyCode.dmg`,
+  which always serves the newest release (the app repo publishes it with
+  `release.sh --publish`). `downloads/HoldMyCode.dmg` is no longer linked.
+- **Thank-you dialog** is a five-step install guide with drawn stand-ins for
+  the macOS "Not Opened" alert and the Privacy & Security row, plus a copyable
+  `xattr` command. `main.js` resets the dialog's scroll on open and wires the Copy button.
+- **Agents section** lists seven agents: Claude Code, Codex, Gemini CLI, Cursor and
+  Cline (lifecycle hooks), Claude Cowork (task logs), Claude chat (estimated).
+  These ship in app 1.0.4; don't deploy the section before that release is out.
+- **Copy fixes:** macOS 14 Sonoma floor (the app never supported 13), ~3 MB size,
+  helper approval happens in Login Items (no admin password prompt), and the privacy
+  FAQ now says hooks keep the folder name and prompt start locally for notifications.
+
+---
+
 ## Update — 2026-09-15 (session 2): launch prep + first deploy
 
 Picks up from the original handoff below. Changes this session:
@@ -25,8 +42,10 @@ Picks up from the original handoff below. Changes this session:
 - **Battery threshold:** the real UI shows "stops below 10%", so the old "20%"
   assumption (which lived only in the now-removed hero SVG) is gone. 10% is the
   only figure on the page now.
-- **Build is notarised** (confirmed), so no Gatekeeper "right-click → Open" note
-  is needed on the download section.
+- **Build is NOT notarised** (corrected 2026-09-15; the earlier "confirmed" note was
+  wrong). First launch shows "Not Opened", so the thank-you dialog walks through
+  Done → System Settings › Privacy & Security › Open Anyway, with a Terminal
+  alternative.
 - **Git:** repo initialised and pushed to
   `github.com/vedjr02/HoldMyCode-Website` (public) — five logical commits on
   `main`.

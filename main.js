@@ -205,7 +205,11 @@
       // Record the download (a no-op until an endpoint is set), then show the card.
       track({ type: 'download', at: new Date().toISOString() });
       setTimeout(function () {
-        if (!thanks.open) thanks.showModal();
+        if (!thanks.open) {
+          thanks.showModal();
+          // Focusing the close button can scroll a tall card; start at its top.
+          thanks.scrollTop = 0;
+        }
       }, 80);
     };
 
@@ -232,6 +236,18 @@
         msg.textContent = "You're on the list — thanks!";
       });
     }
+
+    // Copy buttons in the install guide.
+    thanks.querySelectorAll('[data-copy]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var source = document.getElementById(btn.getAttribute('data-copy'));
+        if (!source || !navigator.clipboard) return;
+        navigator.clipboard.writeText(source.textContent).then(function () {
+          btn.textContent = 'Copied';
+          setTimeout(function () { btn.textContent = 'Copy'; }, 1600);
+        });
+      });
+    });
 
     thanks.querySelectorAll('[data-close]').forEach(function (btn) {
       btn.addEventListener('click', function () { thanks.close(); });
