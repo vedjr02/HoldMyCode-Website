@@ -182,10 +182,28 @@
   /* 6. Thank-you dialog after a download begins. Enhancement only: the links
         still download with JS off; the dialog simply never opens. The native
         <dialog> handles Esc, focus-trap and return-focus for us. */
+  /* Optional analytics: where to record downloads + email sign-ups. Leave '' and
+     the site stays fully static — no tracking, no email field. Set it to your
+     endpoint URL to turn on the download-count ping and the popup email field. */
+  var TRACK_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxVNvUh3hvZ0p2UyFAsEK160Pzn8PyXY3b4dLrZmNwYuLvl6cW05r2MqpjLqEFesf3HjQ/exec';
+
   var thanks = document.getElementById('thanks');
   if (thanks && typeof thanks.showModal === 'function') {
+    var track = function (payload) {
+      if (!TRACK_ENDPOINT) return;
+      try {
+        fetch(TRACK_ENDPOINT, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+      } catch (e) { /* fire-and-forget */ }
+    };
+
     var openThanks = function () {
-      // Let the browser's download kick off first, then surface the dialog.
+      // Record the download (a no-op until an endpoint is set), then show the card.
+      track({ type: 'download', at: new Date().toISOString() });
       setTimeout(function () {
         if (!thanks.open) thanks.showModal();
       }, 80);
@@ -196,6 +214,24 @@
       if (thanks.contains(link)) return;
       link.addEventListener('click', openThanks);
     });
+
+    // Optional email capture — revealed only when an endpoint is configured.
+    var notify = thanks.querySelector('.modal-notify');
+    if (notify && TRACK_ENDPOINT) {
+      notify.hidden = false;
+      notify.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var input = notify.querySelector('.modal-notify-input');
+        var email = (input.value || '').trim();
+        if (!email || !input.checkValidity()) { input.focus(); return; }
+        track({ type: 'signup', email: email, at: new Date().toISOString() });
+        notify.querySelector('.modal-notify-row').hidden = true;
+        notify.querySelector('.modal-notify-label').hidden = true;
+        var msg = notify.querySelector('.modal-notify-msg');
+        msg.hidden = false;
+        msg.textContent = "You're on the list — thanks!";
+      });
+    }
 
     thanks.querySelectorAll('[data-close]').forEach(function (btn) {
       btn.addEventListener('click', function () { thanks.close(); });

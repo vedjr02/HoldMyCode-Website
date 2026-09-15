@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HoldMyCode — keep your Mac awake while your agent works</title>
-<meta name="description" content="HoldMyCode is a free macOS menu-bar app that blocks sleep only while a coding agent is actually working — including with the lid closed — then lets your Mac sleep again when it's done.">
+<title>HoldMyCode: keep your Mac awake while your agent works</title>
+<meta name="description" content="HoldMyCode is a free macOS menu-bar app that blocks sleep only while a coding agent is actually working, lid closed included, then lets your Mac go back to sleep when it's done.">
 <meta name="color-scheme" content="light">
 
 <link rel="canonical" href="https://holdmycode.vercel.app/">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="HoldMyCode">
-<meta property="og:title" content="HoldMyCode — keep your Mac awake while your agent works">
+<meta property="og:title" content="HoldMyCode: keep your Mac awake while your agent works">
 <meta property="og:description" content="Blocks sleep only while your agent is actually working. Lid closed included. Free.">
 <meta property="og:url" content="https://holdmycode.vercel.app/">
 <meta property="og:image" content="https://holdmycode.vercel.app/og-image.png">
@@ -20,11 +20,11 @@
 <meta property="og:image:alt" content="The HoldMyCode mark: a laptop with a sleeping face on its screen.">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="HoldMyCode — keep your Mac awake while your agent works">
+<meta name="twitter:title" content="HoldMyCode: keep your Mac awake while your agent works">
 <meta name="twitter:description" content="Blocks sleep only while your agent is actually working. Lid closed included. Free.">
 <meta name="twitter:image" content="https://holdmycode.vercel.app/og-image.png">
 
-<link rel="stylesheet" href="styles.css?v=6">
+<link rel="stylesheet" href="styles.css?v=7">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -80,17 +80,16 @@
     <span class="kicker"><span class="dot"></span> Free · One job, done properly</span>
     <h1>Your <strong>agent</strong> is still working. Your <strong>Mac</strong> shouldn't <strong>clock out</strong>.</h1>
     <p class="hero-sub">
-      HoldMyCode blocks sleep only while your coding agent is actually running a task — lid
-      open, lid closed, or halfway into your bag. The moment it goes idle, it hands sleep
-      back to macOS and gets out of the way.
+      HoldMyCode blocks sleep only while your coding agent is actually running a task,
+      whether the lid is open, closed, or halfway into your bag. The moment it goes idle,
+      it hands sleep back to macOS and gets out of your way.
     </p>
     <div class="hero-cta">
-      <!-- TODO(next session): drop the built .dmg at this path, or repoint the href. -->
       <a class="btn btn-primary" href="downloads/HoldMyCode.dmg" download>Download for macOS</a>
       <a class="link-more" href="#how">See how it works</a>
     </div>
     <p class="hero-meta">
-      No account, no telemetry, no paywall<br>
+      No account, no paywall<br>
       macOS 13 Ventura or later · Apple silicon and Intel
     </p>
 
@@ -98,7 +97,7 @@
     <div class="figure hero-figure reveal">
       <img class="hero-shot" src="hero-laptop.webp" width="1600" height="967"
            fetchpriority="high" decoding="async"
-           alt="The HoldMyCode menu-bar panel open on a MacBook — Holding, Claude Code working, battery at 38%, and Claude Code as the watched agent.">
+           alt="The HoldMyCode menu-bar panel open on a MacBook, showing Holding, Claude Code working, battery at 38%, and Claude Code as the watched agent.">
       <p class="figure-cap">HoldMyCode holding the wake lock while Claude Code works</p>
     </div>
   </div>
@@ -111,7 +110,7 @@
       <p class="eyebrow">How it works</p>
       <h2>It holds the lock. Then it lets go.</h2>
       <p>
-        Five steps, start to finish — what actually happens when you close the lid
+        Five steps, start to finish. Here's what actually happens when you slam the lid shut
         in the middle of a run.
       </p>
     </div>
@@ -135,7 +134,7 @@
         <div class="step-copy">
           <p class="state-label"><span class="dot"></span> Agent working</p>
           <h3>A task kicks off</h3>
-          <p>Your agent starts a run — a build, a test suite, a long refactor. The lid is open and nothing unusual is happening yet.</p>
+          <p>Your agent kicks off a run: a build, a test suite, one of those refactors that takes a while. The lid is open and nothing dramatic has happened yet.</p>
           <p class="step-count">Step 1 of 5</p>
         </div>
       </article>
@@ -153,7 +152,7 @@
         <div class="step-copy">
           <p class="state-label"><span class="dot"></span> Agent working</p>
           <h3>You shut the lid</h3>
-          <p>Normally this is where the run dies — macOS sees the lid close and starts putting the machine to sleep.</p>
+          <p>Normally this is where the run quietly dies. macOS sees the lid close and starts tucking the machine into bed.</p>
           <p class="step-count">Step 2 of 5</p>
         </div>
       </article>
@@ -214,7 +213,7 @@
         <div class="step-copy">
           <p class="state-label"><span class="dot dot-hollow"></span> Asleep</p>
           <h3>Sleep is handed back</h3>
-          <p>Nothing left to hold. HoldMyCode releases the lock and your Mac sleeps on its normal schedule — no assertion left running overnight.</p>
+          <p>Nothing left to hold. HoldMyCode lets go and your Mac sleeps on its normal schedule, with no stray assertion quietly keeping it up all night.</p>
           <p class="step-count">Step 5 of 5</p>
         </div>
       </article>
@@ -252,7 +251,7 @@
           </svg>
         </div>
         <div class="card-title"><h3>Agent-aware wake lock</h3></div>
-        <p>The Mac stays up only while a watched agent is actually working. An agent sitting idle at a prompt gets no wake lock at all — your machine sleeps like it normally would.</p>
+        <p>The Mac stays up only while a watched agent is actually working. An agent sitting idle at a prompt, waiting on you, gets no wake lock at all, and your machine sleeps like it normally would.</p>
       </article>
 
       <article class="card reveal">
@@ -299,7 +298,7 @@
           </svg>
         </div>
         <div class="card-title"><h3>Notifications</h3></div>
-        <p>A banner and an optional sound when a hold engages, when it releases, and when your battery threshold cuts it short — so you're never guessing what the Mac decided.</p>
+        <p>A banner, and an optional sound, when a hold starts, when it ends, and when your battery threshold cuts it short. You're never left guessing what the Mac decided behind your back.</p>
       </article>
 
       <article class="card reveal">
@@ -311,7 +310,7 @@
           </svg>
         </div>
         <div class="card-title"><h3>Menu-bar dropdown</h3></div>
-        <p>Live status, elapsed hold time, battery level, and a master toggle — one click from the menu bar, plus a global hotkey when you don't want to reach for the mouse.</p>
+        <p>Live status, elapsed hold time, battery level, and a master toggle, all one click from the menu bar. There's a global hotkey too, for when reaching for the mouse feels like too much.</p>
       </article>
 
     </div>
@@ -398,25 +397,25 @@
         <span class="setup-num">01</span>
         <h3>Drag it to Applications</h3>
         <p>
-          Open the download and drop HoldMyCode into your Applications folder. It runs from
-          the menu bar — no dock icon, no window to manage, nothing to keep open.
+          Open the download and drop HoldMyCode into your Applications folder. It lives up in
+          the menu bar, with no dock icon, no window to manage, and nothing to keep open.
         </p>
       </li>
       <li class="setup-step">
         <span class="setup-num">02</span>
         <h3>Approve the helper once</h3>
         <p>
-          macOS asks for your admin password on first launch. That's HoldMyCode installing the
-          small privileged component that can hold lid sleep open — the one thing a normal app
-          isn't allowed to do. You're asked once, not every launch.
+          macOS asks for your admin password the first time you launch it. That's HoldMyCode installing the
+          small privileged helper that can hold lid sleep open, which is the one thing a normal app
+          isn't allowed to do. It asks once, not every single launch.
         </p>
       </li>
       <li class="setup-step">
         <span class="setup-num">03</span>
         <h3>Start a task, close the lid</h3>
         <p>
-          That's the whole setup. Kick off a run in your agent and shut the laptop — the menu
-          bar takes it from there. Adjust the battery floor later if the default doesn't suit you.
+          That's the whole setup. Kick off a run in your agent and shut the laptop. The menu
+          bar takes it from there. Nudge the battery floor later if the default doesn't suit you.
         </p>
       </li>
     </ol>
@@ -442,11 +441,11 @@
           <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v11M2.5 8h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </summary>
         <p>
-          Those keep your Mac awake for as long as you leave them switched on — the decision is
-          yours, and the usual failure mode is forgetting to turn it off and finding a hot, flat
-          laptop later. HoldMyCode ties the wake lock to the agent instead: the hold exists only
-          while a watched agent is mid-task, and it ends by itself when the work does. You're not
-          toggling anything.
+          Those keep your Mac awake for as long as you leave them switched on. The decision is
+          yours, and the classic failure mode is forgetting to flip it off, then finding a hot, flat
+          laptop at the bottom of your bag. HoldMyCode ties the wake lock to the agent instead. The
+          hold exists only while a watched agent is mid-task, and it ends by itself when the work
+          does. Nothing to toggle, nothing to forget.
         </p>
       </details>
 
@@ -469,9 +468,11 @@
           <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v11M2.5 8h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </summary>
         <p>
-          No. The integration is a lifecycle hook that reports one thing: whether a session just
-          started working or just went idle. No prompt text, no file contents, no command output.
-          Nothing is sent anywhere — there's no server, no account, and no analytics in the app.
+          No. The integration is a lifecycle hook that reports exactly one thing: whether a session
+          just started working or just went idle. No prompt text, no file contents, no command
+          output. The app has no account and no analytics inside it. The only part that ever talks
+          to a server is this website, and all it does is keep an anonymous download count and,
+          if you choose to leave it, your email for update notices.
         </p>
       </details>
 
@@ -482,7 +483,7 @@
         </summary>
         <p>
           Claude Code, through its lifecycle hooks. Codex, Gemini CLI, Cursor and Cline are on
-          the roadmap and are not wired up yet — if you run one of those, HoldMyCode won't
+          the roadmap but not wired up yet. If you run one of those today, HoldMyCode won't
           notice it working.
         </p>
       </details>
@@ -505,9 +506,9 @@
           <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v11M2.5 8h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </summary>
         <p>
-          Free. No licence key, no trial timer, no paid tier waiting in the wings. It's a small
-          utility that does one job, and charging for it isn't the plan. The app itself is
-          closed-source, so that's a promise rather than something you can audit — but there's
+          Free. No licence key, no trial timer, no surprise paid tier waiting in the wings. It's a
+          small utility that does one job, and charging for it isn't the plan. The app is
+          closed-source, so that's a promise rather than something you can audit, but there's
           no account to create and nothing to cancel.
         </p>
       </details>
@@ -524,8 +525,7 @@
       <p>No account, no licence key, no trial. Download it, drag it to Applications, done.</p>
 
       <div class="download-cta">
-        <!-- Direct file download — deliberately NOT a GitHub redirect.
-             TODO(next session): drop the built .dmg at this path, or repoint the href. -->
+        <!-- Direct file download, not a GitHub redirect. -->
         <a class="btn btn-primary" href="downloads/HoldMyCode.dmg" download>Download for macOS</a>
         <a class="btn btn-secondary" href="#faq">Read the FAQ</a>
       </div>
@@ -600,12 +600,20 @@
     <ol class="modal-steps">
       <li>Open the <code>.dmg</code> and drag HoldMyCode to your Applications folder.</li>
       <li>Launch it, and approve the helper once when macOS asks.</li>
-      <li>Start a task and close the lid — your Mac stays awake until the work is done.</li>
+      <li>Start a task, close the lid, and your Mac stays awake until the work is done.</li>
     </ol>
+    <form class="modal-notify" novalidate hidden>
+      <p class="modal-notify-label">Want an email when updates ship? <span>Optional.</span></p>
+      <div class="modal-notify-row">
+        <input class="modal-notify-input" id="notify-email" type="email" name="email" placeholder="you@example.com" autocomplete="email" inputmode="email" aria-label="Email address">
+        <button class="btn btn-secondary modal-notify-btn" type="submit">Notify me</button>
+      </div>
+      <p class="modal-notify-msg" role="status" aria-live="polite" hidden></p>
+    </form>
     <button class="btn btn-primary modal-done" type="button" data-close>Got it</button>
   </div>
 </dialog>
 
-<script src="main.js?v=3"></script>
+<script src="main.js?v=4"></script>
 </body>
 </html>

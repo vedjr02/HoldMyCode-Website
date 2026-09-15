@@ -1254,3 +1254,46 @@ h1, h2, h3 {
 @media (prefers-reduced-motion: reduce) {
   .modal[open] .modal-card { animation: none; }
 }
+
+/* Optional email capture inside the dialog. Hidden until JS reveals it (only
+   when an endpoint is configured). */
+.modal-notify {
+  border-top: 1px solid var(--line-soft);
+  margin: 0 0 26px;
+  padding-top: 22px;
+  text-align: left;
+}
+.modal-notify-label {
+  font-size: 13px;
+  color: var(--ink-2);
+  margin: 0 0 10px;
+}
+.modal-notify-label span { color: var(--ink-4); }
+.modal-notify-row { display: flex; gap: 8px; }
+.modal-notify-row[hidden] { display: none; }
+.modal-notify-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  font: inherit;
+  font-size: 15px;
+  padding: 11px 16px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 980px;
+}
+.modal-notify-input::placeholder { color: var(--ink-4); }
+.modal-notify-btn {
+  flex: none;
+  font-size: 15px;
+  padding: 11px 18px;
+}
+.modal-notify-msg {
+  font-size: 13px;
+  color: var(--ink-2);
+  margin: 14px 0 0;
+}
+@media (max-width: 430px) {
+  .modal-notify-row { flex-wrap: wrap; }
+  .modal-notify-btn { width: 100%; }
+}
