@@ -10,7 +10,7 @@ in this file plus the source.
 
 Picks up from the original handoff below. Changes this session:
 
-- **Domain set** to `holdmycode.vercel.app` — replaced `REPLACE-ME-DOMAIN` in all
+- **Domain set** to `holdmycode.xyz` — replaced `REPLACE-ME-DOMAIN` in all
   six spots (canonical, og:url, og:image, twitter:image, robots.txt, sitemap.xml).
   Deploying on Vercel; swap this one string if a custom domain is added later.
 - **Contact handle set** to `vedjr02` in both footers (index + 404).
@@ -421,7 +421,7 @@ default), you can drop the query entirely.
 | Placeholder | Where | What to do |
 |---|---|---|
 | ✅ ~~`downloads/HoldMyCode.dmg`~~ | 3 download buttons (nav, hero, download section) | **DONE (session 2)** — notarised v1.0.1 (2.9 MB) is in `downloads/`; all three buttons resolve. |
-| ✅ ~~`REPLACE-ME-DOMAIN`~~ | `index.html` head, `robots.txt`, `sitemap.xml` | **DONE (session 2)** → `holdmycode.vercel.app`. Swap if a custom domain is added. |
+| ✅ ~~`REPLACE-ME-DOMAIN`~~ | `index.html` head, `robots.txt`, `sitemap.xml` | **DONE (session 2)** → `holdmycode.xyz`. Swap if a custom domain is added. |
 | ✅ ~~`YOUR-GITHUB-USERNAME`~~ | Footer contact row (`index.html` + `404.html`) | **DONE (session 2)** → `vedjr02`. |
 | ✅ ~~Hero SVG mock~~ | hero | **DONE (session 2)** — replaced with a real product shot (`hero-mockup.webp`, JPEG fallback). |
 | `og:url` / `og:image` | `<head>` | Marked with a TODO comment; needs a domain and a share image. |
