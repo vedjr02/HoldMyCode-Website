@@ -1084,8 +1084,18 @@ section {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0.45; }
 }
-.pill-on .dot,
-.kicker .dot { animation: liveBreath 2.6s ease-in-out infinite; }
+.pill-on .dot { animation: liveBreath 2.6s ease-in-out infinite; }
+
+/* Hero kicker: a live, glowing green status light. */
+.kicker .dot {
+  background: #2ECC71;
+  box-shadow: 0 0 5px 1px rgba(46, 204, 113, 0.6);
+  animation: liveGlow 1.8s ease-in-out infinite;
+}
+@keyframes liveGlow {
+  0%, 100% { box-shadow: 0 0 4px 1px rgba(46, 204, 113, 0.5); }
+  50%      { box-shadow: 0 0 10px 2px rgba(46, 204, 113, 0.85); }
+}
 
 /* Matching breath on the holding rings in step 3 of the walkthrough. */
 @keyframes ringBreath {
