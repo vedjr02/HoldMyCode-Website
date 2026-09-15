@@ -743,6 +743,20 @@ section {
   flex: none;
 }
 
+/* brand logos sit on a light tile so the full-colour marks stay legible,
+   overriding the solid ink tile used for the lettermarks */
+.agent-mark.has-logo,
+.agent.is-live .agent-mark.has-logo {
+  background: #FFFFFF;
+  border-color: var(--line);
+}
+.agent-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+}
+
 .agent-name {
   font-size: 14.5px;
   font-weight: 600;
