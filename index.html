@@ -24,7 +24,7 @@
 <meta name="twitter:description" content="Blocks sleep only while your agent is actually working. Lid closed included. Free.">
 <meta name="twitter:image" content="https://holdmycode.xyz/og-image.png">
 
-<link rel="stylesheet" href="styles.css?v=11">
+<link rel="stylesheet" href="styles.css?v=12">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -350,11 +350,10 @@
   <div class="wrap">
     <div class="section-head lead reveal">
       <p class="eyebrow">Supported agents</p>
-      <h2>Seven agents. One lid.</h2>
+      <h2>Six agents. One lid.</h2>
       <p>
         Command line agents and editors report through their own lifecycle hooks, which HoldMyCode
-        installs for you in one click. Cowork is read from the Claude app's task logs. Claude chat
-        keeps no local record, so that one is an honest estimate.
+        installs for you in one click. Claude Cowork is read from the Claude app's task logs.
       </p>
     </div>
 
@@ -373,14 +372,6 @@
         <div>
           <p class="agent-name">Claude Cowork</p>
           <span class="tag tag-shipped"><span class="dot"></span> Task logs</span>
-        </div>
-      </div>
-
-      <div class="agent is-live">
-        <span class="agent-mark" aria-hidden="true">Ch</span>
-        <div>
-          <p class="agent-name">Claude chat</p>
-          <span class="tag tag-soon">Estimated</span>
         </div>
       </div>
 
@@ -416,11 +407,18 @@
         </div>
       </div>
 
+      <div class="agent is-soon">
+        <span class="agent-mark" aria-hidden="true">+</span>
+        <div>
+          <p class="agent-name">More agents</p>
+          <span class="tag tag-soon">Coming soon</span>
+        </div>
+      </div>
+
     </div>
 
     <p class="agent-note">
       <strong>Lifecycle hooks</strong> and <strong>task logs</strong> are a real working / idle signal.
-      <strong>Estimated</strong> means it's inferred from the Claude app's network traffic while a reply streams.
     </p>
   </div>
 </section>
@@ -511,8 +509,6 @@
         <p>
           Claude Code, Codex, Gemini CLI, Cursor and Cline through their lifecycle hooks, which you
           install from the app's Agents tab. Claude Cowork works out of the box from its task logs.
-          Claude chat is estimated from the Claude app's network traffic, so long replies keep your
-          Mac awake, but it can't tell you when a reply is done.
         </p>
       </details>
 
