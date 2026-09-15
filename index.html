@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HoldMyCode: keep your Mac awake while your agent works</title>
-<meta name="description" content="HoldMyCode is a free macOS menu-bar app that blocks sleep only while a coding agent is actually working, lid closed included, then lets your Mac go back to sleep when it's done.">
+<meta name="description" content="HoldMyCode is a free macOS menu bar app that blocks sleep only while a coding agent is actually working, lid closed included, then lets your Mac go back to sleep when it's done.">
 <meta name="color-scheme" content="light">
 
 <link rel="canonical" href="https://holdmycode.vercel.app/">
@@ -42,7 +42,7 @@
   "name": "HoldMyCode",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "macOS 13 Ventura or later",
-  "description": "A macOS menu-bar app that blocks sleep only while a coding agent is actually running a task, including with the lid closed.",
+  "description": "A macOS menu bar app that blocks sleep only while a coding agent is actually running a task, including with the lid closed.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
 </script>
@@ -97,7 +97,7 @@
     <div class="figure hero-figure reveal">
       <img class="hero-shot" src="hero-laptop.webp" width="1600" height="967"
            fetchpriority="high" decoding="async"
-           alt="The HoldMyCode menu-bar panel open on a MacBook, showing Holding, Claude Code working, battery at 38%, and Claude Code as the watched agent.">
+           alt="The HoldMyCode menu bar panel open on a MacBook, showing Holding, Claude Code working, battery at 38%, and Claude Code as the watched agent.">
       <p class="figure-cap">HoldMyCode holding the wake lock while Claude Code works</p>
     </div>
   </div>
@@ -193,7 +193,7 @@
         <div class="step-copy">
           <p class="state-label"><span class="dot"></span> Agent idle</p>
           <h3>The run finishes</h3>
-          <p>The lifecycle hook reports idle. A 30-second grace timer starts, in case another tool call is about to land.</p>
+          <p>The lifecycle hook reports idle. A 30 second grace timer starts, in case another tool call is about to land.</p>
           <p class="step-count">Step 4 of 5</p>
         </div>
       </article>
@@ -250,7 +250,7 @@
             <path d="M8 10.5V7.5a4 4 0 0 1 8 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
           </svg>
         </div>
-        <div class="card-title"><h3>Agent-aware wake lock</h3></div>
+        <div class="card-title"><h3>Awake only for your agent</h3></div>
         <p>The Mac stays up only while a watched agent is actually working. An agent sitting idle at a prompt, waiting on you, gets no wake lock at all, and your machine sleeps like it normally would.</p>
       </article>
 
@@ -309,7 +309,7 @@
             <circle cx="6.5" cy="7.25" r="0.85" fill="currentColor"/>
           </svg>
         </div>
-        <div class="card-title"><h3>Menu-bar dropdown</h3></div>
+        <div class="card-title"><h3>Menu bar dropdown</h3></div>
         <p>Live status, elapsed hold time, battery level, and a master toggle, all one click from the menu bar. There's a global hotkey too, for when reaching for the mouse feels like too much.</p>
       </article>
 
@@ -387,7 +387,7 @@
       <p class="eyebrow">Getting started</p>
       <h2>Set it up once. Then forget it's there.</h2>
       <p>
-        No config file, no per-project setup, no dashboard to keep an eye on.
+        No config file, no per project setup, no dashboard to keep an eye on.
         Three steps and it's running.
       </p>
     </div>
@@ -444,7 +444,7 @@
           Those keep your Mac awake for as long as you leave them switched on. The decision is
           yours, and the classic failure mode is forgetting to flip it off, then finding a hot, flat
           laptop at the bottom of your bag. HoldMyCode ties the wake lock to the agent instead. The
-          hold exists only while a watched agent is mid-task, and it ends by itself when the work
+          hold exists only while a watched agent is in the middle of a task, and it ends by itself when the work
           does. Nothing to toggle, nothing to forget.
         </p>
       </details>
@@ -456,7 +456,7 @@
         </summary>
         <p>
           Yes. A plain sleep assertion isn't enough for a lid close, so HoldMyCode installs a small
-          privileged helper that disables lid sleep while a hold is active and re-enables it the
+          privileged helper that disables lid sleep while a hold is active and turns it back on the
           moment the hold ends. No external display, keyboard, or dongle required. macOS will ask
           for an admin password once, when the helper is installed.
         </p>
@@ -502,13 +502,13 @@
 
       <details>
         <summary>
-          Is it actually free, or free-for-now?
+          Is it actually free, or free for now?
           <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v11M2.5 8h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </summary>
         <p>
           Free. No licence key, no trial timer, no surprise paid tier waiting in the wings. It's a
           small utility that does one job, and charging for it isn't the plan. The app is
-          closed-source, so that's a promise rather than something you can audit, but there's
+          closed source, so that's a promise rather than something you can audit, but there's
           no account to create and nothing to cancel.
         </p>
       </details>
