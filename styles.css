@@ -430,6 +430,120 @@ section {
 }
 .step-visual svg { max-width: 300px; }
 
+/* ---------- how it works: recreated app panel ---------- */
+.app-panel {
+  width: 100%;
+  max-width: 296px;
+  background: #1C1C1E;
+  color: #F5F5F7;
+  border-radius: 16px;
+  padding: 13px 15px 14px;
+  box-shadow: 0 14px 36px rgba(0,0,0,0.24);
+  text-align: left;
+  transition: opacity .45s ease, filter .45s ease;
+}
+.ap-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ap-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.ap-logo { display: block; height: 12px; width: auto; }
+.ap-toggle {
+  position: relative;
+  width: 30px; height: 18px;
+  border-radius: 999px;
+  background: #2ECC71;
+  flex: none;
+}
+.ap-toggle > span {
+  position: absolute; top: 2px; left: 14px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: #fff;
+}
+.ap-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 11px 0 12px;
+}
+.ap-dot {
+  width: 9px; height: 9px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: #6E6E73;
+  flex: none;
+}
+.ap-dot-live { background: #2ECC71; }
+.ap-state { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+.ap-sub { margin-top: 2px; font-size: 11.5px; color: #A1A1A6; }
+.ap-zzz { color: #8E8E93; letter-spacing: 2px; font-weight: 600; font-size: 11px; }
+.ap-meter {
+  height: 4px;
+  margin: 0 0 12px;
+  border-radius: 999px;
+  background: #3A3A3C;
+  overflow: hidden;
+}
+.ap-meter-fill {
+  display: block;
+  height: 100%;
+  width: 62%;
+  border-radius: 999px;
+  background: #F5F5F7;
+}
+.ap-meter-fill.is-grace { width: 55%; background: #8E8E93; }
+.ap-agent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 11px;
+  border-top: 1px solid #2C2C2E;
+  font-size: 12px;
+}
+.ap-agent-name { display: inline-flex; align-items: center; gap: 8px; color: #E5E5EA; }
+.ap-cc {
+  width: 18px; height: 18px;
+  border-radius: 5px;
+  background: #3A3A3C;
+  color: #F5F5F7;
+  font-size: 8.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+.ap-chip { font-size: 11.5px; color: #8E8E93; }
+.ap-chip-live { color: #2ECC71; }
+
+/* the panel dims as the Mac drops to sleep */
+.step[data-step="5"] .app-panel { opacity: .55; filter: grayscale(0.5); }
+
+/* motion, only while a step is active (auto-off under reduced motion) */
+.demo.is-enhanced .step.is-active .ap-dot-live {
+  animation: apPulse 2s ease-in-out infinite;
+}
+.demo.is-enhanced .step.is-active[data-step="3"] .ap-meter-fill {
+  animation: apHold var(--dwell, 4200ms) linear both;
+}
+.demo.is-enhanced .step.is-active[data-step="4"] .ap-meter-fill {
+  animation: apGrace var(--dwell, 4200ms) linear both;
+}
+@keyframes apPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(46,204,113,0.5); }
+  50%      { box-shadow: 0 0 0 5px rgba(46,204,113,0); }
+}
+@keyframes apHold  { from { width: 10%; } to { width: 84%; } }
+@keyframes apGrace { from { width: 100%; } to { width: 4%; } }
+
 .step-visual .pill {
   position: absolute;
   top: 18px;
