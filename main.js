@@ -178,4 +178,38 @@
 
     markActive();
   }
+
+  /* 6. Thank-you dialog after a download begins. Enhancement only: the links
+        still download with JS off; the dialog simply never opens. The native
+        <dialog> handles Esc, focus-trap and return-focus for us. */
+  var thanks = document.getElementById('thanks');
+  if (thanks && typeof thanks.showModal === 'function') {
+    var openThanks = function () {
+      // Let the browser's download kick off first, then surface the dialog.
+      setTimeout(function () {
+        if (!thanks.open) thanks.showModal();
+      }, 80);
+    };
+
+    document.querySelectorAll('a[href$="HoldMyCode.dmg"]').forEach(function (link) {
+      // Don't hijack the "start it manually" link inside the dialog itself.
+      if (thanks.contains(link)) return;
+      link.addEventListener('click', openThanks);
+    });
+
+    thanks.querySelectorAll('[data-close]').forEach(function (btn) {
+      btn.addEventListener('click', function () { thanks.close(); });
+    });
+
+    // A click on the backdrop (the dialog area outside the card) closes it.
+    thanks.addEventListener('click', function (e) {
+      if (e.target === thanks) thanks.close();
+    });
+
+    // Esc-to-close. The native <dialog> already does this; this guarantees it
+    // across environments and is a harmless no-op when the dialog is closed.
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && thanks.open) thanks.close();
+    });
+  }
 })();
