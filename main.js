@@ -213,10 +213,27 @@
       }, 80);
     };
 
+    // Start the download in a hidden iframe instead of a top-level navigation,
+    // so the cross-origin release URL doesn't flash a page for a split second.
+    var downloadVia = function (url) {
+      var f = document.getElementById('dl-frame');
+      if (!f) {
+        f = document.createElement('iframe');
+        f.id = 'dl-frame';
+        f.style.display = 'none';
+        document.body.appendChild(f);
+      }
+      f.src = url;
+    };
+
     document.querySelectorAll('a[href$="HoldMyCode.dmg"]').forEach(function (link) {
       // Don't hijack the "start it manually" link inside the dialog itself.
       if (thanks.contains(link)) return;
-      link.addEventListener('click', openThanks);
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        downloadVia(link.href);
+        openThanks();
+      });
     });
 
     // Optional email capture — revealed only when an endpoint is configured.

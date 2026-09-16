@@ -612,7 +612,7 @@
 <!-- Shown after a download begins. Progressive enhancement: with JS off the
      download still works and this dialog never opens. -->
 <dialog id="thanks" class="modal" aria-labelledby="thanks-title" aria-describedby="thanks-desc">
-  <div class="modal-card modal-guide">
+  <div class="modal-card">
     <button class="modal-close" type="button" data-close aria-label="Close">
       <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
     </button>
@@ -620,57 +620,17 @@
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
     </span>
     <h2 id="thanks-title">Thanks for downloading.</h2>
-    <p id="thanks-desc" class="modal-lead">Your download is starting. If it doesn't, <a href="https://github.com/vedjr02/hold-my-code-releases/releases/latest/download/HoldMyCode.dmg">start it manually</a>. Installing takes about a minute. Here's exactly what to click.</p>
+    <p id="thanks-desc" class="modal-lead">Download starting. Three steps to set up:</p>
 
-    <ol class="guide">
-      <li class="guide-step">
-        <h3>Move it to Applications</h3>
-        <p>Open <code>HoldMyCode.dmg</code> from your Downloads and drag <strong>Hold My Code</strong> onto the <strong>Applications</strong> folder.</p>
-      </li>
-
-      <li class="guide-step">
-        <h3>Open it, and click Done when macOS blocks it</h3>
-        <p>Open Hold My Code from Applications. It isn't notarised by Apple yet, so the first time, macOS stops it with this warning. That's expected.</p>
-        <div class="mac-alert" aria-hidden="true">
-          <img class="mac-alert-icon" src="apple-touch-icon.png" width="44" height="44" alt="">
-          <p class="mac-alert-title">&ldquo;Hold My Code&rdquo; Not Opened</p>
-          <p class="mac-alert-text">Apple could not verify &ldquo;Hold My Code&rdquo; is free of malware that may harm your Mac or compromise your privacy.</p>
-          <div class="mac-alert-buttons">
-            <span class="mac-btn is-pick">Done<span class="pick-ring"></span></span>
-            <span class="mac-btn is-avoid">Move to Bin</span>
-          </div>
-        </div>
-        <p class="guide-callout"><strong>Click Done.</strong> Don't click Move to Bin, which throws the app away.</p>
-      </li>
-
-      <li class="guide-step">
-        <h3>Allow it in Privacy &amp; Security</h3>
-        <p>Open <strong>System Settings</strong>, click <strong>Privacy &amp; Security</strong> in the sidebar, and scroll all the way down to <strong>Security</strong>.</p>
-        <div class="mac-pane" aria-hidden="true">
-          <p class="mac-crumbs"><span>System Settings</span> <span class="sep">&rsaquo;</span> <span>Privacy &amp; Security</span></p>
-          <p class="mac-section">Security</p>
-          <div class="mac-row">
-            <span class="mac-row-text">&ldquo;Hold My Code&rdquo; was blocked to protect your Mac.</span>
-            <span class="mac-btn is-pick">Open Anyway<span class="pick-ring"></span></span>
-          </div>
-        </div>
-        <p>Click <strong>Open Anyway</strong> and confirm with Touch ID or your password. No button? Open the app once more, then check again.</p>
-      </li>
-
-      <li class="guide-step">
-        <h3>Click Open Anyway one last time</h3>
-        <p>macOS double checks. Click <strong>Open Anyway</strong> again and Hold My Code opens in your menu bar. That's the last warning for this version. A new version you download later asks once more.</p>
-      </li>
-
-      <li class="guide-step">
-        <h3>Finish setup in the app</h3>
-        <p>Settings opens by itself. In <strong>Power &amp; Display</strong>, install the helper and switch on Hold My Code when macOS shows it under <strong>Login Items</strong>. Then install hooks for your agents in <strong>Agents</strong>. Now start a task and close the lid.</p>
-      </li>
+    <ol class="modal-steps">
+      <li>Open <code>HoldMyCode.dmg</code> and drag <strong>Hold My Code</strong> to Applications.</li>
+      <li>First open, macOS blocks it (not notarised yet). In <strong>System Settings &rsaquo; Privacy &amp; Security</strong>, click <strong>Open Anyway</strong>.</li>
+      <li>It lands in your menu bar. Start a task, close the lid.</li>
     </ol>
 
     <details class="guide-alt">
-      <summary>Comfortable with Terminal? Skip steps 2 to 4</summary>
-      <p>After moving the app to Applications, run this once, then open the app normally:</p>
+      <summary>Know Terminal? Skip the warning</summary>
+      <p>After moving it to Applications, run this once:</p>
       <div class="guide-code">
         <code id="quarantine-cmd">xattr -dr com.apple.quarantine "/Applications/Hold My Code.app"</code>
         <button class="guide-copy" type="button" data-copy="quarantine-cmd">Copy</button>
@@ -689,6 +649,6 @@
   </div>
 </dialog>
 
-<script src="main.js?v=6"></script>
+<script src="main.js?v=7"></script>
 </body>
 </html>
