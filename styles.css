@@ -1301,6 +1301,21 @@ section {
 .link-more::after { transition: transform .2s ease; }
 .link-more:hover::after { transform: translateX(3px); }
 
+/* The slab arrives as one block, so its rows settle in just behind it rather
+   than all landing at once. Decoration only: this is gated on .reveal-ready,
+   which JS adds and reduced motion never gets, and every row is already in
+   place without it. */
+.reveal-ready .feature-slab.in .feat {
+  animation: riseIn .5s backwards cubic-bezier(.2,.6,.2,1);
+}
+.reveal-ready .feature-slab.in .feat:nth-child(2) { animation-delay: .05s; }
+.reveal-ready .feature-slab.in .feat:nth-child(3) { animation-delay: .10s; }
+.reveal-ready .feature-slab.in .feat:nth-child(4) { animation-delay: .15s; }
+.reveal-ready .feature-slab.in .feat:nth-child(5) { animation-delay: .20s; }
+.reveal-ready .feature-slab.in .feat:nth-child(6) { animation-delay: .25s; }
+.reveal-ready .feature-slab.in .feat:nth-child(7) { animation-delay: .30s; }
+.reveal-ready .feature-slab.in .feat:nth-child(8) { animation-delay: .35s; }
+
 /* Agent tiles lift on hover; the feature slab deliberately does not move. */
 .agent { transition: border-color .2s ease, transform .2s ease; }
 .agent:hover { transform: translateY(-2px); }
@@ -1339,6 +1354,35 @@ section {
 /* Placeholder + figure frames respond to the pointer just enough to feel alive. */
 .hero-shot { transition: transform .35s cubic-bezier(.2,.6,.2,1); }
 .hero-figure:hover .hero-shot { transform: translateY(-3px); }
+
+/* The laptop is above the fold, so the scroll observer fired its .reveal the
+   instant the page loaded and it landed out of time with the text above it.
+   It joins the staggered hero chain instead, one beat after the last line —
+   and starting it visible rather than at opacity 0 keeps the LCP honest. */
+.hero-figure { animation: riseIn .8s .34s backwards cubic-bezier(.2,.6,.2,1); }
+
+/* Parallax: the laptop drifts against the page as the hero scrolls away.
+   Scroll-driven, so it runs on the compositor — no scroll listener, nothing to
+   jank, and nothing to tear down. The drift is deliberately small: the caption
+   underneath does not move, and anything more than a few percent breaks the
+   relationship between them. Browsers without view() timelines just get a
+   still image, which is the same thing the reduced-motion path gets. */
+@keyframes heroParallax {
+  from { transform: translate3d(0, -2%, 0)   scale(0.99);  }
+  to   { transform: translate3d(0,  3.5%, 0) scale(1.012); }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-shot-wrap {
+      animation-name: heroParallax;
+      animation-duration: auto;        /* the timeline supplies the progress */
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
 
 /* ---------- walkthrough video ---------- */
 .walkthrough {
