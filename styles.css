@@ -1224,8 +1224,7 @@ section {
 .hero h1           { animation: riseIn .65s  .06s backwards cubic-bezier(.2,.6,.2,1); }
 .hero .hero-sub    { animation: riseIn .65s  .13s backwards cubic-bezier(.2,.6,.2,1); }
 .hero .hero-cta    { animation: riseIn .65s  .20s backwards cubic-bezier(.2,.6,.2,1); }
-.hero .cta-note    { animation: riseIn .65s  .26s backwards cubic-bezier(.2,.6,.2,1); }
-.hero .hero-meta   { animation: riseIn .65s  .32s backwards cubic-bezier(.2,.6,.2,1); }
+.hero .hero-meta   { animation: riseIn .65s  .26s backwards cubic-bezier(.2,.6,.2,1); }
 
 /* Buttons lift a little on hover. */
 .btn-primary:hover,
