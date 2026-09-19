@@ -230,6 +230,12 @@ section {
   color: var(--on-fill);
   border: 1px solid var(--ink);
 }
+/* soft fill = shipped recently, worth pointing at */
+.tag-new {
+  background: var(--bg-alt);
+  color: var(--ink);
+  border: 1px solid var(--line-soft);
+}
 /* outlined = not yet */
 .tag-soon {
   background: transparent;
