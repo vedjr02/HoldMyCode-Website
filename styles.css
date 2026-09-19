@@ -1361,16 +1361,29 @@ section {
    and starting it visible rather than at opacity 0 keeps the LCP honest. */
 .hero-figure { animation: riseIn .8s .34s backwards cubic-bezier(.2,.6,.2,1); }
 
-/* Parallax: the laptop drifts against the page as the hero scrolls away.
-   Scroll-driven, so it runs on the compositor — no scroll listener, nothing to
-   jank, and nothing to tear down. The drift is deliberately small: the caption
-   underneath does not move, and anything more than a few percent breaks the
-   relationship between them. Browsers without view() timelines just get a
-   still image, which is the same thing the reduced-motion path gets. */
+/* Parallax: the laptop lags the page as the hero scrolls away, then tips back
+   as it leaves. Scroll-driven, so it runs on the compositor — no scroll
+   listener, nothing to jank, nothing to tear down.
+
+   Sizing this matters more than it looks. The travel is spread over the whole
+   time the figure is on screen, which at 1440x900 is about 1740px of scrolling,
+   so a drift that sounds generous as a percentage disappears in practice: the
+   first pass moved 46px over that distance, or 2.7% of it, which reads as
+   nothing at all. 24% of the figure's height is ~200px, or a ninth of the
+   scroll — enough to see without the laptop appearing to slide off its own
+   caption. The caption is inside the wrapper so the pair travels as one figure;
+   that is what lets the number be this big.
+
+   Browsers without view() timelines get a still image, the same thing the
+   reduced-motion path already gets from the global animation reset. */
 @keyframes heroParallax {
-  from { transform: translate3d(0, -2%, 0)   scale(0.99);  }
-  to   { transform: translate3d(0,  3.5%, 0) scale(1.012); }
+  from { transform: translate3d(0, -4%, 0) scale(1.03) rotateX(0deg); }
+  to   { transform: translate3d(0, 20%, 0) scale(0.94) rotateX(7deg); }
 }
+/* The tilt needs a viewing distance; without it rotateX only squashes. Set
+   unconditionally, because the JS fallback drives the same transform. */
+.hero-figure { perspective: 1600px; }
+
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .hero-shot-wrap {
@@ -1383,6 +1396,9 @@ section {
     }
   }
 }
+/* Shared by both paths — the CSS timeline above and the rAF fallback in main.js,
+   which only attaches when there is no view() timeline to do it properly. */
+.hero-shot-wrap { transform-origin: 50% 85%; }   /* pivots near the base, like a lid */
 
 /* ---------- walkthrough video ---------- */
 .walkthrough {

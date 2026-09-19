@@ -59,6 +59,43 @@
     });
   }
 
+  /* 3b. Hero parallax, fallback only.
+         Browsers with scroll-driven timelines run this in CSS, on the
+         compositor, and this block never attaches. The numbers below are the
+         same ones in the heroParallax keyframes — keep them in step. */
+  var shotWrap = document.querySelector('.hero-shot-wrap');
+  var hasViewTimeline = typeof CSS !== 'undefined' && CSS.supports &&
+                        CSS.supports('animation-timeline', 'view()');
+  if (shotWrap && !hasViewTimeline && !stillMotion) {
+    var figure = shotWrap.parentElement;   // untransformed, so safe to measure
+    var queued = false;
+
+    var drawParallax = function () {
+      queued = false;
+      var box = figure.getBoundingClientRect();
+      var span = window.innerHeight + box.height;
+      if (span <= 0) return;
+      // 0 as the figure's top reaches the bottom of the viewport, 1 once its
+      // bottom has passed the top — the same span CSS calls `cover`.
+      var t = (window.innerHeight - box.top) / span;
+      t = t < 0 ? 0 : t > 1 ? 1 : t;
+      shotWrap.style.transform =
+        'translate3d(0,' + (-4 + 24 * t).toFixed(2) + '%,0) ' +
+        'scale(' + (1.03 - 0.09 * t).toFixed(4) + ') ' +
+        'rotateX(' + (7 * t).toFixed(2) + 'deg)';
+    };
+
+    var queueParallax = function () {
+      if (queued) return;
+      queued = true;
+      window.requestAnimationFrame(drawParallax);
+    };
+
+    drawParallax();
+    window.addEventListener('scroll', queueParallax, { passive: true });
+    window.addEventListener('resize', queueParallax, { passive: true });
+  }
+
   /* 4. "How it works" — one card that plays through five states.
         Always autoplays; there is no pause button by design. The segments
         double as controls, so a viewer can still jump to any step.
