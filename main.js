@@ -80,7 +80,7 @@
       var t = (window.innerHeight - box.top) / span;
       t = t < 0 ? 0 : t > 1 ? 1 : t;
       shotWrap.style.transform =
-        'translate3d(0,' + (-4 + 24 * t).toFixed(2) + '%,0) ' +
+        'translate3d(0,' + (-4 + 18 * t).toFixed(2) + '%,0) ' +
         'scale(' + (1.03 - 0.09 * t).toFixed(4) + ') ' +
         'rotateX(' + (7 * t).toFixed(2) + 'deg)';
     };

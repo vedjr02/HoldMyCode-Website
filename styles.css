@@ -316,7 +316,9 @@ section {
 /* ---------- hero ---------- */
 
 .hero {
-  padding: 92px 0 0;
+  /* The bottom pad is the parallax's landing room: the laptop drifts down as it
+     leaves, and without this it arrives on top of the next section's heading. */
+  padding: 92px 0 28px;
   text-align: center;
 }
 
@@ -390,9 +392,7 @@ section {
   padding: 0 var(--gutter);
 }
 
-/* ---------- figures ---------- */
-
-.figure { text-align: center; }
+/* ---------- hero product shot ---------- */
 
 /* Hero product shot — a transparent laptop render, so it floats on the page with
    no card. A shape-aware drop-shadow (follows the alpha, not the box) gives it
@@ -405,12 +405,6 @@ section {
 }
 @media (prefers-color-scheme: dark) and (min-width: 99999px) {
   .hero-shot { filter: none; }
-}
-
-.figure-cap {
-  margin-top: 14px;
-  font-size: 12px;
-  color: var(--ink-4);
 }
 
 /* ---------- how it works: one card, five states ---------- */
@@ -1370,15 +1364,16 @@ section {
    so a drift that sounds generous as a percentage disappears in practice: the
    first pass moved 46px over that distance, or 2.7% of it, which reads as
    nothing at all. 24% of the figure's height is ~200px, or a ninth of the
-   scroll — enough to see without the laptop appearing to slide off its own
-   caption. The caption is inside the wrapper so the pair travels as one figure;
-   that is what lets the number be this big.
+   scroll — enough to see. The ceiling on it is the next section: the figure
+   only has ~140px of clearance before "How it works" starts, and 14% of the
+   height is 118px of that, leaving 22px. Raising it further needs more room
+   under the hero, not a bigger number here.
 
    Browsers without view() timelines get a still image, the same thing the
    reduced-motion path already gets from the global animation reset. */
 @keyframes heroParallax {
   from { transform: translate3d(0, -4%, 0) scale(1.03) rotateX(0deg); }
-  to   { transform: translate3d(0, 20%, 0) scale(0.94) rotateX(7deg); }
+  to   { transform: translate3d(0, 14%, 0) scale(0.94) rotateX(7deg); }
 }
 /* The tilt needs a viewing distance; without it rotateX only squashes. Set
    unconditionally, because the JS fallback drives the same transform. */
