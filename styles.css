@@ -249,12 +249,6 @@ section {
   background: currentColor;
   flex: none;
 }
-.dot-hollow {
-  background: transparent;
-  border: 1.5px solid currentColor;
-  width: 7px; height: 7px;
-}
-
 /* ---------- header ---------- */
 
 .site-header {
@@ -407,267 +401,6 @@ section {
   .hero-shot { filter: none; }
 }
 
-/* ---------- how it works: one card, five states ---------- */
-
-.demo {
-  background: var(--surface);
-  border: 1px solid var(--line-soft);
-  border-radius: var(--radius-lg);
-  padding: 26px;
-}
-
-.demo-stage { display: grid; gap: 28px; }
-
-/* Enhanced mode: all five frames share one grid cell and cross-fade.
-   Without it (no JS) they simply stack and every step stays readable. */
-.demo.is-enhanced .step {
-  grid-area: 1 / 1;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(8px);
-  transition: opacity .45s ease, transform .45s ease, visibility .45s;
-}
-.demo.is-enhanced .step.is-active {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-}
-
-.step {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: center;
-}
-
-.step-visual {
-  position: relative;
-  background: var(--bg-alt);
-  border-radius: var(--radius);
-  padding: 46px 30px 30px;
-  min-height: 272px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.step-visual svg { max-width: 300px; }
-
-/* ---------- how it works: recreated app panel ---------- */
-.app-panel {
-  width: 100%;
-  max-width: 296px;
-  background: #1C1C1E;
-  color: #F5F5F7;
-  border-radius: 16px;
-  padding: 13px 15px 14px;
-  box-shadow: 0 14px 36px rgba(0,0,0,0.24);
-  text-align: left;
-  transition: opacity .45s ease, filter .45s ease;
-}
-.ap-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.ap-name {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 12.5px;
-  font-weight: 600;
-}
-.ap-logo { display: block; height: 12px; width: auto; }
-.ap-toggle {
-  position: relative;
-  width: 30px; height: 18px;
-  border-radius: 999px;
-  background: #2ECC71;
-  flex: none;
-}
-.ap-toggle > span {
-  position: absolute; top: 2px; left: 14px;
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  background: #fff;
-}
-.ap-status {
-  display: flex;
-  align-items: flex-start;
-  gap: 9px;
-  padding: 11px 0 12px;
-}
-.ap-dot {
-  width: 9px; height: 9px;
-  margin-top: 4px;
-  border-radius: 50%;
-  background: #6E6E73;
-  flex: none;
-}
-.ap-dot-live { background: #2ECC71; }
-.ap-state { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
-.ap-sub { margin-top: 2px; font-size: 11.5px; color: #A1A1A6; }
-.ap-zzz { color: #8E8E93; letter-spacing: 2px; font-weight: 600; font-size: 11px; }
-.ap-meter {
-  height: 4px;
-  margin: 0 0 12px;
-  border-radius: 999px;
-  background: #3A3A3C;
-  overflow: hidden;
-}
-.ap-meter-fill {
-  display: block;
-  height: 100%;
-  width: 62%;
-  border-radius: 999px;
-  background: #F5F5F7;
-}
-.ap-meter-fill.is-grace { width: 55%; background: #8E8E93; }
-.ap-agent {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 11px;
-  border-top: 1px solid #2C2C2E;
-  font-size: 12px;
-}
-.ap-agent-name { display: inline-flex; align-items: center; gap: 8px; color: #E5E5EA; }
-.ap-cc {
-  width: 18px; height: 18px;
-  border-radius: 5px;
-  background: #3A3A3C;
-  color: #F5F5F7;
-  font-size: 8.5px;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
-}
-.ap-chip { font-size: 11.5px; color: #8E8E93; }
-.ap-chip-live { color: #2ECC71; }
-
-/* the panel dims as the Mac drops to sleep */
-.step[data-step="5"] .app-panel { opacity: .55; filter: grayscale(0.5); }
-
-/* motion, only while a step is active (auto-off under reduced motion) */
-.demo.is-enhanced .step.is-active .ap-dot-live {
-  animation: apPulse 2s ease-in-out infinite;
-}
-.demo.is-enhanced .step.is-active[data-step="3"] .ap-meter-fill {
-  animation: apHold var(--dwell, 4200ms) linear both;
-}
-.demo.is-enhanced .step.is-active[data-step="4"] .ap-meter-fill {
-  animation: apGrace var(--dwell, 4200ms) linear both;
-}
-@keyframes apPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(46,204,113,0.5); }
-  50%      { box-shadow: 0 0 0 5px rgba(46,204,113,0); }
-}
-@keyframes apHold  { from { width: 10%; } to { width: 84%; } }
-@keyframes apGrace { from { width: 100%; } to { width: 4%; } }
-
-.step-visual .pill {
-  position: absolute;
-  top: 18px;
-  left: 18px;
-}
-
-.step-label,
-.state-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  margin-bottom: 14px;
-}
-
-.step-copy h3 {
-  font-size: clamp(24px, 2.6vw, 30px);
-  letter-spacing: -0.025em;
-  margin-bottom: 12px;
-}
-.step-copy > p { color: var(--ink-2); font-size: 17px; line-height: 1.5; }
-
-.step-count {
-  margin-top: 20px;
-  font-size: 12.5px;
-  color: var(--ink-4);
-}
-.demo.is-enhanced .step-count { display: none; }   /* the bar says this already */
-
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12.5px;
-  font-weight: 500;
-  padding: 6px 14px;
-  border-radius: 999px;
-}
-.pill-on  { background: var(--ink); color: var(--on-fill); }
-.pill-off { background: transparent; color: var(--ink-3); border: 1px solid var(--line); }
-
-/* --- controls --- */
-
-.demo-controls {
-  margin-top: 26px;
-  padding-top: 22px;
-  border-top: 1px solid var(--line-soft);
-}
-.demo:not(.is-enhanced) .demo-controls { display: none; }
-
-.demo-progress {
-  display: flex;
-  gap: 8px;
-  flex: 1;
-}
-
-.seg {
-  flex: 1;
-  height: 22px;              /* generous hit area around a thin bar */
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-.seg .seg-fill {
-  display: block;
-  width: 100%;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--line);
-  overflow: hidden;
-  position: relative;
-}
-.seg .seg-fill::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 2px;
-  background: var(--ink);
-  transform-origin: left center;
-  transform: scaleX(0);
-}
-/* steps already played */
-.seg.is-done .seg-fill::after { transform: scaleX(1); }
-/* the step playing right now — fills across its dwell time */
-.seg.is-current .seg-fill::after {
-  animation: segFill var(--dwell, 4200ms) linear forwards;
-}
-
-.seg:hover .seg-fill { background: var(--ink-4); }
-
-@keyframes segFill {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-
 /* ---------- features ---------- */
 
 /* ---------- features: the inked slab ----------
@@ -679,18 +412,22 @@ section {
    site: one slab, no per-item chrome, the head sitting inside it. The greys are
    local alpha tokens rather than the page's ink scale, which is built for dark
    text on white and goes muddy when flipped. */
+/* A framed panel rather than an ink block. Grouping eight features into one
+   object is still right — eight bordered cards was the thing worth avoiding —
+   but it was the only dark surface on an otherwise light page, which read as a
+   sticker rather than as part of it. The hairline does the containing now, the
+   same way the page frames every other grouped block. */
 .feature-slab {
-  --slab-2:   rgba(255,255,255,0.64);   /* body copy on ink */
-  --slab-3:   rgba(255,255,255,0.44);   /* icons, muted rows */
+  --slab-2:   var(--ink-2);   /* body copy */
+  --slab-3:   var(--ink-3);   /* icons, muted rows */
 
-  background: var(--ink);
-  color: var(--on-fill);
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
   border-radius: var(--radius-lg);
   padding: 40px 42px 44px;
 }
 
 .slab-head { max-width: 600px; margin-bottom: 34px; }
-.slab-head .eyebrow { color: var(--slab-3); }
 .slab-head h2 {
   font-size: clamp(30px, 3.8vw, 42px);
   letter-spacing: -0.03em;
@@ -743,21 +480,11 @@ section {
 }
 
 /* Not shipped yet, so it sits back a step without leaving the list. */
-.feat.is-soon .feat-icon,
-.feat.is-soon .feat-body p { color: rgba(255,255,255,0.34); }
-.feat.is-soon .feat-body h3 { color: var(--slab-2); }
-
-/* The page's tag fills are built for white; on ink they need their own. */
-.feature-slab .tag-new {
-  background: rgba(255,255,255,0.14);
-  color: var(--on-fill);
-  border-color: transparent;
-}
-.feature-slab .tag-soon {
-  background: transparent;
-  color: rgba(255,255,255,0.5);
-  border: 1px dashed rgba(255,255,255,0.3);
-}
+/* Stepping back is carried by the icon, the heading and the dashed tag. The
+   paragraph stays at body strength: on ink it could sit at 3.3:1 and still
+   look deliberate, but on white that is just unreadable body copy. */
+.feat.is-soon .feat-icon { color: var(--ink-4); }
+.feat.is-soon .feat-body h3 { color: var(--ink-2); }
 
 /* ---------- what's new ---------- */
 
@@ -1201,8 +928,6 @@ section {
 /* ---------- responsive ---------- */
 
 @media (max-width: 940px) {
-  .step { grid-template-columns: 1fr; gap: 26px; }
-  .step-visual { min-height: 230px; padding: 44px 24px 26px; }
   .agent-grid { grid-template-columns: repeat(3, 1fr); }
   .setup-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
@@ -1224,12 +949,7 @@ section {
   .agent-grid { grid-template-columns: repeat(2, 1fr); }
   .setup-grid { grid-template-columns: 1fr; }
   .setup-step { padding: 26px 24px 28px; }
-  .specs { grid-template-columns: 1fr; }
-  .demo { padding: 16px; }
-  .step { gap: 22px; }
-  .step-visual { min-height: 200px; padding: 42px 18px 22px; }
-  .demo-controls { margin-top: 20px; padding-top: 18px; gap: 12px; }
-  .demo-progress { gap: 6px; }
+  .specs { grid-template-columns: 1fr; }          /* five names will not fit; the track still reads */
   .hero-cta .btn { width: 100%; max-width: 320px; }
   .faq summary { font-size: 17px; }
 }
@@ -1241,12 +961,12 @@ section {
     animation: none !important;
   }
   .reveal-ready .reveal { opacity: 1 !important; transform: none !important; }
-  /* The walkthrough still advances under reduced motion — it just does so
-     without the cross-fade or the sweeping bar fill. */
-  .seg.is-current .seg-fill::after { animation: none; transform: scaleX(1); }
-  .demo.is-enhanced .step { transition: none; }
+  /* The walkthrough still tracks the scroll under reduced motion — that is the
+     reader moving, not the page. What stops is the machine settling, the meter
+     sliding and the rail sweeping; each simply arrives at its new value. The
+     beats also stay at full strength, since dimming them costs contrast and
+     only earns it back through the transition that is now switched off. */
 }
-
 
 /* ---------- themed SVG illustrations ---------- */
 
@@ -1266,7 +986,6 @@ section {
 .s-soft     { stroke: var(--line-soft); }
 .s-art      { stroke: var(--art-line); }
 .s-ink      { stroke: var(--ink); }
-
 
 /* ==========================================================================
    Motion — deliberately restrained. Everything here is switched off wholesale
@@ -1315,14 +1034,6 @@ section {
 .agent:hover { transform: translateY(-2px); }
 .agent.is-soon:hover { border-color: var(--line); }
 
-/* A slow breath on the live indicator — the one place a pulse actually means
-   something here, since the product's whole job is "still holding". */
-@keyframes liveBreath {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.45; }
-}
-.pill-on .dot { animation: liveBreath 2.6s ease-in-out infinite; }
-
 /* Hero kicker: a live, glowing green status light. */
 .kicker .dot {
   background: #2ECC71;
@@ -1333,17 +1044,6 @@ section {
   0%, 100% { box-shadow: 0 0 4px 1px rgba(46, 204, 113, 0.5); }
   50%      { box-shadow: 0 0 10px 2px rgba(46, 204, 113, 0.85); }
 }
-
-/* Matching breath on the holding rings in step 3 of the walkthrough. */
-@keyframes ringBreath {
-  0%, 100% { transform: scale(1);    opacity: 1; }
-  50%      { transform: scale(1.06); opacity: 0.6; }
-}
-.step[data-step="3"] .ring {
-  transform-origin: 120px 48px;
-  animation: ringBreath 2.8s ease-in-out infinite;
-}
-.step[data-step="3"] .ring-2 { animation-delay: .35s; }
 
 /* Placeholder + figure frames respond to the pointer just enough to feel alive. */
 .hero-shot { transition: transform .35s cubic-bezier(.2,.6,.2,1); }
@@ -1365,7 +1065,7 @@ section {
    first pass moved 46px over that distance, or 2.7% of it, which reads as
    nothing at all. 24% of the figure's height is ~200px, or a ninth of the
    scroll — enough to see. The ceiling on it is the next section: the figure
-   only has ~140px of clearance before "How it works" starts, and 14% of the
+   only has ~140px of clearance before the features slab starts, and 14% of the
    height is 118px of that, leaving 22px. Raising it further needs more room
    under the hero, not a bigger number here.
 
@@ -1412,7 +1112,6 @@ section {
   aspect-ratio: 16 / 9;
 }
 
-
 /* ==========================================================================
    Craft pass — small typographic and interaction details. Each of these is
    the kind of thing that separates a considered page from a template; none
@@ -1426,12 +1125,12 @@ h1, h2, h3 {
 }
 /* NOT on body copy — `balance` narrows the measure to even out line lengths,
    which is right for a 2-line headline and wrong for a paragraph. */
-.section-head p, .hero-sub, .slab-lead, .feat-body p, .step-copy > p, .faq details p {
+.section-head p, .hero-sub, .slab-lead, .feat-body p, .faq details p {
   text-wrap: pretty;
 }
 
 /* 2. Numbers line up in columns instead of wobbling. */
-.spec-v, .step-count, .agent-status, .hero-meta {
+.spec-v, .agent-status, .hero-meta {
   font-variant-numeric: tabular-nums;
 }
 
@@ -1484,7 +1183,6 @@ h1, h2, h3 {
 .brand-mark { transition: transform .3s cubic-bezier(.2,.6,.2,1); }
 .brand:hover .brand-mark { transform: translateY(-1px); }
 
-
 /* ---------- brand mark ---------- */
 
 /* The mark is cropped to the artwork with a transparent ground, so it sits on
@@ -1505,7 +1203,6 @@ h1, h2, h3 {
   height: 18px;
   width: auto;
 }
-
 
 /* ---------- 404 ---------- */
 
@@ -1543,7 +1240,6 @@ h1, h2, h3 {
   flex-wrap: wrap;
   gap: 14px;
 }
-
 
 /* ---------- thank-you dialog ---------- */
 

@@ -96,81 +96,7 @@
     window.addEventListener('resize', queueParallax, { passive: true });
   }
 
-  /* 4. "How it works" — one card that plays through five states.
-        Always autoplays; there is no pause button by design. The segments
-        double as controls, so a viewer can still jump to any step.
-        Enhancement only: with JS off the five steps are listed in order. */
-  var demo = document.getElementById('demo');
-  if (demo) {
-    var steps  = Array.prototype.slice.call(demo.querySelectorAll('.step'));
-    var segs   = Array.prototype.slice.call(demo.querySelectorAll('.seg'));
-    var DWELL  = 4200;
-    var index  = 0;
-    var timer  = null;
-    var hasIO  = 'IntersectionObserver' in window;
-    // Start "not in view" when we can observe — the observer reports the real
-    // state within a frame. Without an observer we just play.
-    var inView = !hasIO;
-
-    demo.classList.add('is-enhanced');
-    demo.style.setProperty('--dwell', DWELL + 'ms');
-
-    function paint() {
-      steps.forEach(function (step, i) {
-        step.classList.toggle('is-active', i === index);
-      });
-      segs.forEach(function (seg, i) {
-        seg.classList.toggle('is-done', i < index);
-        seg.classList.remove('is-current');
-        seg.setAttribute('aria-current', i === index ? 'step' : 'false');
-      });
-      // The fill is a CSS animation, so it would otherwise run to completion
-      // off-screen and be sitting full (and apparently stuck) by the time the
-      // card is scrolled into view. Only arm it while the card is visible.
-      if (!inView) return;
-      // Re-add on the next frame so the animation restarts from zero.
-      requestAnimationFrame(function () {
-        if (segs[index]) segs[index].classList.add('is-current');
-      });
-    }
-
-    function schedule() {
-      clearTimeout(timer);
-      if (!inView) return;
-      timer = setTimeout(function () {
-        index = (index + 1) % steps.length;
-        paint();
-        schedule();
-      }, DWELL);
-    }
-
-    segs.forEach(function (seg, i) {
-      seg.addEventListener('click', function () {
-        index = i;
-        paint();
-        schedule();
-      });
-    });
-
-    /* Only run while the card is actually on screen — no timer churning on a
-       section nobody is looking at. threshold 0 so it starts the moment any
-       part of the card appears, rather than waiting for a quarter of it. */
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (entries) {
-        var last = entries[entries.length - 1];
-        var nowInView = last.isIntersecting;
-        if (nowInView === inView) return;
-        inView = nowInView;
-        paint();      // arms the fill on entry, clears it on exit
-        schedule();   // a full dwell starts from here, so the bar matches
-      }, { threshold: 0 }).observe(demo);
-    }
-
-    paint();
-    schedule();
-  }
-
-  /* 5. Nav reflects where you are on the page. Cheap: one rAF-throttled read
+  /* 4. Nav reflects where you are on the page. Cheap: one rAF-throttled read
         per scroll, no observer per link. */
   var navLinks = Array.prototype.slice.call(
     document.querySelectorAll('.nav-links a[href^="#"]')
@@ -216,7 +142,7 @@
     markActive();
   }
 
-  /* 6. Download flow: ask for an email, then start the download, then say thanks.
+  /* 5. Download flow: ask for an email, then start the download, then say thanks.
 
         Progressive enhancement throughout. With JS off every download link is a
         plain link to the DMG: the gate never opens and the download still works.
@@ -413,7 +339,7 @@
     });
   }
 
-  /* 7. Walkthrough video: plays while it's on screen, pauses when it scrolls
+  /* 6. Walkthrough video: plays while it's on screen, pauses when it scrolls
         away. Muted, no audio track; a click toggles play/pause. Under reduced
         motion it doesn't autoplay and shows native controls instead. */
   var wv = document.querySelector('.walkthrough-video');
