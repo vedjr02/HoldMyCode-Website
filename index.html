@@ -515,6 +515,10 @@
 
     <p class="agent-note">
       <strong>Lifecycle hooks</strong> and <strong>task logs</strong> are a real working / idle signal.
+      Hooks set themselves up at launch and stay up to date, including for an agent you install
+      later. Cline is the one exception: its config lives inside <code>~/Documents</code>, which
+      macOS guards with a permission prompt, so its hooks are offered rather than installed
+      silently.
     </p>
   </div>
 </section>
@@ -588,10 +592,14 @@
         </summary>
         <p>
           No. It never reads your code or your prompts, and nothing about your sessions leaves
-          your Mac. Hooks record only whether a session is working, in a small file on your Mac. The app has no account and no analytics inside it. The only part that ever
-          talks to a server is this website, and all it does is keep an anonymous download count
-          and, if you choose to leave it, your email for update notices. The app itself only checks
-          GitHub for new versions.
+          your Mac. Hooks record only whether a session is working, in a small file on your Mac.
+          The usage card counts turns and estimates cost from Claude Code's own local files and
+          asks Claude Code itself for your limit figures; that runs on your Mac and sends nothing
+          anywhere. The app has no account and no analytics inside it. It talks to exactly two
+          servers: GitHub, to check for and download a new version, and, if you leave local
+          currency switched on, a public exchange rate feed once a day, which is sent nothing about
+          you. The only other part that talks to a server is this website, which keeps an anonymous
+          download count and the email address you give before downloading.
         </p>
       </details>
 
@@ -601,8 +609,12 @@
           <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v11M2.5 8h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </summary>
         <p>
-          Claude Code, Codex, Gemini CLI, Cursor and Cline through their lifecycle hooks, which you
-          install from the app's Agents tab. Claude Cowork works out of the box from its task logs.
+          Claude Code, Codex, Gemini CLI, Cursor and Cline through their lifecycle hooks. Since 2.0
+          those install themselves: every supported agent found on your Mac is hooked up at launch
+          and kept up to date, and so is one you install later. Cline is the exception, because its
+          config sits in <code>~/Documents</code> behind a macOS permission prompt, so it asks
+          first. Claude Cowork works out of the box from the Claude app's task logs. You can still
+          remove hooks in Settings &rsaquo; Agents, and nothing puts them back.
         </p>
       </details>
 
