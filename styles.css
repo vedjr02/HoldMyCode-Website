@@ -1035,7 +1035,9 @@ section {
 .specs {
   margin-top: 64px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* Four facts now, so they read as a 2x2 block rather than a row of three
+     plus an orphan. */
+  grid-template-columns: repeat(2, 1fr);
   gap: 1px;
   background: var(--line-soft);
   border: 1px solid var(--line-soft);
