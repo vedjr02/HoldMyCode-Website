@@ -179,16 +179,43 @@
     markActive();
   }
 
-  /* 6. Thank-you dialog after a download begins. Enhancement only: the links
-        still download with JS off; the dialog simply never opens. The native
-        <dialog> handles Esc, focus-trap and return-focus for us. */
-  /* Optional analytics: where to record downloads + email sign-ups. Leave '' and
-     the site stays fully static — no tracking, no email field. Set it to your
-     endpoint URL to turn on the download-count ping and the popup email field. */
+  /* 6. Download flow: ask for an email, then start the download, then say thanks.
+
+        Progressive enhancement throughout. With JS off every download link is a
+        plain link to the DMG: the gate never opens and the download still works.
+        With JS on the gate is mandatory — the DMG is only fetched once a valid
+        address has been submitted, or once one was submitted on an earlier
+        visit. The native <dialog> handles Esc, focus-trap and return-focus. */
+  /* Where downloads and email sign-ups are recorded. Leave '' and the site stays
+     fully static — no ping, and the gate lets everyone straight through. */
   var TRACK_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxVNvUh3hvZ0p2UyFAsEK160Pzn8PyXY3b4dLrZmNwYuLvl6cW05r2MqpjLqEFesf3HjQ/exec';
 
+  /* Remembering the address keeps a returning visitor from being asked twice.
+     Private-mode Safari throws on storage, so every access is guarded. */
+  var EMAIL_KEY = 'hmc.email';
+  var remembered = function () {
+    try { return localStorage.getItem(EMAIL_KEY) || ''; } catch (e) { return ''; }
+  };
+  var remember = function (email) {
+    try { localStorage.setItem(EMAIL_KEY, email); } catch (e) { /* not essential */ }
+  };
+
+  /* Deliberately loose: a shape check, not an attempt to decide what a real
+     address is. One @, something either side, a dot in the domain. */
+  var looksLikeEmail = function (value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
+  };
+
   var thanks = document.getElementById('thanks');
-  if (thanks && typeof thanks.showModal === 'function') {
+  var gate   = document.getElementById('gate');
+
+  if (thanks && typeof thanks.showModal === 'function' &&
+      gate   && typeof gate.showModal === 'function') {
+
+    /* Fire-and-forget POST. The endpoint answers opaquely across origins, so a
+       resolved promise only means the request left, which is all we need. The
+       caller never waits on it; a failure is logged, never surfaced, and never
+       stops a download. */
     var track = function (payload) {
       if (!TRACK_ENDPOINT) return;
       try {
@@ -197,8 +224,12 @@
           mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
+        }).catch(function (err) {
+          console.warn('HoldMyCode: could not record ' + payload.type, err);
         });
-      } catch (e) { /* fire-and-forget */ }
+      } catch (err) {
+        console.warn('HoldMyCode: could not record ' + payload.type, err);
+      }
     };
 
     var openThanks = function () {
@@ -226,33 +257,94 @@
       f.src = url;
     };
 
+    var startDownload = function (url) {
+      downloadVia(url);
+      openThanks();
+    };
+
+    /* ---- the email gate, asked before any download starts ---- */
+
+    var gateForm   = gate.querySelector('.gate-form');
+    var gateInput  = gate.querySelector('.gate-input');
+    var gateError  = gate.querySelector('.gate-error');
+    var gateSubmit = gate.querySelector('.gate-submit');
+    var pendingURL = '';
+
+    var showGateError = function (message) {
+      gateError.textContent = message;
+      gateError.hidden = false;
+      gateForm.classList.add('is-invalid');
+      gateInput.setAttribute('aria-invalid', 'true');
+    };
+
+    var clearGateError = function () {
+      gateError.hidden = true;
+      gateForm.classList.remove('is-invalid');
+      gateInput.removeAttribute('aria-invalid');
+    };
+
+    var openGate = function (url) {
+      pendingURL = url;
+      clearGateError();
+      gateSubmit.disabled = false;
+      gate.showModal();
+      gate.scrollTop = 0;
+      // showModal() focuses the first focusable child, which is the close
+      // button. The field is what someone opened this to fill in.
+      setTimeout(function () { gateInput.focus(); }, 0);
+    };
+
+    gateInput.addEventListener('input', clearGateError);
+
+    gateForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = (gateInput.value || '').trim();
+
+      if (!email) { showGateError('Enter an email address.'); gateInput.focus(); return; }
+      if (!looksLikeEmail(email)) {
+        showGateError("That doesn't look like an email address.");
+        gateInput.focus();
+        return;
+      }
+
+      remember(email);
+      gateSubmit.disabled = true;
+
+      // If recording the address fails, the download still happens. Losing a
+      // row of a count is no reason to withhold a free app.
+      track({ type: 'signup', email: email, at: new Date().toISOString() });
+
+      gate.close();
+      startDownload(pendingURL);
+    });
+
+    gate.querySelectorAll('[data-gate-close]').forEach(function (btn) {
+      btn.addEventListener('click', function () { gate.close(); });
+    });
+
+    // A click on the backdrop (the dialog area outside the card) closes it.
+    gate.addEventListener('click', function (e) {
+      if (e.target === gate) gate.close();
+    });
+
+    /* ---- every download button on the page goes through the gate ---- */
+
     document.querySelectorAll('a[href$="HoldMyCode.dmg"]').forEach(function (link) {
       // Don't hijack the "start it manually" link inside the dialog itself.
-      if (thanks.contains(link)) return;
+      if (thanks.contains(link) || gate.contains(link)) return;
       link.addEventListener('click', function (e) {
         e.preventDefault();
-        downloadVia(link.href);
-        openThanks();
+        // Asked once, not twice — the download itself is still recorded.
+        var known = remembered();
+        if (known && looksLikeEmail(known)) { startDownload(link.href); return; }
+        // With no endpoint configured there is nowhere to put an address, so
+        // asking for one would be theatre.
+        if (!TRACK_ENDPOINT) { startDownload(link.href); return; }
+        openGate(link.href);
       });
     });
 
-    // Optional email capture — revealed only when an endpoint is configured.
-    var notify = thanks.querySelector('.modal-notify');
-    if (notify && TRACK_ENDPOINT) {
-      notify.hidden = false;
-      notify.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var input = notify.querySelector('.modal-notify-input');
-        var email = (input.value || '').trim();
-        if (!email || !input.checkValidity()) { input.focus(); return; }
-        track({ type: 'signup', email: email, at: new Date().toISOString() });
-        notify.querySelector('.modal-notify-row').hidden = true;
-        notify.querySelector('.modal-notify-label').hidden = true;
-        var msg = notify.querySelector('.modal-notify-msg');
-        msg.hidden = false;
-        msg.textContent = "You're on the list — thanks!";
-      });
-    }
+    /* ---- the thank-you dialog ---- */
 
     // Copy buttons in the install guide.
     thanks.querySelectorAll('[data-copy]').forEach(function (btn) {
@@ -276,9 +368,11 @@
     });
 
     // Esc-to-close. The native <dialog> already does this; this guarantees it
-    // across environments and is a harmless no-op when the dialog is closed.
+    // across environments and is a harmless no-op when nothing is open.
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && thanks.open) thanks.close();
+      if (e.key !== 'Escape') return;
+      if (gate.open) gate.close();
+      else if (thanks.open) thanks.close();
     });
   }
 

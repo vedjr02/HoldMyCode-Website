@@ -24,7 +24,7 @@
 <meta name="twitter:description" content="Blocks sleep only while your agent is actually working. Lid closed included. Free.">
 <meta name="twitter:image" content="https://holdmycode.xyz/og-image.png">
 
-<link rel="stylesheet" href="styles.css?v=13">
+<link rel="stylesheet" href="styles.css?v=14">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -85,6 +85,10 @@
       <a class="btn btn-primary" href="https://github.com/vedjr02/Hold-My-Code/releases/latest/download/HoldMyCode.dmg">Download for macOS</a>
       <a class="link-more" href="#how">See how it works</a>
     </div>
+    <p class="cta-note">
+      Asks for your email first. No spam, no mailing list. It's only so I can see how many
+      people are using it.
+    </p>
     <p class="hero-meta">
       No account, no paywall<br>
       macOS 14 Sonoma or later · Apple silicon and Intel
@@ -662,6 +666,11 @@
         <a class="btn btn-secondary" href="#faq">Read the FAQ</a>
       </div>
 
+      <p class="cta-note">
+        The download asks for your email first. No spam, no mailing list, nothing sent to you.
+        It's only so I can see how many people are using it.
+      </p>
+
       <div class="specs">
         <div class="spec">
           <p class="spec-k">Requires</p>
@@ -721,6 +730,34 @@
   </div>
 </footer>
 
+<!-- Asked before the download starts. Progressive enhancement: with JS off the
+     download links work as plain links and this dialog never opens. -->
+<dialog id="gate" class="modal" aria-labelledby="gate-title" aria-describedby="gate-desc">
+  <div class="modal-card">
+    <button class="modal-close" type="button" data-gate-close aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+    </button>
+    <span class="modal-mark" aria-hidden="true">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
+    </span>
+    <h2 id="gate-title">One email, then the download.</h2>
+    <p id="gate-desc" class="modal-lead">Hold My Code is free and stays free. This is the only thing it asks for.</p>
+
+    <form class="gate-form" novalidate>
+      <label class="gate-label" for="gate-email">Email address</label>
+      <input class="gate-input" id="gate-email" type="email" name="email"
+             placeholder="you@example.com" autocomplete="email" inputmode="email"
+             spellcheck="false" required aria-describedby="gate-help gate-error">
+      <p class="gate-error" id="gate-error" role="alert" hidden></p>
+      <p class="gate-help" id="gate-help">
+        No spam. This is only so I can see how many people are using it. Nothing else is
+        collected, nothing is sent to you.
+      </p>
+      <button class="btn btn-primary gate-submit" type="submit">Download for macOS</button>
+    </form>
+  </div>
+</dialog>
+
 <!-- Shown after a download begins. Progressive enhancement: with JS off the
      download still works and this dialog never opens. -->
 <dialog id="thanks" class="modal" aria-labelledby="thanks-title" aria-describedby="thanks-desc">
@@ -749,18 +786,10 @@
       </div>
     </details>
 
-    <form class="modal-notify" novalidate hidden>
-      <p class="modal-notify-label">Want an email when updates ship? <span>Optional.</span></p>
-      <div class="modal-notify-row">
-        <input class="modal-notify-input" id="notify-email" type="email" name="email" placeholder="you@example.com" autocomplete="email" inputmode="email" aria-label="Email address">
-        <button class="btn btn-secondary modal-notify-btn" type="submit">Notify me</button>
-      </div>
-      <p class="modal-notify-msg" role="status" aria-live="polite" hidden></p>
-    </form>
     <button class="btn btn-primary modal-done" type="button" data-close>Got it</button>
   </div>
 </dialog>
 
-<script src="main.js?v=7"></script>
+<script src="main.js?v=8"></script>
 </body>
 </html>
