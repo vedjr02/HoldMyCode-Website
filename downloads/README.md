@@ -1,15 +1,18 @@
 # downloads/
 
-The site's Download buttons link straight to `HoldMyCode.dmg` in this folder —
-a direct file download, not a redirect to GitHub.
+**Not used by the site any more.** Every Download button links straight to the
+latest GitHub release:
 
-**Put the built `HoldMyCode.dmg` here before deploying.** Until you do, the
-download buttons will 404.
+```
+https://github.com/vedjr02/Hold-My-Code/releases/latest/download/HoldMyCode.dmg
+```
 
-If you'd rather serve the file from somewhere else (a CDN, object storage),
-change the three `href="downloads/HoldMyCode.dmg"` links in `index.html`
-instead — keep the `download` attribute so the browser saves the file rather
-than navigating to it.
+That URL always resolves to the newest published DMG, so the site never needs a
+copy of the build and never goes stale when a release ships.
 
-Note: the build is notarised with Apple, so it opens normally on first launch —
-no Gatekeeper "right-click → Open" workaround is needed on the site.
+`HoldMyCode.dmg` in this folder is a leftover 1.x build. It is safe to delete;
+nothing links to it.
+
+The app is **not** notarised. First launch shows a Gatekeeper warning, and the
+thank-you dialog on the site walks through allowing it in
+System Settings › Privacy & Security › Open Anyway.
