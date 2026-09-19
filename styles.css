@@ -282,6 +282,14 @@ section {
   margin-right: auto;
 }
 
+/* The nav carries no logo mark, so the wordmark holds that weight on its own. */
+.site-header .brand {
+  font-size: 16.5px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
 .nav-links {
   display: flex;
   gap: 26px;
