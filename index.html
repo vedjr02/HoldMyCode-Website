@@ -361,6 +361,83 @@
       </article>
 
     </div>
+
+    <!-- ---------------------- WHAT'S NEW IN 2.0 ---------------------- -->
+    <div class="whatsnew reveal" id="whatsnew">
+      <div class="wn-head">
+        <p class="eyebrow">What's new in 2.0</p>
+        <h3>Usage you can see, setup you don't have to do.</h3>
+        <p class="wn-lead">
+          2.0 brought Claude's usage figures into the panel and took the manual work out of hooks
+          and updates. 2.0.1 followed by making the figures honest.
+        </p>
+      </div>
+
+      <ol class="wn-list">
+        <li class="wn-item">
+          <h4>Claude usage in the menu bar panel</h4>
+          <p>
+            The current limit windows, how much of the session is left, today's agent stats, and an
+            estimated cost. The numbers come from Claude Code's own reporting. Earlier builds
+            inferred a percentage from local logs and could read "114% used", so that estimate was
+            removed: where Claude Code reports nothing, the app shows nothing.
+          </p>
+        </li>
+        <li class="wn-item">
+          <h4>A usage limit counts down in the menu bar</h4>
+          <p>
+            While Claude is refusing turns over a limit, the icon shows the time left until the
+            window lifts.
+          </p>
+        </li>
+        <li class="wn-item">
+          <h4>A limit that has lifted stops being reported</h4>
+          <p>
+            A limit hit this morning is no longer shown as a live warning tonight. One limit that
+            was retried several times is counted once, not once per retry.
+          </p>
+        </li>
+        <li class="wn-item">
+          <h4>Hooks install themselves</h4>
+          <p>
+            Every supported agent on your Mac is hooked up at launch and kept up to date, including
+            an agent you install later. Nothing to click and nothing to paste into a config file.
+            One exception, stated honestly: Cline's config lives inside <code>~/Documents</code>,
+            which triggers a macOS permission prompt, so Cline's hooks are offered rather than
+            installed silently.
+          </p>
+        </li>
+        <li class="wn-item">
+          <h4>One-click updates</h4>
+          <p>
+            When a new version is out, press Update. The app downloads it, swaps itself in and
+            reopens. No browser, no dragging to Applications. The browser download stays as a
+            fallback if that fails.
+          </p>
+        </li>
+        <li class="wn-item">
+          <h4>A What's New window</h4>
+          <p>
+            After an update installs, the app opens a short page explaining what the new version
+            changed, so an update never arrives unexplained.
+          </p>
+        </li>
+      </ol>
+
+      <div class="changelog">
+        <p class="changelog-head"><span class="changelog-v">2.0.1</span> smaller fixes</p>
+        <ul>
+          <li>The app asks your shell where Claude Code is installed instead of guessing, so version managers (nvm, fnm, mise, asdf) work.</li>
+          <li>Usage refreshes every minute in the background, rather than only while the panel is open.</li>
+          <li>A usage reading that hangs is abandoned and retried instead of freezing the panel.</li>
+          <li>The currency for the cost estimate is picked in Settings.</li>
+        </ul>
+        <p class="changelog-note">
+          Full notes for every release are on the
+          <a href="https://github.com/vedjr02/Hold-My-Code/releases">releases page</a>.
+        </p>
+      </div>
+    </div>
   </div>
 </section>
 
