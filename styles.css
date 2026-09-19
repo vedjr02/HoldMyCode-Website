@@ -676,52 +676,101 @@ section {
 
 /* ---------- features ---------- */
 
-.feature-grid {
+/* ---------- features: the inked slab ----------
+
+   Every other block on the page is the same object — a white surface, a hairline
+   border, a radius. Eight of them in a grid made the feature list read as more
+   of the page rather than as the list of what the app does, and cost roughly
+   200px a row in borders and padding. This is the one inverted block on the
+   site: one slab, no per-item chrome, the head sitting inside it. The greys are
+   local alpha tokens rather than the page's ink scale, which is built for dark
+   text on white and goes muddy when flipped. */
+.feature-slab {
+  --slab-2:   rgba(255,255,255,0.64);   /* body copy on ink */
+  --slab-3:   rgba(255,255,255,0.44);   /* icons, muted rows */
+
+  background: var(--ink);
+  color: var(--on-fill);
+  border-radius: var(--radius-lg);
+  padding: 40px 42px 44px;
+}
+
+.slab-head { max-width: 600px; margin-bottom: 34px; }
+.slab-head .eyebrow { color: var(--slab-3); }
+.slab-head h2 {
+  font-size: clamp(30px, 3.8vw, 42px);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-top: 10px;
+}
+.slab-lead {
+  margin-top: 14px;
+  color: var(--slab-2);
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+/* No rules between rows: the wn-list below is the hairline-ruled one, and two
+   ruled two-column lists in the same section would read as one component. */
+.feat-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 26px 44px;
 }
 
-.card {
-  background: var(--surface);
-  border: 1px solid var(--line-soft);
-  border-radius: var(--radius);
-  padding: 26px 26px 28px;
-  transition: border-color .2s ease, transform .2s ease;
-}
-.card:hover {
-  border-color: var(--line);
-  transform: translateY(-2px);
-}
-
-.card-icon {
-  width: 32px; height: 32px;
+.feat {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--ink);
-  margin-bottom: 16px;
+  align-items: flex-start;
+  gap: 13px;
 }
-.card.is-soon .card-icon { color: var(--ink-4); }
-
-.card-title {
+.feat-icon {
+  flex: none;
+  margin-top: 1px;
+  color: var(--slab-3);
+}
+.feat-icon svg { display: block; }   /* no baseline gap under the glyph */
+.feat-body { min-width: 0; }
+.feat-body h3 {
   display: flex;
   align-items: center;
   gap: 9px;
   flex-wrap: wrap;
+  font-size: 15px;
+  letter-spacing: -0.015em;
+  margin-bottom: 4px;
 }
-.card-title { margin-bottom: 7px; }
-.card-title h3 { font-size: 17px; letter-spacing: -0.018em; }
-.card.is-soon .card-title h3 { color: var(--ink-2); }
-.card p { color: var(--ink-2); font-size: 15px; line-height: 1.5; }
-.card.is-soon p { color: var(--ink-3); }
+.feat-body p {
+  color: var(--slab-2);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+/* Not shipped yet, so it sits back a step without leaving the list. */
+.feat.is-soon .feat-icon,
+.feat.is-soon .feat-body p { color: rgba(255,255,255,0.34); }
+.feat.is-soon .feat-body h3 { color: var(--slab-2); }
+
+/* The page's tag fills are built for white; on ink they need their own. */
+.feature-slab .tag-new {
+  background: rgba(255,255,255,0.14);
+  color: var(--on-fill);
+  border-color: transparent;
+}
+.feature-slab .tag-soon {
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+  border: 1px dashed rgba(255,255,255,0.3);
+}
 
 /* ---------- what's new ---------- */
 
 /* Sits inside the features section rather than taking a band of its own, so
-   the page keeps alternating plain / band all the way down. */
-/* Deliberately terse: the features section above already makes the case, so this
-   is a changelog — a line per change, not a second pitch. */
+   the page keeps alternating plain / band all the way down. Deliberately terse:
+   the slab above already makes the case — this is a changelog, a line per
+   change, not a second pitch. */
 .whatsnew {
   margin-top: 52px;
   padding-top: 38px;
@@ -944,8 +993,8 @@ section {
 
 /* ---------- getting started ---------- */
 
-/* A hairline-divided run rather than another row of rounded cards — the page
-   already has two card grids and needed a different device here. */
+/* A hairline-divided run rather than a row of rounded cards — the agent grid is
+   already tiled and the features are a slab, so this needed its own device. */
 .setup-grid {
   list-style: none;
   margin: 0;
@@ -1172,7 +1221,9 @@ section {
   .hero-sub { font-size: 18px; }
   .section-head { margin-bottom: 44px; }
   .section-head p { font-size: 17px; }
-  .feature-grid { grid-template-columns: 1fr; }
+  .feat-list { grid-template-columns: 1fr; gap: 22px; }
+  .feature-slab { padding: 30px 24px 32px; border-radius: var(--radius); }
+  .slab-head { margin-bottom: 26px; }
   .wn-list { grid-template-columns: 1fr; gap: 0; }
   .whatsnew { margin-top: 40px; padding-top: 30px; }
   .changelog { padding: 0 18px; }
@@ -1180,7 +1231,6 @@ section {
   .setup-grid { grid-template-columns: 1fr; }
   .setup-step { padding: 26px 24px 28px; }
   .specs { grid-template-columns: 1fr; }
-  .card { padding: 28px 24px; }
   .demo { padding: 16px; }
   .step { gap: 22px; }
   .step-visual { min-height: 200px; padding: 42px 18px 22px; }
@@ -1251,7 +1301,7 @@ section {
 .link-more::after { transition: transform .2s ease; }
 .link-more:hover::after { transform: translateX(3px); }
 
-/* Agent cards lift like the feature cards. */
+/* Agent tiles lift on hover; the feature slab deliberately does not move. */
 .agent { transition: border-color .2s ease, transform .2s ease; }
 .agent:hover { transform: translateY(-2px); }
 .agent.is-soon:hover { border-color: var(--line); }
@@ -1321,7 +1371,7 @@ h1, h2, h3 {
 }
 /* NOT on body copy — `balance` narrows the measure to even out line lengths,
    which is right for a 2-line headline and wrong for a paragraph. */
-.section-head p, .hero-sub, .card p, .step-copy > p, .faq details p {
+.section-head p, .hero-sub, .slab-lead, .feat-body p, .step-copy > p, .faq details p {
   text-wrap: pretty;
 }
 
@@ -1347,12 +1397,10 @@ h1, h2, h3 {
 .section-head.lead p { margin-left: 0; }
 
 /* 5. Cards gain a whisper of depth on hover, not a drop shadow. */
-.card:hover,
 .agent:hover {
   box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.05);
 }
 @media (prefers-color-scheme: dark) and (min-width: 99999px) {
-  .card:hover,
   .agent:hover { box-shadow: none; }
 }
 
