@@ -720,24 +720,20 @@ section {
 
 /* Sits inside the features section rather than taking a band of its own, so
    the page keeps alternating plain / band all the way down. */
+/* Deliberately terse: the features section above already makes the case, so this
+   is a changelog — a line per change, not a second pitch. */
 .whatsnew {
-  margin-top: 64px;
-  padding-top: 48px;
+  margin-top: 52px;
+  padding-top: 38px;
   border-top: 1px solid var(--line-soft);
 }
 
-.wn-head { max-width: 640px; margin-bottom: 34px; }
+.wn-head { max-width: 640px; margin-bottom: 24px; }
 .wn-head h3 {
-  font-size: clamp(26px, 3.4vw, 34px);
+  font-size: clamp(22px, 2.6vw, 27px);
   letter-spacing: -0.028em;
-  line-height: 1.16;
-  margin-top: 10px;
-}
-.wn-lead {
-  margin-top: 12px;
-  color: var(--ink-2);
-  font-size: 17px;
-  line-height: 1.55;
+  line-height: 1.2;
+  margin-top: 8px;
 }
 
 .wn-list {
@@ -746,16 +742,18 @@ section {
   grid-template-columns: repeat(2, 1fr);
   gap: 0 44px;
   counter-reset: wn;
+  margin: 0;
+  padding: 0;
 }
 .wn-item {
   counter-increment: wn;
-  padding: 20px 0;
+  padding: 13px 0;
   border-top: 1px solid var(--line-soft);
 }
 .wn-item h4 {
-  font-size: 16px;
+  font-size: 15px;
   letter-spacing: -0.015em;
-  margin-bottom: 6px;
+  margin-bottom: 3px;
 }
 .wn-item h4::before {
   content: counter(wn, decimal-leading-zero);
@@ -766,8 +764,8 @@ section {
 }
 .wn-item p {
   color: var(--ink-2);
-  font-size: 15px;
-  line-height: 1.55;
+  font-size: 14.5px;
+  line-height: 1.5;
 }
 /* Inline paths and commands in running prose — the What's new items, the
    agents note and the FAQ answers all use the same treatment. */
@@ -781,14 +779,19 @@ section {
   white-space: nowrap;
 }
 
+/* The point release is folded away — it is detail for whoever wants it, not
+   something the page has to spend height on. */
 .changelog {
-  margin-top: 34px;
-  padding: 24px 26px 26px;
+  margin-top: 26px;
+  padding: 0 20px;
   background: var(--surface-2);
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);
 }
-.changelog-head {
+.changelog > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 15px 0;
   display: flex;
   align-items: center;
   gap: 9px;
@@ -797,8 +800,16 @@ section {
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: var(--ink-3);
-  margin-bottom: 14px;
 }
+.changelog > summary::-webkit-details-marker { display: none; }
+.changelog > summary .chev {
+  flex: none;
+  margin-left: auto;
+  color: var(--ink-4);
+  transition: transform .25s ease;
+}
+.changelog[open] > summary { padding-bottom: 12px; }
+.changelog[open] > summary .chev { transform: rotate(45deg); }
 .changelog-v {
   font: 500 12px/1 var(--mono);
   letter-spacing: 0;
@@ -812,6 +823,8 @@ section {
   list-style: none;
   display: grid;
   gap: 9px;
+  margin: 0;
+  padding: 0;
 }
 .changelog li {
   position: relative;
@@ -829,7 +842,7 @@ section {
   background: var(--ink-4);
 }
 .changelog-note {
-  margin-top: 16px;
+  margin: 14px 0 18px;
   font-size: 13.5px;
   color: var(--ink-3);
 }
@@ -1161,8 +1174,8 @@ section {
   .section-head p { font-size: 17px; }
   .feature-grid { grid-template-columns: 1fr; }
   .wn-list { grid-template-columns: 1fr; gap: 0; }
-  .whatsnew { margin-top: 48px; padding-top: 38px; }
-  .changelog { padding: 20px 20px 22px; }
+  .whatsnew { margin-top: 40px; padding-top: 30px; }
+  .changelog { padding: 0 18px; }
   .agent-grid { grid-template-columns: repeat(2, 1fr); }
   .setup-grid { grid-template-columns: 1fr; }
   .setup-step { padding: 26px 24px 28px; }
