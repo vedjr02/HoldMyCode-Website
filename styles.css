@@ -380,11 +380,14 @@ section {
   margin-bottom: 26px;
 }
 
+/* The laptop is the product, so it runs nearly the full window rather than the
+   1000px text column — it lives outside .wrap for this. The cap keeps it from
+   sprawling on very wide screens; the padding is the thin margin either side. */
 .hero-figure {
-  margin-top: 64px;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 64px auto 0;
+  width: 100%;
+  max-width: 1920px;
+  padding: 0 var(--gutter);
 }
 
 /* ---------- figures ---------- */
@@ -398,7 +401,7 @@ section {
   display: block;
   width: 100%;
   height: auto;
-  filter: drop-shadow(0 22px 44px rgba(0,0,0,0.16));
+  filter: drop-shadow(0 28px 56px rgba(0,0,0,0.16));
 }
 @media (prefers-color-scheme: dark) and (min-width: 99999px) {
   .hero-shot { filter: none; }

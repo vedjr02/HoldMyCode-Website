@@ -26,7 +26,7 @@ changing anything visual.
 | `main.js` | Reveal-on-scroll, the FAQ accordion, the email gate and the download handoff. Progressive enhancement: with JS off, the page reads fine and the download links still work. |
 | `logos/` | Agent logos used in the agents section. |
 | `downloads/` | Legacy. Nothing links here any more — see `downloads/README.md`. |
-| `walkthrough.mp4`, `hero-laptop.webp`, `og-image.png`, favicons | Media, committed as-is. |
+| `walkthrough.mp4`, `hero-laptop*.webp`, `og-image.png`, favicons | Media, committed as-is. The hero ships at three widths (1600/2400/3200) behind one `srcset`. |
 | `robots.txt`, `sitemap.xml`, `site.webmanifest` | Hardcoded to `holdmycode.xyz`; update all three together if the domain changes. |
 
 ## Run it locally
