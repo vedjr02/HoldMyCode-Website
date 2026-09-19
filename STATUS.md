@@ -6,6 +6,85 @@ in this file plus the source.
 
 ---
 
+## Update — 2026-09-19 (session 4): app 2.0.1, mandatory email gate, nav without the mark
+
+Source of truth for the app side this session: `vedjr02/hold-my-code-source`
+(private, branch `next`, `Resources/Info.plist` at **2.0.1**) and
+`Sources/HoldMyCodeCore/WhatsNew.swift`, which carries the app's own release
+notes. Released DMG: `v2.0.1`, 3,859,950 bytes.
+
+### Content — caught up to 2.0.1
+
+- **Releases repo renamed.** Every download link now points at
+  `github.com/vedjr02/Hold-My-Code` (was `hold-my-code-releases`, which GitHub
+  still forwards; the app README says never to recreate that old name because
+  1.0.4 still checks it). Changed in `index.html` (3 links + comment) and
+  `404.html`.
+- **Two new feature cards:** "Claude usage in the panel" and "Limit countdown in
+  the menu bar", both tagged `.tag-new` ("New in 2.0"). The features grid is
+  eight cards now.
+- **New `#whatsnew` block** at the foot of the features section, not a section
+  of its own — the page alternates plain / `.band` all the way down and a new
+  top-level section would break that run. Six numbered items (usage panel, limit
+  countdown, lifted limits, self-installing hooks, one-click updates, the What's
+  New window) plus a `.changelog` card for the 2.0.1 fixes.
+- **Download panel:** "about 3 MB" → "about 4 MB" (the DMG is 3.86 MB now), a
+  fourth spec cell for the version, and `.specs` re-laid as 2×2 instead of a row
+  of three plus an orphan.
+- **FAQ corrections.** Hooks are no longer installed by hand from the Agents tab
+  — they install themselves at launch and stay current, with Cline the stated
+  exception (its config is inside `~/Documents`, behind a macOS permission
+  prompt). The privacy answer now names both servers the app talks to: GitHub,
+  and a public exchange rate feed once a day when local currency is on.
+- **Structured data** carries `softwareVersion: 2.0.1` and a `downloadUrl`.
+
+### Email gate before download — `#gate`
+
+- Mandatory with JS on. Every `a[href$="HoldMyCode.dmg"]` outside the two
+  dialogs is intercepted; the DMG is only fetched after a valid address is
+  submitted, or when one is already in `localStorage` under `hmc.email`.
+- **Storage is the existing Google Apps Script endpoint** (`TRACK_ENDPOINT` in
+  `main.js`), which already backed the download count and the old optional
+  sign-up. It writes to a Google Sheet, so counting is opening the sheet. No new
+  infrastructure: the site is still static files on Vercel, no functions, no
+  build step, no auth.
+- **Fail-open by design.** `track()` never blocks; a rejected `fetch` is
+  `console.warn`ed and the download proceeds. Losing a row of a count is not a
+  reason to withhold a free app. Same for `localStorage` throwing in private
+  Safari — both accessors are guarded.
+- Validation is a shape check (`/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/`), not an
+  attempt to decide what a real address is. Empty and malformed both show an
+  inline `role="alert"` error and keep focus in the field.
+- Accessibility: real `<label for="gate-email">`, focus moved into the field on
+  open (`showModal()` would otherwise land on the close button), Esc handled by
+  native `<dialog>` with the keydown fallback preferring the gate over the
+  thank-you card, backdrop click closes, 16px input so iOS does not zoom.
+- **The old optional `.modal-notify` form is gone** from the thank-you dialog
+  and its CSS deleted — asking twice would be worse than asking once.
+- With JS off the links are still plain links to the DMG. Breaking the download
+  entirely for no-JS visitors would be a worse trade than an unmeasured download.
+
+### Nav
+
+- **The logo mark is gone from the nav** in `index.html` and `404.html`; the
+  wordmark carries it alone at 16.5px/700 (`.site-header .brand`). The favicon,
+  the footer mark and the in-panel mock logos are untouched.
+- **No refresh button.** The brief asked for one "beside the existing on/off
+  toggle", but that toggle is the *app's* menu bar panel header (changed in app
+  commit `ee19149`), not the site nav, and the site has no live values to
+  refresh. Confirmed with the owner and skipped deliberately.
+
+### Known stale, not fixed this session
+
+- `hero-laptop.webp` and `walkthrough.mp4` both show the 1.x panel: no usage
+  card, no limit row, and the walkthrough shows hook setup that is now automatic.
+  Both need re-shooting against 2.0.1.
+- The five-state mock in `#how` (`.app-panel`) is likewise a 1.x panel.
+
+Assets are at `styles.css?v=14`, `main.js?v=8`.
+
+---
+
 ## Update — 2026-09-15 (session 3): install guide, seven agents, GitHub downloads
 
 - **Downloads** now point at `https://github.com/vedjr02/hold-my-code-releases/releases/latest/download/HoldMyCode.dmg`,
