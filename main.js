@@ -96,6 +96,171 @@
     window.addEventListener('resize', queueParallax, { passive: true });
   }
 
+  /* 3c. Scroll progress rule under the nav, fallback only.
+         Browsers with scroll() timelines fill it in CSS, on the compositor,
+         and this block never attaches. Decoration: with neither path it stays
+         at scaleX(0) and the nav looks exactly as it does today. */
+  var progress = document.querySelector('.scroll-progress');
+  var hasScrollTimeline = typeof CSS !== 'undefined' && CSS.supports &&
+                          CSS.supports('animation-timeline', 'scroll()');
+  if (progress && !hasScrollTimeline && !stillMotion) {
+    var pQueued = false;
+
+    var drawProgress = function () {
+      pQueued = false;
+      var doc = document.documentElement;
+      var span = doc.scrollHeight - window.innerHeight;
+      var t = span > 0 ? window.scrollY / span : 0;
+      t = t < 0 ? 0 : t > 1 ? 1 : t;
+      progress.style.transform = 'scaleX(' + t.toFixed(4) + ')';
+    };
+
+    var queueProgress = function () {
+      if (pQueued) return;
+      pQueued = true;
+      window.requestAnimationFrame(drawProgress);
+    };
+
+    drawProgress();
+    window.addEventListener('scroll', queueProgress, { passive: true });
+    window.addEventListener('resize', queueProgress, { passive: true });
+  }
+
+  /* 3d. The hero laptop leans towards the pointer.
+         A few pixels of translation, eased by the .45s transition in CSS, so
+         it reads as the shot following your cursor rather than tracking it.
+         Fine pointers only — there is nothing to follow on a touchscreen —
+         and never under reduced motion. The inline transform is cleared on the
+         way out, which hands the element back to the CSS hover rule. */
+  var heroFigure = document.querySelector('.hero-figure');
+  var heroShot = document.querySelector('.hero-shot');
+  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (heroFigure && heroShot && finePointer && !stillMotion) {
+    var leanQueued = false;
+    var leanX = 0;
+    var leanY = 0;
+
+    var drawLean = function () {
+      leanQueued = false;
+      heroShot.style.transform =
+        'translate3d(' + leanX.toFixed(2) + 'px,' + leanY.toFixed(2) + 'px,0)';
+    };
+
+    heroFigure.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      var box = heroFigure.getBoundingClientRect();
+      if (!box.width || !box.height) return;
+      // -1 .. 1 from the centre of the figure, then a handful of pixels each way.
+      leanX = ((e.clientX - box.left) / box.width  - 0.5) * 2 * 7;
+      leanY = ((e.clientY - box.top)  / box.height - 0.5) * 2 * 5 - 3;
+      if (leanQueued) return;
+      leanQueued = true;
+      window.requestAnimationFrame(drawLean);
+    }, { passive: true });
+
+    heroFigure.addEventListener('pointerleave', function () {
+      heroShot.style.transform = '';
+    });
+  }
+
+  /* 3e. Buttons pull towards the pointer.
+         Four pixels at the edges, on top of the one-pixel lift the CSS hover
+         already gives them, eased by the .22s transform transition. Fine
+         pointers only, never under reduced motion, and the inline transform is
+         cleared on the way out so the CSS hover and :active take back over. */
+  if (finePointer && !stillMotion) {
+    document.querySelectorAll('.btn').forEach(function (btn) {
+      var pull = 4;          // px at the far edge of the button
+      var pending = false;
+      var dx = 0, dy = 0;
+
+      var drawPull = function () {
+        pending = false;
+        btn.style.transform =
+          'translate3d(' + dx.toFixed(2) + 'px,' + (dy - 1).toFixed(2) + 'px,0)';
+      };
+
+      btn.addEventListener('pointermove', function (e) {
+        if (e.pointerType !== 'mouse') return;
+        var box = btn.getBoundingClientRect();
+        if (!box.width || !box.height) return;
+        dx = ((e.clientX - box.left) / box.width  - 0.5) * 2 * pull;
+        dy = ((e.clientY - box.top)  / box.height - 0.5) * 2 * (pull * 0.6);
+        if (pending) return;
+        pending = true;
+        window.requestAnimationFrame(drawPull);
+      }, { passive: true });
+
+      btn.addEventListener('pointerleave', function () { btn.style.transform = ''; });
+      // A press should read as a press, not as a magnet fighting it.
+      btn.addEventListener('pointerdown', function () { btn.style.transform = ''; });
+    });
+  }
+
+  /* 3f. Section headings are split into words, so they can land one at a time.
+         Only headings that are a single text node are touched — anything with
+         markup inside is left exactly as written. The words keep the spaces
+         between them as real text, so the line breaks are the ones the browser
+         picked before. Skipped wholesale under reduced motion, which leaves
+         the headings as plain, unsplit type. */
+  if (!stillMotion) {
+    var headings = document.querySelectorAll(
+      '.section-head h2, .slab-head h2, .download-panel > h2'
+    );
+    headings.forEach(function (h) {
+      if (h.childNodes.length !== 1 || h.firstChild.nodeType !== 3) return;
+      var words = h.textContent.trim().split(/\s+/);
+      if (words.length < 2) return;
+
+      // The head's own stagger puts the heading at .07s; the words go on from there.
+      var base = h.closest('.section-head') ? 0.07 : 0;
+      var frag = document.createDocumentFragment();
+      words.forEach(function (word, i) {
+        var span = document.createElement('span');
+        span.className = 'word';
+        span.textContent = word;
+        span.style.animationDelay = (base + i * 0.045).toFixed(3) + 's';
+        frag.appendChild(span);
+        if (i < words.length - 1) frag.appendChild(document.createTextNode(' '));
+      });
+      h.textContent = '';
+      h.appendChild(frag);
+      h.classList.add('has-words');
+    });
+  }
+
+  /* 3g. Agent tiles lean towards the pointer, like the hero shot does.
+         Four degrees at the corners, on top of the two-pixel lift the CSS
+         hover gives them. The perspective is baked into each tile's own
+         transform so a tile at the edge of the grid tilts on its own axis. */
+  if (finePointer && !stillMotion) {
+    document.querySelectorAll('.agent').forEach(function (tile) {
+      var tQueued = false;
+      var rx = 0, ry = 0;
+
+      var drawTilt = function () {
+        tQueued = false;
+        tile.style.transform =
+          'perspective(700px) translateY(-2px) ' +
+          'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
+      };
+
+      tile.addEventListener('pointermove', function (e) {
+        if (e.pointerType !== 'mouse') return;
+        var box = tile.getBoundingClientRect();
+        if (!box.width || !box.height) return;
+        // Tilt away from the cursor on the vertical, towards it on the horizontal.
+        rx = -(((e.clientY - box.top)  / box.height - 0.5) * 2) * 4;
+        ry =  (((e.clientX - box.left) / box.width  - 0.5) * 2) * 4;
+        if (tQueued) return;
+        tQueued = true;
+        window.requestAnimationFrame(drawTilt);
+      }, { passive: true });
+
+      tile.addEventListener('pointerleave', function () { tile.style.transform = ''; });
+    });
+  }
+
   /* 4. Nav reflects where you are on the page. Cheap: one rAF-throttled read
         per scroll, no observer per link. */
   var navLinks = Array.prototype.slice.call(
@@ -316,7 +481,14 @@
         if (!source || !navigator.clipboard) return;
         navigator.clipboard.writeText(source.textContent).then(function () {
           btn.textContent = 'Copied';
-          setTimeout(function () { btn.textContent = 'Copy'; }, 1600);
+          // Restarting the animation needs the class off for a frame.
+          btn.classList.remove('is-copied');
+          void btn.offsetWidth;
+          btn.classList.add('is-copied');
+          setTimeout(function () {
+            btn.textContent = 'Copy';
+            btn.classList.remove('is-copied');
+          }, 1600);
         });
       });
     });

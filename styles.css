@@ -1626,3 +1626,475 @@ h1, h2, h3 {
 .gate-submit { width: 100%; }
 .gate-submit[disabled] { opacity: .6; pointer-events: none; }
 
+
+/* ==========================================================================
+   Motion pass two — more of the same restraint, spread further across the
+   page. Nothing below changes a colour token, a size or a resting position:
+   every rule is a transition, a keyframe or a scroll-driven timeline, and the
+   prefers-reduced-motion block above switches all of it off wholesale (a
+   universal `animation: none !important` outranks anything written here,
+   whatever the order). Every animated element is correct in its rest state.
+   ========================================================================== */
+
+/* ---------- 1. Scroll progress hairline ----------
+   A 2px ink rule along the bottom edge of the sticky nav, filling as the page
+   is read. Scroll-driven where the browser has timelines, rAF in main.js where
+   it doesn't, and simply absent (scaleX(0)) under reduced motion. */
+.scroll-progress {
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 2px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  will-change: transform;
+  pointer-events: none;
+}
+@keyframes scrollProgress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-progress {
+      animation: scrollProgress linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+
+/* ---------- 2. Disclosure panels open and close, rather than snap ----------
+   `interpolate-size` lets the auto height be interpolated, and
+   ::details-content is the box to animate. Browsers without either keep the
+   instant toggle they have today and get the content fading in instead. */
+@supports selector(::details-content) {
+  html { interpolate-size: allow-keywords; }
+
+  .faq details::details-content,
+  .changelog::details-content {
+    block-size: 0;
+    overflow: clip;
+    opacity: 0;
+    transition:
+      block-size .42s cubic-bezier(.2,.6,.2,1),
+      opacity    .3s  ease,
+      content-visibility .42s allow-discrete;
+  }
+  .faq details[open]::details-content,
+  .changelog[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+}
+@supports not selector(::details-content) {
+  .faq details[open] > p,
+  .changelog[open] > ul,
+  .changelog[open] > .changelog-note {
+    animation: riseIn .42s backwards cubic-bezier(.2,.6,.2,1);
+  }
+}
+
+/* The chevron already turns; it now also answers the pointer. */
+.faq summary .chev,
+.changelog > summary .chev {
+  transition: transform .3s cubic-bezier(.2,.6,.2,1), color .2s ease;
+}
+.faq summary:hover .chev { color: var(--ink); transform: scale(1.14); }
+.faq details[open] summary:hover .chev { transform: rotate(45deg) scale(1.14); }
+.changelog > summary { transition: color .2s ease; }
+.changelog > summary:hover { color: var(--ink-2); }
+.changelog > summary:hover .chev { color: var(--ink-3); }
+.changelog[open] > summary:hover .chev { transform: rotate(45deg); }
+
+/* ---------- 3. Buttons: a sheen on hover, a press on click ----------
+   The sweep is white over ink and black over white, so it stays inside the
+   monochrome palette. It sits behind the label in the button's own stacking
+   context, and is clipped by the pill radius. */
+.btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    background .2s ease, border-color .2s ease, opacity .2s ease,
+    transform .22s cubic-bezier(.2,.6,.2,1), box-shadow .3s ease;
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  background: linear-gradient(105deg,
+              transparent 38%, rgba(255,255,255,0.22) 50%, transparent 62%);
+  transform: translateX(-130%);
+  transition: transform .62s cubic-bezier(.2,.6,.2,1);
+}
+.btn:hover::before { transform: translateX(130%); }
+.btn-secondary::before,
+.btn.btn-secondary::before {
+  background: linear-gradient(105deg,
+              transparent 38%, rgba(0,0,0,0.055) 50%, transparent 62%);
+}
+.btn-primary:hover   { box-shadow: 0 6px 20px rgba(0,0,0,0.16); }
+.btn-secondary:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.06); }
+.btn:active { transform: translateY(0) scale(.982); }
+
+/* ---------- 4. Hero: the three load-bearing phrases sharpen last ----------
+   The headline rises as one line of type, then the words that carry the pitch
+   come into focus a beat behind it. Opacity and blur only — no layout, no
+   colour, and at rest (or with motion off) they are simply the bold words. */
+@keyframes sharpenIn {
+  from { opacity: .22; filter: blur(5px); }
+  to   { opacity: 1;   filter: blur(0); }
+}
+.hero h1 strong {
+  animation: sharpenIn .72s backwards cubic-bezier(.2,.6,.2,1);
+}
+.hero h1 strong:nth-of-type(1) { animation-delay: .30s; }
+.hero h1 strong:nth-of-type(2) { animation-delay: .42s; }
+.hero h1 strong:nth-of-type(3) { animation-delay: .54s; }
+
+/* The kicker pill answers the pointer the way the cards do. */
+.kicker { transition: border-color .25s ease, transform .3s cubic-bezier(.2,.6,.2,1); }
+.kicker:hover { border-color: var(--ink-3); transform: translateY(-1px); }
+
+/* ---------- 5. Section heads arrive in sequence ----------
+   Eyebrow, heading, standfirst — one behind the other rather than as a block.
+   Gated on .reveal-ready, so with JS off or motion reduced they just exist. */
+.reveal-ready .section-head.in > * {
+  animation: riseIn .55s backwards cubic-bezier(.2,.6,.2,1);
+}
+.reveal-ready .section-head.in > *:nth-child(2) { animation-delay: .07s; }
+.reveal-ready .section-head.in > *:nth-child(3) { animation-delay: .14s; }
+
+/* ---------- 6. Agent tiles: stagger in, then react ---------- */
+.reveal-ready .agent-grid.in .agent {
+  animation: riseIn .48s backwards cubic-bezier(.2,.6,.2,1);
+}
+.reveal-ready .agent-grid.in .agent:nth-child(2) { animation-delay: .045s; }
+.reveal-ready .agent-grid.in .agent:nth-child(3) { animation-delay: .09s; }
+.reveal-ready .agent-grid.in .agent:nth-child(4) { animation-delay: .135s; }
+.reveal-ready .agent-grid.in .agent:nth-child(5) { animation-delay: .18s; }
+.reveal-ready .agent-grid.in .agent:nth-child(6) { animation-delay: .225s; }
+.reveal-ready .agent-grid.in .agent:nth-child(7) { animation-delay: .27s; }
+
+.agent { transition: border-color .2s ease, transform .25s cubic-bezier(.2,.6,.2,1), box-shadow .3s ease; }
+.agent-mark { transition: transform .3s cubic-bezier(.2,.6,.2,1), border-color .2s ease; }
+.agent:hover .agent-mark { transform: translateY(-2px) scale(1.06); }
+.agent-logo { transition: transform .3s cubic-bezier(.2,.6,.2,1); }
+.agent:hover .agent-logo { transform: scale(1.08); }
+
+/* ---------- 7. Feature rows ---------- */
+.feat { transition: transform .28s cubic-bezier(.2,.6,.2,1); }
+.feat-icon { transition: color .25s ease, transform .35s cubic-bezier(.2,.6,.2,1); }
+.feat:hover { transform: translateX(3px); }
+.feat:hover .feat-icon { color: var(--ink); transform: translateY(-2px) scale(1.08); }
+.feat.is-soon:hover .feat-icon { color: var(--ink-3); }
+
+/* ---------- 8. What's new: the changelog rows land one after another ------ */
+.reveal-ready .whatsnew.in .wn-item {
+  animation: riseIn .46s backwards cubic-bezier(.2,.6,.2,1);
+}
+.reveal-ready .whatsnew.in .wn-item:nth-child(2) { animation-delay: .06s; }
+.reveal-ready .whatsnew.in .wn-item:nth-child(3) { animation-delay: .12s; }
+.reveal-ready .whatsnew.in .wn-item:nth-child(4) { animation-delay: .18s; }
+.wn-item h4::before { transition: color .25s ease; }
+.wn-item:hover h4::before { color: var(--ink-2); }
+
+/* ---------- 9. The walkthrough card ----------
+   The frame lifts under the pointer; the footage inside settles from a hair
+   over full size to full size as the card crosses the viewport. The scale
+   lives on the video, not the figure, so it never fights the reveal or the
+   hover — and the figure already clips its overflow. */
+.walkthrough { transition: transform .5s cubic-bezier(.2,.6,.2,1), box-shadow .5s ease; }
+/* Once it has landed, the card's own timing takes over from the reveal's. */
+.reveal-ready .walkthrough.reveal.in {
+  transition: opacity .7s cubic-bezier(.2,.6,.2,1),
+              transform .5s cubic-bezier(.2,.6,.2,1),
+              box-shadow .5s ease;
+}
+/* The card is also a .reveal, and `.reveal-ready .reveal.in { transform: none }`
+   outweighs a bare `.walkthrough:hover` — hence the second, heavier selector. */
+.walkthrough:hover,
+.reveal-ready .walkthrough.reveal.in:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 42px 90px rgba(0,0,0,0.16);
+}
+@keyframes videoSettle {
+  from { transform: scale(1.055); }
+  to   { transform: scale(1); }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .walkthrough-video {
+      animation: videoSettle linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 58%;
+    }
+  }
+}
+
+/* ---------- 10. Download block ---------- */
+.reveal-ready .download-panel.in .spec {
+  animation: riseIn .5s backwards cubic-bezier(.2,.6,.2,1);
+}
+.reveal-ready .download-panel.in .spec:nth-child(2) { animation-delay: .06s; }
+.reveal-ready .download-panel.in .spec:nth-child(3) { animation-delay: .12s; }
+.reveal-ready .download-panel.in .spec:nth-child(4) { animation-delay: .18s; }
+.spec { transition: background .28s ease; }
+.spec:hover { background: var(--surface-2); }
+
+/* ---------- 11. Footer ---------- */
+.footer-contact a svg { transition: transform .28s cubic-bezier(.2,.6,.2,1), opacity .2s ease; }
+.footer-contact a:hover svg { transform: translateY(-1px); opacity: 1; }
+.footer-links a { transition: color .18s ease; }
+
+/* ---------- 12. Dialogs open instead of appearing ----------
+   The card rises and settles, the scrim fades behind it, the mark pops once,
+   and the steps follow it in. All `backwards`, so nothing is ever mid-flight
+   when the dialog is closed, and all of it is off under reduced motion. */
+@keyframes modalCardIn {
+  from { opacity: 0; transform: translateY(16px) scale(.972); }
+}
+@keyframes scrimIn { from { opacity: 0; } }
+@keyframes markPop { from { opacity: 0; transform: scale(.62); } }
+
+.modal[open] .modal-card {
+  animation: modalCardIn .4s cubic-bezier(.16,.84,.34,1) backwards;
+}
+.modal[open]::backdrop {
+  animation: scrimIn .3s ease backwards;
+}
+.modal[open] .modal-mark {
+  animation: markPop .52s .1s cubic-bezier(.34,1.42,.5,1) backwards;
+}
+.modal[open] .modal-steps li {
+  animation: riseIn .44s backwards cubic-bezier(.2,.6,.2,1);
+}
+.modal[open] .modal-steps li:nth-child(1) { animation-delay: .14s; }
+.modal[open] .modal-steps li:nth-child(2) { animation-delay: .20s; }
+.modal[open] .modal-steps li:nth-child(3) { animation-delay: .26s; }
+.modal[open] .gate-form { animation: riseIn .44s .1s backwards cubic-bezier(.2,.6,.2,1); }
+
+.modal-close { transition: transform .22s cubic-bezier(.2,.6,.2,1), color .2s ease, background .2s ease; }
+.modal-close:hover { transform: rotate(90deg); }
+.guide-copy { transition: background .2s ease, border-color .2s ease, transform .18s cubic-bezier(.2,.6,.2,1); }
+.guide-copy:active { transform: scale(.94); }
+.gate-input { transition: border-color .2s ease, box-shadow .25s ease; }
+
+/* ---------- 13. Hero shot follows the pointer ----------
+   main.js writes the transform on .hero-shot while a fine pointer is over the
+   figure, and clears it on the way out; the transition is what makes it a
+   follow rather than a snap. The lift below is the resting hover, kept for
+   touch and for browsers where the script never runs. */
+.hero-shot { transition: transform .45s cubic-bezier(.2,.6,.2,1); }
+
+/* ---------- 14. Reduced motion, for the one box the global reset misses ----
+   The universal selector covers elements and ::before / ::after, but not
+   ::details-content, so the panel height would still animate. Switch it off
+   by hand: open is open, immediately. */
+@media (prefers-reduced-motion: reduce) {
+  .faq details::details-content,
+  .changelog::details-content {
+    transition: none !important;
+  }
+  .faq details[open]::details-content,
+  .changelog[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   Motion pass three — the last of it. Same rules as the two passes above: no
+   colour, size or resting position changes hands, and the reduced-motion
+   block switches every line of it off.
+   ========================================================================== */
+
+/* ---------- 15. The feature icons draw themselves ----------
+   Each icon is line art, so it can be drawn rather than faded. The dash
+   length is longer than any path in the set, so once the offset reaches 0
+   every stroke is solid — the resting state is exactly the icon as it is
+   today. Only stroked shapes take part; the two filled rects simply arrive
+   with their row. */
+@keyframes strokeDraw {
+  from { stroke-dashoffset: 150; }
+  to   { stroke-dashoffset: 0; }
+}
+.reveal-ready .feature-slab.in .feat-icon svg [stroke] {
+  stroke-dasharray: 150;
+  animation: strokeDraw .85s backwards cubic-bezier(.3,.7,.3,1);
+}
+.reveal-ready .feature-slab.in .feat:nth-child(1) .feat-icon svg [stroke] { animation-delay: .14s; }
+.reveal-ready .feature-slab.in .feat:nth-child(2) .feat-icon svg [stroke] { animation-delay: .19s; }
+.reveal-ready .feature-slab.in .feat:nth-child(3) .feat-icon svg [stroke] { animation-delay: .24s; }
+.reveal-ready .feature-slab.in .feat:nth-child(4) .feat-icon svg [stroke] { animation-delay: .29s; }
+.reveal-ready .feature-slab.in .feat:nth-child(5) .feat-icon svg [stroke] { animation-delay: .34s; }
+.reveal-ready .feature-slab.in .feat:nth-child(6) .feat-icon svg [stroke] { animation-delay: .39s; }
+.reveal-ready .feature-slab.in .feat:nth-child(7) .feat-icon svg [stroke] { animation-delay: .44s; }
+.reveal-ready .feature-slab.in .feat:nth-child(8) .feat-icon svg [stroke] { animation-delay: .49s; }
+
+/* ---------- 16. The hero text hands the page over ----------
+   The laptop already drifts as the hero leaves. The column above it now goes
+   with it: a little lift and a softening, over the stretch where it is on its
+   way out anyway. Scroll-driven, so it runs on the compositor and reverses
+   exactly when you scroll back up. */
+@keyframes heroHandoff {
+  to { transform: translateY(-34px); opacity: .45; }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero .wrap {
+      animation: heroHandoff linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 90%;
+    }
+  }
+}
+
+/* ---------- 17. The status light sends out a ring ----------
+   The dot already breathes; this is the ping around it. Same green, nothing
+   new on the page at rest — the ring is transparent at both ends of the loop. */
+.kicker .dot { position: relative; }
+.kicker .dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: dotPing 2.6s cubic-bezier(.2,.6,.2,1) infinite;
+}
+@keyframes dotPing {
+  0%        { box-shadow: 0 0 0 0 rgba(46,204,113,0.42); }
+  70%, 100% { box-shadow: 0 0 0 9px rgba(46,204,113,0); }
+}
+
+/* ---------- 18. The header assembles ----------
+   The hero rises out of nothing on load; the nav above it was the one part of
+   the first screen that simply existed. It now arrives first, in reading
+   order, and is done before the headline lands. */
+.site-header .brand      { animation: riseIn .5s .00s backwards cubic-bezier(.2,.6,.2,1); }
+.nav-links a:nth-child(1){ animation: riseIn .5s .05s backwards cubic-bezier(.2,.6,.2,1); }
+.nav-links a:nth-child(2){ animation: riseIn .5s .09s backwards cubic-bezier(.2,.6,.2,1); }
+.nav-links a:nth-child(3){ animation: riseIn .5s .13s backwards cubic-bezier(.2,.6,.2,1); }
+.site-header .nav-cta    { animation: riseIn .5s .17s backwards cubic-bezier(.2,.6,.2,1); }
+
+/* ---------- 19. The text link draws its own underline ----------
+   Same rule in the same place as the browser's; it is wiped on from the left
+   instead of appearing whole. */
+.link-more { position: relative; }
+.link-more:hover { text-decoration: none; }
+.link-more::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .32s cubic-bezier(.2,.6,.2,1);
+}
+.link-more:hover::before { transform: scaleX(1); }
+
+/* ---------- 20. Panels animate their contents in, both ways ----------
+   The answer rises whether or not the browser can animate the panel height,
+   so the two paths land on the same thing. */
+.faq details[open] > p {
+  animation: riseIn .45s .05s backwards cubic-bezier(.2,.6,.2,1);
+}
+.changelog[open] li {
+  animation: riseIn .4s backwards cubic-bezier(.2,.6,.2,1);
+}
+.changelog[open] li:nth-child(2) { animation-delay: .05s; }
+.changelog[open] li:nth-child(3) { animation-delay: .10s; }
+.changelog[open] li:nth-child(4) { animation-delay: .15s; }
+.changelog[open] .changelog-note { animation: riseIn .4s .2s backwards cubic-bezier(.2,.6,.2,1); }
+
+/* ---------- 21. Dialogs close the way they opened ----------
+   showModal() flips display, which is why the scrim and card could fade in
+   but never out. Transitioning display and overlay as discrete properties,
+   with @starting-style for the entry, gives the close its half second back.
+   Browsers without @starting-style keep today's instant close. */
+.modal {
+  opacity: 0;
+  transition:
+    opacity .22s ease,
+    display .22s allow-discrete,
+    overlay .22s allow-discrete;
+}
+.modal[open] { opacity: 1; }
+@starting-style {
+  .modal[open] { opacity: 0; }
+}
+
+/* ---------- 22. Copy confirms itself ---------- */
+@keyframes copyPop {
+  0%   { transform: scale(.92); }
+  60%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+.guide-copy.is-copied { animation: copyPop .42s cubic-bezier(.34,1.42,.5,1); }
+
+/* ==========================================================================
+   Motion pass four — the headings, the tiles and the keyboard. Same contract:
+   nothing here moves, recolours or resizes anything at rest, and the
+   reduced-motion reset above switches all of it off.
+   ========================================================================== */
+
+/* ---------- 23. Section headings arrive a word at a time ----------
+   main.js wraps each word of a plain-text heading in a span and writes the
+   delays; the words are inline-block so they still break exactly where the
+   line broke before. With the script off there are no spans and the heading
+   is one piece of type, which is the resting state either way. */
+.word { display: inline-block; }
+.reveal-ready .in h2.has-words .word {
+  animation: riseIn .5s backwards cubic-bezier(.2,.6,.2,1);
+}
+/* The head's own child stagger would run the heading twice over. */
+.reveal-ready .section-head.in > h2.has-words { animation: none; }
+
+/* ---------- 24. The 2.0 badges catch the light, once ----------
+   A single sweep as the feature slab lands — not a loop. Black over white,
+   so it stays inside the palette. */
+.tag-new { position: relative; overflow: hidden; }
+@keyframes tagSheen {
+  from { transform: translateX(-150%); }
+  to   { transform: translateX(150%); }
+}
+.reveal-ready .feature-slab.in .tag-new::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-150%);
+  background: linear-gradient(105deg,
+              transparent 40%, rgba(0,0,0,0.07) 50%, transparent 60%);
+  animation: tagSheen 1.05s .7s ease-out;
+}
+
+/* ---------- 25. Agent tiles lean towards the pointer ----------
+   main.js writes the rotation; this is the easing that makes it a lean rather
+   than a jump, and the resting transform the tile returns to. The perspective
+   is per tile, written into the transform itself, so tiles at the edge of the
+   grid tilt on their own axis instead of sharing one vanishing point. */
+.agent { transform-style: preserve-3d; }
+
+/* ---------- 26. The keyboard ring settles ----------
+   Tab focus lands with the ring easing in from a little wider, so the eye can
+   follow it from one control to the next. */
+@keyframes focusRing {
+  from { outline-offset: 9px; outline-color: transparent; }
+}
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+.btn:focus-visible,
+details:focus-visible {
+  animation: focusRing .24s cubic-bezier(.2,.6,.2,1);
+}
+
+/* ---------- 27. The 404 page gets the hero's entrance ----------
+   It shares this stylesheet but not the script, so this is CSS only: the same
+   staggered rise the home page's first screen uses. */
+.error-page .error-code { animation: riseIn .5s  .00s backwards cubic-bezier(.2,.6,.2,1); }
+.error-page h1          { animation: riseIn .6s  .06s backwards cubic-bezier(.2,.6,.2,1); }
+.error-page .error-lead { animation: riseIn .6s  .13s backwards cubic-bezier(.2,.6,.2,1); }
+.error-page .error-cta  { animation: riseIn .6s  .20s backwards cubic-bezier(.2,.6,.2,1); }
