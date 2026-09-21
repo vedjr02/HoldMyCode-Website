@@ -203,40 +203,6 @@
 
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  /* 3e. Buttons pull towards the pointer.
-         Four pixels at the edges, on top of the one-pixel lift the CSS hover
-         already gives them, eased by the .22s transform transition. Fine
-         pointers only, never under reduced motion, and the inline transform is
-         cleared on the way out so the CSS hover and :active take back over. */
-  if (finePointer && !stillMotion) {
-    document.querySelectorAll('.btn').forEach(function (btn) {
-      var pull = 4;          // px at the far edge of the button
-      var pending = false;
-      var dx = 0, dy = 0;
-
-      var drawPull = function () {
-        pending = false;
-        btn.style.transform =
-          'translate3d(' + dx.toFixed(2) + 'px,' + (dy - 1).toFixed(2) + 'px,0)';
-      };
-
-      btn.addEventListener('pointermove', function (e) {
-        if (e.pointerType !== 'mouse') return;
-        var box = btn.getBoundingClientRect();
-        if (!box.width || !box.height) return;
-        dx = ((e.clientX - box.left) / box.width  - 0.5) * 2 * pull;
-        dy = ((e.clientY - box.top)  / box.height - 0.5) * 2 * (pull * 0.6);
-        if (pending) return;
-        pending = true;
-        window.requestAnimationFrame(drawPull);
-      }, { passive: true });
-
-      btn.addEventListener('pointerleave', function () { btn.style.transform = ''; });
-      // A press should read as a press, not as a magnet fighting it.
-      btn.addEventListener('pointerdown', function () { btn.style.transform = ''; });
-    });
-  }
-
   /* 3f. Section headings are split into words, so they can land one at a time.
          Only headings that are a single text node are touched — anything with
          markup inside is left exactly as written. The words keep the spaces
