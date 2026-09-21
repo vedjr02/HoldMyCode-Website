@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" aria-hidden="true">
+  <defs>
+    <clipPath id="b"><circle cx="32" cy="32" r="30"/></clipPath>
+    <radialGradient id="g" cx="38%" cy="32%" r="72%">
+      <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
+      <stop offset=".55" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".22"/>
+    </radialGradient>
+  </defs>
+  <g clip-path="url(#b)">
+    <path d="M32 32 32 2 A30 30 0 0 1 47 6z" fill="#f04b4b"/>
+    <path d="M32 32 47 6 A30 30 0 0 1 58 17z" fill="#f28b2c"/>
+    <path d="M32 32 58 17 A30 30 0 0 1 62 32z" fill="#f2c53d"/>
+    <path d="M32 32 62 32 A30 30 0 0 1 58 47z" fill="#63bb4a"/>
+    <path d="M32 32 58 47 A30 30 0 0 1 47 58z" fill="#3aa8c1"/>
+    <path d="M32 32 47 58 A30 30 0 0 1 32 62z" fill="#3f6fd8"/>
+    <path d="M32 32 32 62 A30 30 0 0 1 17 58z" fill="#6a4bd0"/>
+    <path d="M32 32 17 58 A30 30 0 0 1 6 47z" fill="#c24bd0"/>
+    <path d="M32 32 6 47 A30 30 0 0 1 2 32z" fill="#e23f8f"/>
+    <path d="M32 32 2 32 A30 30 0 0 1 6 17z" fill="#e8434f"/>
+    <path d="M32 32 6 17 A30 30 0 0 1 17 6z" fill="#f0703a"/>
+    <path d="M32 32 17 6 A30 30 0 0 1 32 2z" fill="#f2a92f"/>
+    <circle cx="32" cy="32" r="30" fill="url(#g)"/>
+  </g>
+  <circle cx="32" cy="32" r="29.25" fill="none" stroke="#000" stroke-opacity=".18" stroke-width="1.5"/>
+</svg>
