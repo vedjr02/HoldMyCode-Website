@@ -430,7 +430,7 @@ section {
   gap: 14px;
 }
 
-/* Sits directly under a Download button and says what the email gate is for,
+/* Sits directly under a Download button and says what the name gate is for,
    so nobody meets the field without knowing why it's there. */
 .cta-note {
   margin: 14px auto 0;
@@ -1794,7 +1794,7 @@ h1, h2, h3 {
   .modal[open] .modal-card { animation: none; }
 }
 
-/* ---------- email gate ---------- */
+/* ---------- name gate ---------- */
 
 /* Asked before the download starts. One field, one button, stacked so it works
    the same on a phone as on a desktop. */
@@ -1807,6 +1807,9 @@ h1, h2, h3 {
   color: var(--ink-2);
   margin-bottom: 8px;
 }
+/* Name is what's asked for; email is the quieter alternative. */
+.gate-label strong { font-weight: 600; color: var(--ink); }
+.gate-label-alt { opacity: .55; }
 
 .gate-input {
   display: block;
