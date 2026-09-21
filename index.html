@@ -24,7 +24,7 @@
 <meta name="twitter:description" content="Blocks sleep only while your agent is actually working. Lid closed included. Free.">
 <meta name="twitter:image" content="https://holdmycode.xyz/og-image.png">
 
-<link rel="stylesheet" href="styles.css?v=52">
+<link rel="stylesheet" href="styles.css?v=53">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -475,7 +475,7 @@
           servers: GitHub, to check for and download a new version, and, if you leave local
           currency switched on, a public exchange rate feed once a day, which is sent nothing about
           you. The only other part that talks to a server is this website, which keeps an anonymous
-          download count and the email address you give before downloading.
+          download count and the name you give before downloading.
         </p>
       </details>
 
@@ -576,7 +576,7 @@
         <a class="btn btn-secondary" href="#faq">Read the FAQ</a>
       </div>
 
-      <p class="cta-note">One email first, so I can count installs. Nothing else.</p>
+      <p class="cta-note">Just a name before it downloads, so I know how many Macs it&rsquo;s keeping awake.</p>
 
       <div class="specs">
         <div class="spec">
@@ -644,20 +644,20 @@
       <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
     </button>
     <span class="modal-mark" aria-hidden="true">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1.2-3.7 4-5.5 7.5-5.5s6.3 1.8 7.5 5.5"/></svg>
     </span>
-    <h2 id="gate-title">One email, then the download.</h2>
+    <h2 id="gate-title">Your name, then the download.</h2>
     <p id="gate-desc" class="modal-lead">Hold My Code is free and stays free. This is the only thing it asks for.</p>
 
     <form class="gate-form" novalidate>
-      <label class="gate-label" for="gate-email">Email address</label>
-      <input class="gate-input" id="gate-email" type="email" name="email"
-             placeholder="you@example.com" autocomplete="email" inputmode="email"
+      <label class="gate-label" for="gate-name"><strong>Name</strong> <span class="gate-label-alt">or email</span></label>
+      <input class="gate-input" id="gate-name" type="text" name="name"
+             placeholder="Ada Lovelace" autocomplete="name"
              spellcheck="false" required aria-describedby="gate-help gate-error">
       <p class="gate-error" id="gate-error" role="alert" hidden></p>
       <p class="gate-help" id="gate-help">
-        No spam. This is only so I can see how many people are using it. Nothing else is
-        collected, nothing is sent to you.
+        It only tells me how many Macs HoldMyCode is keeping awake. Nothing is sent to you,
+        ever.
       </p>
       <button class="btn btn-primary gate-submit" type="submit">Download for macOS</button>
     </form>
@@ -696,6 +696,6 @@
   </div>
 </dialog>
 
-<script src="main.js?v=52"></script>
+<script src="main.js?v=53"></script>
 </body>
 </html>
