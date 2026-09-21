@@ -1984,9 +1984,10 @@ h1, h2, h3 {
 .changelog[open] > summary:hover .chev { transform: rotate(45deg); }
 
 /* ---------- 3. Buttons: a sheen on hover, a press on click ----------
-   The sweep is white over ink and black over white, so it stays inside the
-   monochrome palette. It sits behind the label in the button's own stacking
-   context, and is clipped by the pill radius. */
+   Only the outline buttons get the sweep, a faint black pass over white. The
+   dark download button stays flat: no shine, just its shadow on hover. The
+   sweep sits behind the label in the button's own stacking context, and is
+   clipped by the pill radius. */
 .btn {
   position: relative;
   overflow: hidden;
@@ -1995,22 +1996,17 @@ h1, h2, h3 {
     background .2s ease, border-color .2s ease, opacity .2s ease,
     transform .22s cubic-bezier(.2,.6,.2,1), box-shadow .3s ease;
 }
-.btn::before {
+.btn-secondary::before {
   content: "";
   position: absolute;
   inset: -1px;
   z-index: -1;
   background: linear-gradient(105deg,
-              transparent 38%, rgba(255,255,255,0.22) 50%, transparent 62%);
+              transparent 38%, rgba(0,0,0,0.055) 50%, transparent 62%);
   transform: translateX(-130%);
   transition: transform .62s cubic-bezier(.2,.6,.2,1);
 }
-.btn:hover::before { transform: translateX(130%); }
-.btn-secondary::before,
-.btn.btn-secondary::before {
-  background: linear-gradient(105deg,
-              transparent 38%, rgba(0,0,0,0.055) 50%, transparent 62%);
-}
+.btn-secondary:hover::before { transform: translateX(130%); }
 .btn-primary:hover   { box-shadow: 0 6px 20px rgba(0,0,0,0.16); }
 .btn-secondary:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.06); }
 .btn:active { transform: translateY(0) scale(.982); }
