@@ -40,6 +40,41 @@
     }, (60 - new Date().getSeconds()) * 1000);
   }
 
+  /* 1c. The mobile Control Center. The toggle in the bar opens #cc as a modal
+        <dialog>, which brings the focus trap and Esc with it. Any link inside
+        closes it first — in the capture phase, so a download link's own
+        handler can open the name gate over a page that is already clear. */
+  var cc = document.getElementById('cc');
+  var ccOpen = document.querySelector('[data-cc-open]');
+  if (cc && ccOpen && typeof cc.showModal === 'function') {
+    var ccClock = document.getElementById('ccClock');
+    var closeCc = function () { if (cc.open) cc.close(); };
+
+    ccOpen.addEventListener('click', function () {
+      if (ccClock) {
+        try {
+          ccClock.textContent = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+        } catch (e) { /* leave it blank */ }
+      }
+      cc.showModal();
+      ccOpen.setAttribute('aria-expanded', 'true');
+    });
+    cc.addEventListener('close', function () {
+      ccOpen.setAttribute('aria-expanded', 'false');
+    });
+    cc.querySelector('[data-cc-close]').addEventListener('click', closeCc);
+    cc.addEventListener('click', function (e) {
+      if (e.target.closest('a')) closeCc();
+    }, true);
+
+    // Rotating a tablet to landscape can cross the breakpoint with the sheet
+    // open, leaving it up with no button to close it from.
+    var wide = window.matchMedia('(min-width: 941px)');
+    var onWide = function () { if (wide.matches) closeCc(); };
+    if (wide.addEventListener) wide.addEventListener('change', onWide);
+    else if (wide.addListener) wide.addListener(onWide);
+  }
+
   /* 2. FAQ: keep one answer open at a time. */
   var faqItems = document.querySelectorAll('.faq details');
   faqItems.forEach(function (item) {

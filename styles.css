@@ -2454,3 +2454,251 @@ img.sticker.is-dragging {
   .sticker { transition: none; }
   .sticker.is-dragging { scale: 1; }
 }
+
+/* ---------- control center (mobile nav) ----------
+   Below 940px the section links drop out of the menu bar, and .mb-cc opens
+   them as a macOS Control Center sheet: soft grey tiles on the hero's dot
+   grid. Every tile is the same material; the download carries weight, not
+   colour, and the two status pills are set dressing like the bar's glyphs. */
+
+.mb-cc {
+  display: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-right: -8px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.mb-cc:active { background: color-mix(in srgb, var(--ink) 8%, transparent); }
+@media (max-width: 940px) {
+  .mb-cc { display: grid; }
+}
+
+.cc {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--ink);
+  background-color: #F4F4F4;
+  background-image: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, .14) 1px, transparent 0);
+  background-size: 26px 26px;
+  background-position: 12px 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.cc::backdrop { background: #F4F4F4; }
+html:has(.cc[open]) { overflow: hidden; }
+
+.cc-inner {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top) + 6px) 20px calc(env(safe-area-inset-bottom) + 32px);
+}
+
+/* Sits exactly where the menu bar was, so the close lands under the thumb
+   that opened it. */
+.cc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-h);
+  margin: 0 -6px 0 0;
+}
+.cc-mark { display: flex; line-height: 0; border-radius: 6px; }
+.cc-mark img { height: 22px; width: auto; }
+.cc-close {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.cc-close:active { background: rgba(0, 0, 0, .07); }
+.cc-close svg { transform: rotate(180deg); }
+
+.cc-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 26px 4px 14px;
+  color: var(--ink-4);
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+}
+.cc-clock:empty::before { content: "\00a0"; }
+
+.cc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.cc-stack {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+}
+
+/* The material: a lit top edge, a soft bottom falloff, and a shadow that
+   lifts the tile off the dots rather than outlining it. */
+.cc-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin: 0;
+  color: var(--ink);
+  text-decoration: none;
+  background: linear-gradient(180deg, #FBFBFB 0%, #F1F1F1 100%);
+  border: 1px solid #E2E2E2;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, .95),
+    inset 0 -2px 3px rgba(0, 0, 0, .025),
+    0 1px 2px rgba(0, 0, 0, .05),
+    0 10px 22px -10px rgba(0, 0, 0, .14);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .18s cubic-bezier(.2,.6,.2,1), background .18s ease;
+}
+a.cc-tile:active {
+  transform: scale(.965);
+  background: linear-gradient(180deg, #F0F0F0 0%, #E9E9E9 100%);
+}
+
+.cc-pill {
+  gap: 12px;
+  min-height: 56px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-size: 16.5px;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+.cc-pill span { overflow: hidden; text-overflow: ellipsis; }
+.cc-pill svg { flex: none; }
+.cc-get {
+  justify-content: center;
+  gap: 8px;
+  color: var(--ink);
+  font-weight: 600;
+}
+.cc-get svg { margin-top: -2px; }
+
+/* "Now playing": the walkthrough, with the poster as its album art. */
+.cc-now {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px;
+  border-radius: 34px;
+}
+.cc-art {
+  width: 58%;
+  max-width: 110px;
+  aspect-ratio: 1;
+  height: auto;
+  object-fit: cover;
+  border-radius: 16px;
+  background: var(--art-1);
+  filter: grayscale(1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .12);
+}
+.cc-now-play {
+  position: absolute;
+  top: 20px;
+  right: 18px;
+}
+.cc-now-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.25;
+}
+.cc-now-title { font-size: 17px; font-weight: 600; }
+.cc-now-sub   { font-size: 14.5px; color: var(--ink-3); padding-right: 34px; }
+
+.cc-wave {
+  position: absolute;
+  right: 18px;
+  bottom: 22px;
+  display: flex;
+  align-items: center;
+  gap: 2.5px;
+  height: 20px;
+}
+.cc-wave i {
+  display: block;
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--ink-2);
+  transform: scaleY(.45);
+}
+
+.cc-nav {
+  justify-content: center;
+  min-height: 92px;
+  padding: 0 14px;
+  border-radius: 34px;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+}
+
+@media (max-width: 360px) {
+  .cc-inner { padding-left: 14px; padding-right: 14px; }
+  .cc-pill  { padding: 0 14px; gap: 9px; font-size: 15px; }
+  .cc-nav   { font-size: 15px; min-height: 80px; padding: 0 8px; }
+  .cc-now   { padding: 16px; }
+  .cc-now-title { font-size: 16px; }
+  .cc-now-sub   { padding-right: 0; }
+  .cc-wave  { display: none; }
+}
+
+/* Opening: the sheet fades up, the tiles settle in a quick stagger, and the
+   waveform idles along like something is playing. All of it is removed
+   under reduced motion by the global rule above. */
+.cc[open] { animation: ccIn .26s cubic-bezier(.2,.6,.2,1); }
+.cc[open] .cc-tile { animation: ccTile .42s cubic-bezier(.2,.7,.2,1) backwards; }
+.cc[open] .cc-stack .cc-tile:nth-child(1) { animation-delay: .03s; }
+.cc[open] .cc-stack .cc-tile:nth-child(2) { animation-delay: .06s; }
+.cc[open] .cc-stack .cc-tile:nth-child(3) { animation-delay: .09s; }
+.cc[open] .cc-now                         { animation-delay: .05s; }
+.cc[open] .cc-nav:nth-of-type(2) { animation-delay: .12s; }
+.cc[open] .cc-nav:nth-of-type(3) { animation-delay: .14s; }
+.cc[open] .cc-nav:nth-of-type(4) { animation-delay: .17s; }
+.cc[open] .cc-nav:nth-of-type(5) { animation-delay: .19s; }
+.cc[open] .cc-nav:nth-of-type(6) { animation-delay: .22s; }
+.cc[open] .cc-nav:nth-of-type(7) { animation-delay: .24s; }
+.cc[open] .cc-wave i { animation: ccWave 1.1s ease-in-out infinite alternate; }
+.cc-wave i:nth-child(2) { animation-delay: -.35s !important; }
+.cc-wave i:nth-child(3) { animation-delay: -.7s  !important; }
+.cc-wave i:nth-child(4) { animation-delay: -.2s  !important; }
+.cc-wave i:nth-child(5) { animation-delay: -.55s !important; }
+
+@keyframes ccIn {
+  from { opacity: 0; transform: scale(1.02); }
+}
+@keyframes ccTile {
+  from { opacity: 0; transform: translateY(10px) scale(.96); }
+}
+@keyframes ccWave {
+  from { transform: scaleY(.3); }
+  to   { transform: scaleY(1); }
+}
