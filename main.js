@@ -5,6 +5,9 @@
 (function () {
   'use strict';
 
+  // Raised every time a sticker is picked up, so the last one grabbed is on top.
+  var stickerTop = 10;
+
   /* 1. Hairline under the sticky nav once the page scrolls. */
   var header = document.getElementById('siteHeader');
   if (header) {
@@ -13,6 +16,28 @@
     };
     syncHeader();
     window.addEventListener('scroll', syncHeader, { passive: true });
+  }
+
+  /* 1b. The menu bar clock. Written by JS only, so with JS off the bar simply
+        has no clock rather than a wrong one. Minute resolution, like macOS. */
+  var clock = document.getElementById('mbClock');
+  if (clock) {
+    var drawClock = function () {
+      var now = new Date();
+      var text;
+      try {
+        text = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      } catch (e) {
+        text = now.getHours() + ':' + ('0' + now.getMinutes()).slice(-2);
+      }
+      clock.textContent = text;
+    };
+    drawClock();
+    // Land on the minute, then keep to it.
+    window.setTimeout(function () {
+      drawClock();
+      window.setInterval(drawClock, 60000);
+    }, (60 - new Date().getSeconds()) * 1000);
   }
 
   /* 2. FAQ: keep one answer open at a time. */
@@ -126,42 +151,7 @@
     window.addEventListener('resize', queueProgress, { passive: true });
   }
 
-  /* 3d. The hero laptop leans towards the pointer.
-         A few pixels of translation, eased by the .45s transition in CSS, so
-         it reads as the shot following your cursor rather than tracking it.
-         Fine pointers only — there is nothing to follow on a touchscreen —
-         and never under reduced motion. The inline transform is cleared on the
-         way out, which hands the element back to the CSS hover rule. */
-  var heroFigure = document.querySelector('.hero-figure');
-  var heroShot = document.querySelector('.hero-shot');
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  if (heroFigure && heroShot && finePointer && !stillMotion) {
-    var leanQueued = false;
-    var leanX = 0;
-    var leanY = 0;
-
-    var drawLean = function () {
-      leanQueued = false;
-      heroShot.style.transform =
-        'translate3d(' + leanX.toFixed(2) + 'px,' + leanY.toFixed(2) + 'px,0)';
-    };
-
-    heroFigure.addEventListener('pointermove', function (e) {
-      if (e.pointerType !== 'mouse') return;
-      var box = heroFigure.getBoundingClientRect();
-      if (!box.width || !box.height) return;
-      // -1 .. 1 from the centre of the figure, then a handful of pixels each way.
-      leanX = ((e.clientX - box.left) / box.width  - 0.5) * 2 * 7;
-      leanY = ((e.clientY - box.top)  / box.height - 0.5) * 2 * 5 - 3;
-      if (leanQueued) return;
-      leanQueued = true;
-      window.requestAnimationFrame(drawLean);
-    }, { passive: true });
-
-    heroFigure.addEventListener('pointerleave', function () {
-      heroShot.style.transform = '';
-    });
-  }
 
   /* 3e. Buttons pull towards the pointer.
          Four pixels at the edges, on top of the one-pixel lift the CSS hover
@@ -535,4 +525,72 @@
       });
     }
   }
+  /* 7. Desk clutter: the stickers can be picked up and moved.
+        Pointer events and two style properties, no library. A sticker keeps
+        its rotation while it moves, because the rotation lives in `transform`
+        and the drag only ever writes `left` and `top`. Each pickup raises the
+        z-index, so whatever you touched last is on top, and a sticker that
+        travelled more than a few pixels swallows the click that follows it so
+        a drag never reads as a press. Nothing is stored: a reload puts the
+        desk back the way it was. */
+  document.querySelectorAll('.stickers').forEach(function (layer) {
+    layer.querySelectorAll('.sticker').forEach(function (el) {
+
+      // The browser's own image drag would hijack the gesture.
+      el.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+      el.addEventListener('pointerdown', function (e) {
+        if (e.button !== 0) return;
+        e.preventDefault();
+
+        // offsetLeft/offsetTop are the layout position inside .stickers, so
+        // they read the same whether the sticker was anchored left or right,
+        // and they ignore the rotation.
+        var x = el.offsetLeft;
+        var y = el.offsetTop;
+        var startX = e.clientX;
+        var startY = e.clientY;
+
+        // Keep it inside its own section: no sticker can be shoved off the
+        // page and drag a horizontal scrollbar in behind it.
+        var maxX = layer.clientWidth  - el.offsetWidth;
+        var maxY = layer.clientHeight - el.offsetHeight;
+
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+        el.style.right = 'auto';      // once moved it stops being edge-anchored
+        el.style.bottom = 'auto';
+        el.style.zIndex = String(++stickerTop);
+        el.classList.add('is-dragging');
+        el.setPointerCapture(e.pointerId);
+
+        var moved = false;
+
+        var onMove = function (ev) {
+          var dx = ev.clientX - startX;
+          var dy = ev.clientY - startY;
+          if (!moved && Math.abs(dx) + Math.abs(dy) > 3) moved = true;
+          el.style.left = Math.max(0, Math.min(maxX, x + dx)) + 'px';
+          el.style.top  = Math.max(0, Math.min(maxY, y + dy)) + 'px';
+        };
+
+        var onUp = function () {
+          el.removeEventListener('pointermove', onMove);
+          el.removeEventListener('pointerup', onUp);
+          el.removeEventListener('pointercancel', onUp);
+          el.classList.remove('is-dragging');
+          if (moved) {
+            window.addEventListener('click', function (ev) {
+              ev.stopPropagation();
+              ev.preventDefault();
+            }, { capture: true, once: true });
+          }
+        };
+
+        el.addEventListener('pointermove', onMove);
+        el.addEventListener('pointerup', onUp);
+        el.addEventListener('pointercancel', onUp);
+      });
+    });
+  });
 })();
