@@ -86,6 +86,21 @@
     });
   });
 
+  /* 2b. Changelog: open downwards. Scroll anchoring would otherwise lock onto
+        the section below and scroll the page to keep it still, so the summary
+        jumps up and the list looks like it grows upwards. Anchoring is paused
+        for the length of the open/close transition only. */
+  var changelog = document.querySelector('.changelog > summary');
+  if (changelog) {
+    var anchorTimer;
+    changelog.addEventListener('click', function () {
+      var root = document.documentElement;
+      root.style.overflowAnchor = 'none';
+      clearTimeout(anchorTimer);
+      anchorTimer = setTimeout(function () { root.style.overflowAnchor = ''; }, 600);
+    });
+  }
+
   /* 3. Fade sections in on scroll.
         The CSS only hides .reveal elements once <html> has .reveal-ready, so
         if this script never runs — or the browser lacks IntersectionObserver,
