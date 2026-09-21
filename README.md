@@ -22,6 +22,7 @@ changing anything visual.
 | --- | --- |
 | `index.html` | The whole page: hero, how it works, features + what's new, agents, FAQ, download, and the two `<dialog>` modals. |
 | `404.html` | Not-found page. Links back with root-relative `/#anchor` hrefs. |
+| `claude-code-lid-closed/`, `vs-amphetamine/` | Long-form search landing pages (`index.html` each), linked from the footer and listed in `sitemap.xml`. Header and footer are copied from `404.html` with root-absolute asset paths; they load no `main.js`, so every Download goes to `/#download` and through the name gate. Styles under "guide pages" in `styles.css`. |
 | `styles.css` | Every style. One file, sectioned by page area. |
 | `main.js` | Reveal-on-scroll, the FAQ accordion, the name gate and the download handoff. Progressive enhancement: with JS off, the page reads fine and the download links still work. |
 | `logos/` | Agent logos used in the agents section. |
@@ -60,7 +61,7 @@ the download still starts. A returning visitor whose entry is already in
 
 - **Bump the cache key** after touching `styles.css` or `main.js`. Both are
   loaded as `styles.css?v=N` / `main.js?v=N`, and `styles.css` is referenced
-  from **both** `index.html` and `404.html` — change every copy in the same
+  from `index.html`, `404.html` and both guide pages — change every copy in the same
   commit, or a returning visitor gets old CSS against new markup. Current:
   `styles.css?v=15`, `main.js?v=8`.
 - **Say a thing once.** Copy that repeats across sections reads as filler; the

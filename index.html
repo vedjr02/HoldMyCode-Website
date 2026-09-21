@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HoldMyCode: keep your Mac awake while your agent works</title>
-<meta name="description" content="HoldMyCode is a free macOS menu bar app that blocks sleep only while a coding agent is actually working, lid closed included, then lets your Mac go back to sleep when it's done.">
+<title>HoldMyCode: keep your Mac awake while AI agents work</title>
+<meta name="description" content="Free macOS menu bar app that keeps your Mac awake only while Claude Code, Codex, Cursor or Gemini CLI is working, lid closed included, then lets it sleep.">
 <meta name="color-scheme" content="light">
 
 <link rel="canonical" href="https://holdmycode.xyz/">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="HoldMyCode">
-<meta property="og:title" content="HoldMyCode: keep your Mac awake while your agent works">
-<meta property="og:description" content="Blocks sleep only while your agent is actually working. Lid closed included. Free.">
+<meta property="og:title" content="HoldMyCode: keep your Mac awake while AI agents work">
+<meta property="og:description" content="Blocks sleep only while your coding agent is actually working. Lid closed included. Free for macOS.">
 <meta property="og:url" content="https://holdmycode.xyz/">
 <meta property="og:image" content="https://holdmycode.xyz/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -20,11 +20,11 @@
 <meta property="og:image:alt" content="The HoldMyCode mark: a laptop with a sleeping face on its screen.">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="HoldMyCode: keep your Mac awake while your agent works">
-<meta name="twitter:description" content="Blocks sleep only while your agent is actually working. Lid closed included. Free.">
+<meta name="twitter:title" content="HoldMyCode: keep your Mac awake while AI agents work">
+<meta name="twitter:description" content="Blocks sleep only while your coding agent is actually working. Lid closed included. Free for macOS.">
 <meta name="twitter:image" content="https://holdmycode.xyz/og-image.png">
 
-<link rel="stylesheet" href="styles.css?v=53">
+<link rel="stylesheet" href="styles.css?v=54">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -38,14 +38,81 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "HoldMyCode",
-  "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "macOS 14 Sonoma or later",
-  "description": "A macOS menu bar app that blocks sleep only while a coding agent is actually running a task, including with the lid closed.",
-  "softwareVersion": "2.0.1",
-  "downloadUrl": "https://github.com/vedjr02/Hold-My-Code/releases/latest/download/HoldMyCode.dmg",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://holdmycode.xyz/#website",
+      "name": "HoldMyCode",
+      "url": "https://holdmycode.xyz/"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://holdmycode.xyz/#author",
+      "name": "Ved",
+      "url": "https://github.com/vedjr02"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://holdmycode.xyz/#app",
+      "name": "HoldMyCode",
+      "url": "https://holdmycode.xyz/",
+      "applicationCategory": "DeveloperApplication",
+      "applicationSubCategory": "Utilities",
+      "operatingSystem": "macOS 14 Sonoma or later",
+      "description": "A macOS menu bar app that blocks sleep only while a coding agent such as Claude Code, Codex, Gemini CLI, Cursor or Cline is actually running a task, including with the lid closed.",
+      "softwareVersion": "2.0.1",
+      "fileSize": "4MB",
+      "downloadUrl": "https://github.com/vedjr02/Hold-My-Code/releases/latest/download/HoldMyCode.dmg",
+      "releaseNotes": "https://github.com/vedjr02/Hold-My-Code/releases",
+      "image": "https://holdmycode.xyz/og-image.png",
+      "screenshot": "https://holdmycode.xyz/hero-laptop.webp",
+      "author": { "@id": "https://holdmycode.xyz/#author" },
+      "publisher": { "@id": "https://holdmycode.xyz/#author" },
+      "sameAs": ["https://github.com/vedjr02/Hold-My-Code"],
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://holdmycode.xyz/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How is this different from Caffeine or Amphetamine?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Those keep your Mac awake for as long as you leave them switched on. The decision is yours, and the classic failure mode is forgetting to flip it off, then finding a hot, flat laptop at the bottom of your bag. HoldMyCode ties the wake lock to the agent instead. The hold exists only while a watched agent is in the middle of a task, and it ends by itself when the work does. Nothing to toggle, nothing to forget." }
+        },
+        {
+          "@type": "Question",
+          "name": "Why not just run caffeinate?",
+          "acceptedAnswer": { "@type": "Answer", "text": "caffeinate is built into macOS and fine while the lid is open: caffeinate -i claude keeps the Mac up for as long as that process runs. Two catches. It holds for the whole session, including the hours an agent sits idle at a prompt, and it does nothing about the lid: close it and the Mac sleeps anyway. HoldMyCode holds only while a task is running, and handles the lid as well." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it really keep running with the lid closed and no external display?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. A plain sleep assertion isn't enough for a lid close, so HoldMyCode installs a small privileged helper that disables lid sleep while a hold is active and turns it back on the moment the hold ends. No external display, keyboard, or dongle required. macOS asks you to allow it once, in System Settings under Login Items." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can it read my code or my prompts?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. It never reads your code or your prompts, and nothing about your sessions leaves your Mac. Hooks record only whether a session is working, in a small file on your Mac. The usage card counts turns and estimates cost from Claude Code's own local files and asks Claude Code itself for your limit figures; that runs on your Mac and sends nothing anywhere. The app has no account and no analytics inside it. It talks to exactly two servers: GitHub, to check for and download a new version, and, if you leave local currency switched on, a public exchange rate feed once a day, which is sent nothing about you. The only other part that talks to a server is this website, which keeps an anonymous download count and the name you give before downloading." }
+        },
+        {
+          "@type": "Question",
+          "name": "Which agents work today?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Claude Code, Codex, Gemini CLI, Cursor and Cline through their lifecycle hooks. Since 2.0 those install themselves: every supported agent found on your Mac is hooked up at launch and kept up to date, and so is one you install later. Cline is the exception, because its config sits in ~/Documents behind a macOS permission prompt, so it asks first. Claude Cowork works out of the box from the Claude app's task logs. You can still remove hooks in Settings › Agents, and nothing puts them back." }
+        },
+        {
+          "@type": "Question",
+          "name": "What stops it from draining my battery?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A threshold you pick. Below it, the hold releases and a notification tells you why. You can also restrict holds to times when you're on power, and HoldMyCode won't override Low Power Mode. Thermal pressure ends a hold too, rather than cooking the machine in a bag." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it actually free, or free for now?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Free. No licence key, no trial timer, no surprise paid tier waiting in the wings. It's a small utility that does one job, and charging for it isn't the plan. The app is closed source, so that's a promise rather than something you can audit, but there's no account to create and nothing to cancel." }
+        }
+      ]
+    }
+  ]
 }
 </script>
 </head>
@@ -126,8 +193,8 @@
     <span class="kicker"><span class="dot"></span> Free · One job, done properly</span>
     <h1>Your <strong>agent</strong> is still working. Your <strong>Mac</strong> shouldn't <strong>clock out</strong>.</h1>
     <p class="hero-sub">
-      HoldMyCode blocks sleep only while your coding agent is actually running a task,
-      whether the lid is open, closed, or halfway into your bag. The moment it goes idle,
+      HoldMyCode blocks sleep only while a coding agent like Claude Code, Codex or Cursor
+      is actually running a task, whether the lid is open, closed, or halfway into your bag. The moment it goes idle,
       it hands sleep back to macOS and gets out of your way.
     </p>
     <div class="hero-cta">
@@ -450,6 +517,21 @@
 
       <details>
         <summary>
+          Why not just run caffeinate?
+          <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v11M2.5 8h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </summary>
+        <p>
+          <code>caffeinate</code> is built into macOS and fine while the lid is open:
+          <code>caffeinate -i claude</code> keeps the Mac up for as long as that process runs. Two
+          catches. It holds for the whole session, including the hours an agent sits idle at a
+          prompt, and it does nothing about the lid: close it and the Mac sleeps anyway.
+          HoldMyCode holds only while a task is running, and handles the lid as well.
+          More in <a href="/claude-code-lid-closed/">keeping Claude Code running with the lid closed</a>.
+        </p>
+      </details>
+
+      <details>
+        <summary>
           Does it really keep running with the lid closed and no external display?
           <svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2.5v11M2.5 8h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </summary>
@@ -615,7 +697,9 @@
         HoldMyCode
       </span>
       <nav class="footer-links" aria-label="Footer">
-          <a href="#faq">FAQ</a>
+        <a href="#faq">FAQ</a>
+        <a href="/claude-code-lid-closed/">Lid closed guide</a>
+        <a href="/vs-amphetamine/">vs Amphetamine</a>
         <a href="#download">Download</a>
       </nav>
     </div>

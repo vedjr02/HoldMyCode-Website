@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keep Claude Code running with the lid closed · HoldMyCode</title>
+<meta name="description" content="Why your Mac stops Claude Code when the lid closes, and four ways around it: clamshell mode, caffeinate, pmset, and HoldMyCode, which holds only while it works.">
+<meta name="color-scheme" content="light">
+
+<link rel="canonical" href="https://holdmycode.xyz/claude-code-lid-closed/">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="HoldMyCode">
+<meta property="og:title" content="Keep Claude Code running with your MacBook lid closed">
+<meta property="og:description" content="Why your Mac stops Claude Code when the lid closes, and four ways around it: clamshell mode, caffeinate, pmset, and HoldMyCode, which holds only while it works.">
+<meta property="og:url" content="https://holdmycode.xyz/claude-code-lid-closed/">
+<meta property="og:image" content="https://holdmycode.xyz/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The HoldMyCode mark: a laptop with a sleeping face on its screen.">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Keep Claude Code running with your MacBook lid closed">
+<meta name="twitter:description" content="Why your Mac stops Claude Code when the lid closes, and four ways around it: clamshell mode, caffeinate, pmset, and HoldMyCode, which holds only while it works.">
+<meta name="twitter:image" content="https://holdmycode.xyz/og-image.png">
+
+<link rel="stylesheet" href="/styles.css?v=54">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
+<meta name="theme-color" media="(prefers-color-scheme: dark) and (min-width: 99999px)" content="#000000">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Keep Claude Code running with your MacBook lid closed",
+  "description": "Why your Mac stops Claude Code when the lid closes, and four ways around it: clamshell mode, caffeinate, pmset, and HoldMyCode, which holds only while it works.",
+  "url": "https://holdmycode.xyz/claude-code-lid-closed/",
+  "mainEntityOfPage": "https://holdmycode.xyz/claude-code-lid-closed/",
+  "image": "https://holdmycode.xyz/og-image.png",
+  "datePublished": "2026-09-21",
+  "dateModified": "2026-09-21",
+  "author": {
+    "@type": "Person",
+    "name": "Ved",
+    "url": "https://github.com/vedjr02"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Ved",
+    "url": "https://github.com/vedjr02"
+  },
+  "about": {
+    "@type": "SoftwareApplication",
+    "name": "HoldMyCode",
+    "url": "https://holdmycode.xyz/"
+  }
+}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <!-- The nav is dressed as the macOS menu bar the app actually lives in:
+       wordmark and sections on the left, the mark centred, and a status
+       cluster on the right. The glyphs and clock are decoration — every real
+       destination is a link. -->
+  <div class="menubar">
+    <div class="mb-left">
+      <a class="brand" href="/">HoldMyCode</a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="/#agents">Agents</a>
+        <a href="/#features">Features</a>
+        <a href="/#faq">FAQ</a>
+      </nav>
+    </div>
+
+    <a class="mb-mark" href="/" aria-label="HoldMyCode, home">
+      <picture>
+        <source srcset="/logo-mark-on-dark.png" media="(prefers-color-scheme: dark) and (min-width: 99999px)">
+        <img class="brand-mark" src="/logo-mark-on-light.png" alt="" width="24" height="18" decoding="async">
+      </picture>
+    </a>
+
+    <div class="mb-right">
+      <span class="mb-glyphs" aria-hidden="true">
+        <!-- Awake: the eye the app puts in the bar while it is holding sleep off. -->
+        <svg class="mb-glyph" viewBox="0 0 22 16" width="20" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 8s3.6-6 10-6 10 6 10 6-3.6 6-10 6S1 8 1 8Z"/>
+          <circle cx="11" cy="8" r="2.4" fill="currentColor" stroke="none"/>
+        </svg>
+        <!-- Lid closed, still working. -->
+        <svg class="mb-glyph" viewBox="0 0 22 16" width="20" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3.5" y="2.5" width="15" height="9" rx="1.4"/>
+          <path d="M1 13.5h20"/>
+        </svg>
+        <!-- Battery, still charged, because the Mac never spun all night. -->
+        <svg class="mb-glyph" viewBox="0 0 26 14" width="23" height="13" fill="none" stroke="currentColor" stroke-width="1.4">
+          <rect x="1" y="2.2" width="21" height="9.6" rx="2.6"/>
+          <rect x="3.2" y="4.4" width="13" height="5.2" rx="1.3" fill="currentColor" stroke="none"/>
+          <path d="M24 5.6v2.8" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="mb-clock" id="mbClock" aria-hidden="true"></span>
+      <a class="mb-cta" href="/#download">
+        <svg class="mb-apple" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+          <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>
+        </svg>
+        get HoldMyCode
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1" class="guide">
+  <article class="wrap">
+    <h1>Keep Claude Code running with your MacBook lid closed</h1>
+    <p class="guide-lead">
+      Close the lid mid-task and macOS puts the Mac to sleep, and the agent stops wherever it
+      was. Here's why that happens, the ways around it, and what each one costs you.
+    </p>
+
+    <h2>Why closing the lid stops the agent</h2>
+    <p>
+      Apps can hold off idle sleep, the kind that kicks in after a few minutes with nobody at the
+      keyboard. Closing the lid is a separate trigger, and ordinary sleep assertions don't block
+      it. When the Mac sleeps, everything sleeps with it: Claude Code stops making tool calls, its
+      network requests stall, and nothing moves until you open the lid again. The same goes for
+      Codex, Gemini CLI, Cursor or anything else running in a terminal.
+    </p>
+
+    <h2>Option 1: clamshell mode</h2>
+    <p>
+      A MacBook stays awake with the lid closed when it's on power and connected to an external
+      display. Good at a desk. No use in a bag, on a train, or anywhere without a monitor.
+    </p>
+
+    <h2>Option 2: caffeinate</h2>
+    <p>
+      <code>caffeinate</code> ships with macOS. Wrap the agent in it and the Mac stays up for as
+      long as that process runs:
+    </p>
+    <pre><code>caffeinate -i claude</code></pre>
+    <p>
+      That stops idle sleep while the lid is open. It doesn't stop lid sleep: close the lid and
+      the Mac sleeps anyway. It also holds for the whole session, including the time Claude Code
+      sits at a prompt waiting for you.
+    </p>
+
+    <h2>Option 3: switch sleep off with pmset</h2>
+    <p>You can turn system sleep off altogether, lid included:</p>
+    <pre><code>sudo pmset -a disablesleep 1</code></pre>
+    <p>
+      It works, and it keeps working until you run <code>sudo pmset -a disablesleep 0</code>.
+      Forget, and the Mac stays awake in your bag all night, getting hot and draining its
+      battery. It's a global switch with no idea whether an agent is doing anything.
+    </p>
+
+    <h2>Option 4: HoldMyCode</h2>
+    <p>
+      HoldMyCode holds the lid for you, but only while an agent is actually working. Claude Code
+      reports each task starting and finishing through its lifecycle hooks. HoldMyCode blocks
+      sleep, lid included, from the first and hands it back at the second. A session sitting idle
+      at a prompt gets no hold, so the Mac sleeps normally once the work is done.
+    </p>
+    <ul>
+      <li>Works with the lid closed and no external display, through a small helper macOS asks you to allow once.</li>
+      <li>Hooks install themselves for Claude Code, Codex, Gemini CLI and Cursor. Cline asks first, since its config sits in <code>~/Documents</code>.</li>
+      <li>A battery threshold where the hold gives up, an on-power-only option, and Low Power Mode respected.</li>
+    </ul>
+
+    <h2>A note on heat</h2>
+    <p>
+      A Mac working hard in a closed bag gets warm. HoldMyCode ends a hold under thermal
+      pressure, but for a long run, a desk or a bag with some air beats a tight sleeve.
+    </p>
+
+    <p>
+      Weighing up Amphetamine instead? See
+      <a href="/vs-amphetamine/">HoldMyCode vs Amphetamine vs caffeinate</a>.
+    </p>
+
+    <div class="guide-cta">
+      <h2>Close the lid. The agent keeps going.</h2>
+      <p>Free, about 4 MB, macOS 14 Sonoma or later. No account, no licence key.</p>
+      <div class="error-cta">
+        <a class="btn btn-primary" href="/#download">Download for macOS</a>
+        <a class="link-more" href="/#faq">Read the FAQ</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-row">
+      <span class="brand">
+        <picture>
+          <source srcset="/logo-mark-on-dark.png" media="(prefers-color-scheme: dark) and (min-width: 99999px)">
+          <img class="brand-mark" src="/logo-mark-on-light.png" alt=""
+               width="24" height="18" decoding="async">
+        </picture>
+        HoldMyCode
+      </span>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="/#faq">FAQ</a>
+        <a href="/claude-code-lid-closed/">Lid closed guide</a>
+        <a href="/vs-amphetamine/">vs Amphetamine</a>
+        <a href="/#download">Download</a>
+      </nav>
+    </div>
+    <p class="footer-note">
+      Built for people who close the laptop before the agent is done.
+    </p>
+    <nav class="footer-contact" aria-label="Contact">
+      <a href="https://github.com/vedjr02">GitHub</a>
+      <a href="mailto:vedantambre.tech@gmail.com">vedantambre.tech@gmail.com</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>

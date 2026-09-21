@@ -1459,6 +1459,76 @@ h1, h2, h3 {
   gap: 14px;
 }
 
+/* ---------- guide pages (/claude-code-lid-closed/, /vs-amphetamine/) ----------
+   Long-form reading pages: one narrow column, the FAQ's type scale, no
+   stickers or reveal, since main.js isn't loaded on them. */
+
+.guide { padding: 96px 0 120px; }
+.guide .wrap { max-width: 760px; }
+.guide h1 {
+  font-size: clamp(34px, 5vw, 52px);
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.guide-lead {
+  margin-top: 20px;
+  font-size: 19px;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+.guide h2 {
+  margin: 56px 0 14px;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+.guide p + p, .guide p + ul, .guide ul + p, .guide p + pre, .guide pre + p { margin-top: 14px; }
+.guide p, .guide li { line-height: 1.6; }
+.guide ul { margin: 0; padding-left: 1.2em; }
+.guide li + li { margin-top: 8px; }
+.guide code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  background: var(--bg-alt);
+  border: 1px solid var(--line-soft);
+  border-radius: 6px;
+  padding: 1px 6px;
+}
+.guide pre {
+  margin: 0;
+  padding: 16px 18px;
+  background: var(--bg-alt);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  font-size: 14px;
+}
+.guide pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+
+.guide-table-wrap { margin-top: 20px; overflow-x: auto; }
+.guide table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.45;
+}
+.guide th, .guide td {
+  text-align: left;
+  vertical-align: top;
+  padding: 12px 14px 12px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.guide thead th { font-weight: 600; border-bottom-color: var(--line); }
+.guide tbody th { font-weight: 500; color: var(--ink-2); width: 30%; }
+
+.guide-cta {
+  margin-top: 56px;
+  padding: 32px;
+  background: var(--bg-alt);
+  border-radius: var(--radius);
+}
+.guide-cta h2 { margin-top: 0; }
+.guide-cta .error-cta { justify-content: flex-start; margin-top: 22px; }
+
 /* ---------- thank-you dialog ---------- */
 
 /* Native <dialog>: showModal() gives us the top layer, focus trap and Esc for
@@ -2086,7 +2156,7 @@ h1, h2, h3 {
   animation: scrimIn .3s ease backwards;
 }
 .modal[open] .modal-mark {
-  animation: markPop .52s .1s cubic-bezier(.34,1.42,.5,1) backwards;
+  animation: markPop .52s .1s cubic-bezier(.22,1,.36,1) backwards;
 }
 .modal[open] .modal-steps li {
   animation: riseIn .44s backwards cubic-bezier(.2,.6,.2,1);
@@ -2242,10 +2312,9 @@ h1, h2, h3 {
 /* ---------- 22. Copy confirms itself ---------- */
 @keyframes copyPop {
   0%   { transform: scale(.92); }
-  60%  { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
-.guide-copy.is-copied { animation: copyPop .42s cubic-bezier(.34,1.42,.5,1); }
+.guide-copy.is-copied { animation: copyPop .42s cubic-bezier(.22,1,.36,1); }
 
 /* ==========================================================================
    Motion pass four — the headings, the tiles and the keyboard. Same contract:
