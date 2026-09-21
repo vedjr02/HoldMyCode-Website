@@ -324,19 +324,6 @@ section {
 }
 .nav-links a:hover { color: var(--ink); }
 
-/* Centred on the bar itself, not between its two clusters, so it holds still
-   as the left and right sides change width. */
-.mb-mark {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  line-height: 0;
-  border-radius: 6px;
-}
-.mb-mark .brand-mark { height: 21px; width: auto; }
-
 .mb-glyphs {
   display: flex;
   align-items: center;
@@ -1028,7 +1015,6 @@ section {
 
 @media (max-width: 600px) {
   .mb-clock { display: none; }
-  .mb-mark { display: none; }
   .menubar { padding: 0 14px; }
 }
 
