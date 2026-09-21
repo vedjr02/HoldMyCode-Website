@@ -45,7 +45,7 @@
 
   --maxw:   1000px;
   --gutter: 22px;
-  --nav-h:  48px;
+  --nav-h:  46px;
 
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
@@ -189,13 +189,15 @@ section {
 .btn-primary {
   background: var(--ink);
   color: var(--on-fill);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, .16), 0 10px 26px rgba(0, 0, 0, .12);
 }
 .btn-primary:hover { opacity: 0.86; }
 
 .btn-secondary {
-  background: transparent;
+  background: var(--surface);
   border-color: var(--line);
   color: var(--ink);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
 }
 .btn-secondary:hover { border-color: var(--ink-3); background: var(--surface-2); }
 
@@ -249,27 +251,47 @@ section {
   background: currentColor;
   flex: none;
 }
-/* ---------- header ---------- */
+/* ---------- header: the macOS menu bar ---------- */
 
+/* The app lives in the menu bar, so the site's nav is one too: a thin
+   full-bleed strip, sections on the left, the mark centred, and a status
+   cluster on the right. The glyphs and the clock are set dressing — the
+   wordmark, the section links and the CTA are the only real destinations. */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 50;
   height: var(--nav-h);
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  background: color-mix(in srgb, var(--bg-alt) 78%, transparent);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 1px solid transparent;
-  transition: border-color .25s ease;
+  border-bottom: 1px solid var(--line-soft);
+  transition: background-color .25s ease, border-color .25s ease;
 }
-.site-header.is-stuck { border-bottom-color: var(--line-soft); }
+.site-header.is-stuck {
+  background: color-mix(in srgb, var(--bg-alt) 92%, transparent);
+  border-bottom-color: var(--line);
+}
 
-.nav {
+/* Full bleed, like the real bar: no 1000px column, just an edge gutter. */
+.menubar {
+  position: relative;
   height: var(--nav-h);
   display: flex;
   align-items: center;
-  gap: 30px;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 20px;
 }
+
+.mb-left,
+.mb-right {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.mb-left  { gap: 26px; }
+.mb-right { gap: 17px; }
 
 .brand {
   display: flex;
@@ -279,21 +301,21 @@ section {
   font-weight: 600;
   letter-spacing: -0.015em;
   text-decoration: none;
-  margin-right: auto;
 }
 
-/* The nav carries no logo mark, so the wordmark holds that weight on its own. */
+/* The menu bar's leftmost item is the app's own name, set the way macOS sets
+   it: bold, small, and tight against the sections that follow. */
 .site-header .brand {
-  font-size: 16.5px;
+  font-size: 15.5px;
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
   color: var(--ink);
 }
 
 .nav-links {
   display: flex;
-  gap: 26px;
-  font-size: 13px;
+  gap: 24px;
+  font-size: 14.5px;
   color: var(--ink-2);
 }
 .nav-links a {
@@ -302,18 +324,83 @@ section {
 }
 .nav-links a:hover { color: var(--ink); }
 
-.nav-cta {
-  font-size: 13px;
-  padding: 6px 15px;
+/* Centred on the bar itself, not between its two clusters, so it holds still
+   as the left and right sides change width. */
+.mb-mark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  line-height: 0;
+  border-radius: 6px;
 }
+.mb-mark .brand-mark { height: 21px; width: auto; }
+
+.mb-glyphs {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: var(--ink-3);
+}
+.mb-glyph { display: block; }
+
+.mb-clock {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.mb-clock:empty { display: none; }
+
+/* The one item with weight: the menu bar's rightmost entry is the download. */
+.mb-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity .15s ease;
+}
+.mb-cta:hover { opacity: .62; }
+.mb-apple { display: block; margin-top: -1px; }
 
 /* ---------- hero ---------- */
 
 .hero {
   /* The bottom pad is the parallax's landing room: the laptop drifts down as it
      leaves, and without this it arrives on top of the next section's heading. */
-  padding: 92px 0 28px;
+  padding: 46px 0 28px;
   text-align: center;
+  position: relative;
+  isolation: isolate;
+}
+
+/* The dot grid the hero sits on: the desk under the clutter. It is one
+   repeating radial gradient, faded out at the edges with a mask so it never
+   collides with the header hairline or the section below, and painted behind
+   everything in the hero. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, .13) 1px, transparent 0);
+  background-size: 26px 26px;
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0, #000 90px, #000 62%, transparent 92%);
+  mask-image:
+    linear-gradient(to bottom, transparent 0, #000 90px, #000 62%, transparent 92%);
+  pointer-events: none;
+}
+@media (prefers-color-scheme: dark) and (min-width: 99999px) {
+  .hero::before {
+    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, .11) 1px, transparent 0);
+  }
 }
 
 .hero h1 {
@@ -374,6 +461,9 @@ section {
   border-radius: 999px;
   padding: 5px 14px;
   margin-bottom: 26px;
+  /* It floats over the dot grid, so it carries a white ground and a little lift. */
+  background: var(--surface);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
 }
 
 /* The laptop is the product, so it runs nearly the full window rather than the
@@ -395,7 +485,8 @@ section {
   display: block;
   width: 100%;
   height: auto;
-  filter: drop-shadow(0 28px 56px rgba(0,0,0,0.16));
+  /* Two shadows, not one: the near one seats the laptop, the far one lifts it. */
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.08)) drop-shadow(0 34px 66px rgba(0,0,0,0.18));
 }
 @media (prefers-color-scheme: dark) and (min-width: 99999px) {
   .hero-shot { filter: none; }
@@ -931,12 +1022,20 @@ section {
   .agent-grid { grid-template-columns: repeat(3, 1fr); }
   .setup-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
+  /* Same as the real bar on a small screen: the status items drop first. */
+  .mb-glyphs { display: none; }
+}
+
+@media (max-width: 600px) {
+  .mb-clock { display: none; }
+  .mb-mark { display: none; }
+  .menubar { padding: 0 14px; }
 }
 
 @media (max-width: 700px) {
   body { font-size: 16px; }
   section { padding: 80px 0; }
-  .hero { padding-top: 64px; }
+  .hero { padding-top: 34px; }
   .hero-sub { font-size: 18px; }
   .section-head { margin-bottom: 44px; }
   .section-head p { font-size: 17px; }
@@ -1044,10 +1143,6 @@ section {
   0%, 100% { box-shadow: 0 0 4px 1px rgba(46, 204, 113, 0.5); }
   50%      { box-shadow: 0 0 10px 2px rgba(46, 204, 113, 0.85); }
 }
-
-/* Placeholder + figure frames respond to the pointer just enough to feel alive. */
-.hero-shot { transition: transform .35s cubic-bezier(.2,.6,.2,1); }
-.hero-figure:hover .hero-shot { transform: translateY(-3px); }
 
 /* The laptop is above the fold, so the scroll observer fired its .reveal the
    instant the page loaded and it landed out of time with the text above it.
@@ -1182,6 +1277,129 @@ h1, h2, h3 {
 /* 7. The brand mark nudges when you hover the wordmark. */
 .brand-mark { transition: transform .3s cubic-bezier(.2,.6,.2,1); }
 .brand:hover .brand-mark { transform: translateY(-1px); }
+
+/* ---------- terminal card ---------- */
+
+/* The card rides the FAQ's grey band rather than starting a new field: the two
+   sections share one background, so the grey simply runs on behind the card
+   and ends under it, with no seam against the card's own dark edge. */
+#ask { padding: 0 0 80px; }
+#faq { padding-bottom: 76px; }
+
+
+/* Deliberately the darkest surface on the site: the page is white, the agents
+   run in a terminal, so the one place that asks you to write in gets dressed
+   as one. Greys only, traffic lights included. */
+.term {
+  border-radius: 14px;
+  overflow: hidden;
+  background: #161616;
+  border: 1px solid #262626;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .14);
+}
+
+.term-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 14px;
+  background: #1F1F1F;
+  border-bottom: 1px solid #262626;
+}
+.term-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #3C3C3C;
+}
+.term-dot:nth-child(2) { background: #4A4A4A; }
+.term-dot:nth-child(3) { background: #585858; }
+
+.term-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 28px;
+  padding: 34px 32px 36px;
+}
+
+.term-copy { min-width: 0; }
+
+.term-head {
+  font-family: var(--mono);
+  font-size: 23px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #F2F2F2;
+  margin-bottom: 14px;
+}
+
+/* The block cursor left sitting after the prompt. */
+.term-caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.95em;
+  margin-left: 6px;
+  vertical-align: -0.11em;
+  background: #F2F2F2;
+  animation: termBlink 1.1s steps(1, end) infinite;
+}
+@keyframes termBlink { 50% { opacity: 0; } }
+
+.term-text {
+  font-family: var(--mono);
+  font-size: 15px;
+  line-height: 1.72;
+  color: #909090;
+  max-width: 46ch;
+}
+
+.term-mark {
+  color: #7A7A7A;
+  line-height: 0;
+  transition: color .2s ease;
+}
+.term-mark:hover { color: #D8D8D8; }
+
+/* The one light thing inside the dark box, so it reads as the way out. */
+.term-btn {
+  font-family: var(--mono);
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: #161616;
+  background: #F4F4F4;
+  border: 1px solid #FFFFFF;
+  border-radius: 999px;
+  padding: 12px 26px;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
+  transition: transform .2s cubic-bezier(.2,.6,.2,1), background-color .2s ease;
+}
+.term-btn:hover {
+  background: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.term-note {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+@media (max-width: 820px) {
+  .term-body {
+    grid-template-columns: 1fr auto;
+    gap: 22px 18px;
+    padding: 28px 24px 30px;
+  }
+  .term-copy { grid-column: 1 / -1; }
+  .term-head { font-size: 20px; }
+  .term-text { font-size: 14px; max-width: none; }
+  .term-btn { font-size: 15px; padding: 11px 22px; }
+}
 
 /* ---------- brand mark ---------- */
 
@@ -1881,13 +2099,6 @@ h1, h2, h3 {
 .guide-copy:active { transform: scale(.94); }
 .gate-input { transition: border-color .2s ease, box-shadow .25s ease; }
 
-/* ---------- 13. Hero shot follows the pointer ----------
-   main.js writes the transform on .hero-shot while a fine pointer is over the
-   figure, and clears it on the way out; the transition is what makes it a
-   follow rather than a snap. The lift below is the resting hover, kept for
-   touch and for browsers where the script never runs. */
-.hero-shot { transition: transform .45s cubic-bezier(.2,.6,.2,1); }
-
 /* ---------- 14. Reduced motion, for the one box the global reset misses ----
    The universal selector covers elements and ::before / ::after, but not
    ::details-content, so the panel height would still animate. Switch it off
@@ -1975,7 +2186,7 @@ h1, h2, h3 {
 .nav-links a:nth-child(1){ animation: riseIn .5s .05s backwards cubic-bezier(.2,.6,.2,1); }
 .nav-links a:nth-child(2){ animation: riseIn .5s .09s backwards cubic-bezier(.2,.6,.2,1); }
 .nav-links a:nth-child(3){ animation: riseIn .5s .13s backwards cubic-bezier(.2,.6,.2,1); }
-.site-header .nav-cta    { animation: riseIn .5s .17s backwards cubic-bezier(.2,.6,.2,1); }
+.site-header .mb-right   { animation: riseIn .5s .17s backwards cubic-bezier(.2,.6,.2,1); }
 
 /* ---------- 19. The text link draws its own underline ----------
    Same rule in the same place as the browser's; it is wiped on from the left
@@ -2098,3 +2309,76 @@ details:focus-visible {
 .error-page h1          { animation: riseIn .6s  .06s backwards cubic-bezier(.2,.6,.2,1); }
 .error-page .error-lead { animation: riseIn .6s  .13s backwards cubic-bezier(.2,.6,.2,1); }
 .error-page .error-cta  { animation: riseIn .6s  .20s backwards cubic-bezier(.2,.6,.2,1); }
+
+/* ---------- 28. Desk clutter ----------
+   A few macOS oddments scattered in the margins either side of the text
+   column, which you can pick up and move. They are decoration, so the layer
+   is aria-hidden and nothing here is focusable; the only thing they cost a
+   visitor who ignores them is a handful of kilobytes.
+
+   The layer never eats a pointer — only the stickers themselves do — and it
+   is only shown from 1300px up, which is the first width where the margins
+   are wide enough for a sticker to sit clear of the 1000px column. */
+.has-stickers { position: relative; }
+
+.stickers {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.sticker {
+  position: absolute;
+  pointer-events: auto;
+  cursor: grab;
+  /* Without this a touch drag scrolls the page instead of moving the sticker,
+     and the browser's own image drag starts a file drag mid-gesture. */
+  touch-action: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+  transform: rotate(var(--r, 0deg));
+  transition: scale .18s cubic-bezier(.2,.6,.2,1), filter .18s;
+}
+
+img.sticker {
+  display: block;
+  width: var(--w, 48px);
+  height: auto;
+  /* The icons are flat PNG-alpha, so the shadow is what sits them on the page. */
+  filter: drop-shadow(0 5px 12px rgba(0, 0, 0, .16));
+}
+
+/* Text stickers weigh nothing and pick up the reader's own emoji font. */
+.sticker-emoji,
+.sticker-kao {
+  font-size: var(--fs, 24px);
+  line-height: 1;
+  white-space: nowrap;
+}
+.sticker-kao {
+  font-family: var(--mono);
+  color: var(--ink-2);
+  letter-spacing: -0.02em;
+}
+
+/* Picked up: a little larger, and the shadow lifts with it. */
+.sticker.is-dragging {
+  cursor: grabbing;
+  scale: 1.07;
+}
+img.sticker.is-dragging {
+  filter: drop-shadow(0 14px 24px rgba(0, 0, 0, .24));
+}
+
+@media (max-width: 1299px) {
+  .stickers { display: none; }
+}
+
+/* Dragging is the visitor's own gesture, so it stays. The bounce on pickup is
+   ours, so it goes. */
+@media (prefers-reduced-motion: reduce) {
+  .sticker { transition: none; }
+  .sticker.is-dragging { scale: 1; }
+}
