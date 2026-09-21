@@ -297,25 +297,27 @@
     markActive();
   }
 
-  /* 5. Download flow: ask for an email, then start the download, then say thanks.
+  /* 5. Download flow: ask for a name (or an email, if they'd rather), then start
+        the download, then say thanks.
 
         Progressive enhancement throughout. With JS off every download link is a
         plain link to the DMG: the gate never opens and the download still works.
-        With JS on the gate is mandatory — the DMG is only fetched once a valid
-        address has been submitted, or once one was submitted on an earlier
+        With JS on the gate is mandatory — the DMG is only fetched once a name
+        or address has been submitted, or once one was submitted on an earlier
         visit. The native <dialog> handles Esc, focus-trap and return-focus. */
-  /* Where downloads and email sign-ups are recorded. Leave '' and the site stays
+  /* Where downloads and sign-ups are recorded. Leave '' and the site stays
      fully static — no ping, and the gate lets everyone straight through. */
   var TRACK_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxVNvUh3hvZ0p2UyFAsEK160Pzn8PyXY3b4dLrZmNwYuLvl6cW05r2MqpjLqEFesf3HjQ/exec';
 
-  /* Remembering the address keeps a returning visitor from being asked twice.
+  /* Remembering the entry keeps a returning visitor from being asked twice.
+     The key predates names, and is kept so earlier visitors still skip the gate.
      Private-mode Safari throws on storage, so every access is guarded. */
-  var EMAIL_KEY = 'hmc.email';
+  var SIGNUP_KEY = 'hmc.email';
   var remembered = function () {
-    try { return localStorage.getItem(EMAIL_KEY) || ''; } catch (e) { return ''; }
+    try { return localStorage.getItem(SIGNUP_KEY) || ''; } catch (e) { return ''; }
   };
-  var remember = function (email) {
-    try { localStorage.setItem(EMAIL_KEY, email); } catch (e) { /* not essential */ }
+  var remember = function (entry) {
+    try { localStorage.setItem(SIGNUP_KEY, entry); } catch (e) { /* not essential */ }
   };
 
   /* Deliberately loose: a shape check, not an attempt to decide what a real
@@ -380,7 +382,7 @@
       openThanks();
     };
 
-    /* ---- the email gate, asked before any download starts ---- */
+    /* ---- the name gate, asked before any download starts ---- */
 
     var gateForm   = gate.querySelector('.gate-form');
     var gateInput  = gate.querySelector('.gate-input');
@@ -416,21 +418,29 @@
 
     gateForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      var email = (gateInput.value || '').trim();
+      var entry = (gateInput.value || '').trim();
 
-      if (!email) { showGateError('Enter an email address.'); gateInput.focus(); return; }
-      if (!looksLikeEmail(email)) {
-        showGateError("That doesn't look like an email address.");
+      if (!entry) { showGateError('Enter your name.'); gateInput.focus(); return; }
+      // A name is taken as typed. Only something that is trying to be an
+      // address gets the shape check.
+      var isEmail = entry.indexOf('@') !== -1;
+      if (isEmail && !looksLikeEmail(entry)) {
+        showGateError("That email doesn't look quite right. A name works too.");
         gateInput.focus();
         return;
       }
 
-      remember(email);
+      remember(entry);
       gateSubmit.disabled = true;
 
-      // If recording the address fails, the download still happens. Losing a
+      // If recording the entry fails, the download still happens. Losing a
       // row of a count is no reason to withhold a free app.
-      track({ type: 'signup', email: email, at: new Date().toISOString() });
+      track({
+        type: 'signup',
+        name: isEmail ? '' : entry,
+        email: isEmail ? entry : '',
+        at: new Date().toISOString()
+      });
 
       gate.close();
       startDownload(pendingURL);
@@ -454,8 +464,8 @@
         e.preventDefault();
         // Asked once, not twice — the download itself is still recorded.
         var known = remembered();
-        if (known && looksLikeEmail(known)) { startDownload(link.href); return; }
-        // With no endpoint configured there is nowhere to put an address, so
+        if (known) { startDownload(link.href); return; }
+        // With no endpoint configured there is nowhere to put a name, so
         // asking for one would be theatre.
         if (!TRACK_ENDPOINT) { startDownload(link.href); return; }
         openGate(link.href);
