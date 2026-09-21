@@ -348,14 +348,14 @@
   if (thanks && typeof thanks.showModal === 'function' &&
       gate   && typeof gate.showModal === 'function') {
 
-    /* Fire-and-forget POST. The endpoint answers opaquely across origins, so a
-       resolved promise only means the request left, which is all we need. The
-       caller never waits on it; a failure is logged, never surfaced, and never
-       stops a download. */
+    /* POST, never awaited by the download. The endpoint answers opaquely
+       across origins, so the promise settling only means the script has
+       replied. A failure is logged, never surfaced, and never stops a
+       download. Resolves either way so the next record can be chained on. */
     var track = function (payload) {
-      if (!TRACK_ENDPOINT) return;
+      if (!TRACK_ENDPOINT) return Promise.resolve();
       try {
-        fetch(TRACK_ENDPOINT, {
+        return fetch(TRACK_ENDPOINT, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -365,12 +365,29 @@
         });
       } catch (err) {
         console.warn('HoldMyCode: could not record ' + payload.type, err);
+        return Promise.resolve();
       }
     };
 
-    var openThanks = function () {
-      // Record the download (a no-op until an endpoint is set), then show the card.
-      track({ type: 'download', at: new Date().toISOString() });
+    /* Who a record belongs to, split the way the sheet has columns for it. */
+    var whoIs = function (entry) {
+      var isEmail = entry.indexOf('@') !== -1;
+      return { name: isEmail ? '' : entry, email: isEmail ? entry : '' };
+    };
+
+    /* Records sent back to back reach the script at the same moment, and two
+       runs appending at once can land on the same row, so the download row
+       would overwrite the sign-up. Each record waits for the one before it. */
+    var lastRecord = Promise.resolve();
+    var record = function (payload) {
+      lastRecord = lastRecord.then(function () { return track(payload); });
+    };
+
+    var openThanks = function (entry) {
+      // Record the download against whoever it is (a no-op until an endpoint
+      // is set), so the row names them even when the gate was skipped.
+      var who = whoIs(entry || '');
+      record({ type: 'download', name: who.name, email: who.email, at: new Date().toISOString() });
       setTimeout(function () {
         if (!thanks.open) {
           thanks.showModal();
@@ -393,9 +410,9 @@
       f.src = url;
     };
 
-    var startDownload = function (url) {
+    var startDownload = function (url, entry) {
       downloadVia(url);
-      openThanks();
+      openThanks(entry);
     };
 
     /* ---- the name gate, asked before any download starts ---- */
@@ -451,15 +468,11 @@
 
       // If recording the entry fails, the download still happens. Losing a
       // row of a count is no reason to withhold a free app.
-      track({
-        type: 'signup',
-        name: isEmail ? '' : entry,
-        email: isEmail ? entry : '',
-        at: new Date().toISOString()
-      });
+      var who = whoIs(entry);
+      record({ type: 'signup', name: who.name, email: who.email, at: new Date().toISOString() });
 
       gate.close();
-      startDownload(pendingURL);
+      startDownload(pendingURL, entry);
     });
 
     gate.querySelectorAll('[data-gate-close]').forEach(function (btn) {
@@ -480,7 +493,7 @@
         e.preventDefault();
         // Asked once, not twice — the download itself is still recorded.
         var known = remembered();
-        if (known) { startDownload(link.href); return; }
+        if (known) { startDownload(link.href, known); return; }
         // With no endpoint configured there is nowhere to put a name, so
         // asking for one would be theatre.
         if (!TRACK_ENDPOINT) { startDownload(link.href); return; }

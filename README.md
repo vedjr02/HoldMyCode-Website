@@ -53,7 +53,9 @@ stale when a release ships and no build is committed here. The DMG left in
 A download is gated behind a name, or an email if the visitor would rather
 (`#gate` in `index.html`, handled in `main.js`). The entry is sent as `name` or
 `email` to a Google Apps Script endpoint that writes to a Sheet — that is the
-entire backend. The gate fails open: if the request or `localStorage` fails,
+entire backend. Every `download` row carries the same `name`/`email`, and each
+record is sent only after the previous one is answered, so two rows never race
+for the same line of the sheet. The gate fails open: if the request or `localStorage` fails,
 the download still starts. A returning visitor whose entry is already in
 `localStorage` under `hmc.email` (the key predates names) skips the dialog.
 
