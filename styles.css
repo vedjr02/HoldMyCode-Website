@@ -2621,7 +2621,7 @@ a.cc-tile:active {
   line-height: 1.25;
 }
 .cc-now-title { font-size: 17px; font-weight: 600; }
-.cc-now-sub   { font-size: 14.5px; color: var(--ink-3); padding-right: 34px; }
+.cc-now-sub   { font-size: 14.5px; color: var(--ink-3); }
 
 .cc-wave {
   flex: none;
@@ -2656,7 +2656,6 @@ a.cc-tile:active {
   .cc-nav   { font-size: 15px; min-height: 80px; padding: 0 8px; }
   .cc-now   { padding: 16px; }
   .cc-now-title { font-size: 16px; }
-  .cc-now-sub   { padding-right: 0; }
   .cc-wave  { display: none; }
 }
 
