@@ -2606,6 +2606,14 @@ a.cc-tile:active {
   top: 20px;
   right: 18px;
 }
+/* Text and waveform share a row, so the bars sit beside the words and a
+   long title wraps instead of running under them. */
+.cc-now-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+}
 .cc-now-text {
   display: flex;
   flex-direction: column;
@@ -2616,9 +2624,8 @@ a.cc-tile:active {
 .cc-now-sub   { font-size: 14.5px; color: var(--ink-3); padding-right: 34px; }
 
 .cc-wave {
-  position: absolute;
-  right: 18px;
-  bottom: 22px;
+  flex: none;
+  margin-bottom: 1px;
   display: flex;
   align-items: center;
   gap: 2.5px;
